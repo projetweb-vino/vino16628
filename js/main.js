@@ -29,6 +29,8 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.debug(response);
+                let quantite = document.getElementById('item'+id);
+                quantite.innerHTML = 'Quantité : '+ response.quantite;
               }).catch(error => {
                 console.error(error);
               });
@@ -52,6 +54,8 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.debug(response);
+                let quantite = document.getElementById('item'+id);
+                quantite.innerHTML = 'Quantité : '+ response.quantite;
               }).catch(error => {
                 console.error(error);
               });
