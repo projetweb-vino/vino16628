@@ -34,6 +34,15 @@ class Controler
 				case 'ajouterBouteilleCellier':
 					$this->ajouterBouteilleCellier();
 					break;
+				case 'modifier':
+					$id = $_GET["id_bouteille_cellier"];
+					$this->modifierCellier($id);
+					break;
+				case 'sauvgarder':
+
+					$this->sauvgardeModifierCellier($_POST['id'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix'], $_POST['millesime']);
+					var_dump($_POST['id'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix'], $_POST['millesime']);
+					break;		
 				case 'boireBouteilleCellier':
 					$this->boireBouteilleCellier();
 					break;
@@ -93,6 +102,23 @@ class Controler
 			}
 			
             
+		}
+		/*
+		* Fonction modifier un cellier
+		*/
+		private function modifierCellier($id)
+		{	
+			$bte = new Bouteille();
+			$data = $bte->RecupererCellierParId($id);
+            include("vues/entete.php");
+			include("vues/modifier.php");
+			include("vues/pied.php");       
+		}
+		private function sauvgardeModifierCellier($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
+		{	
+			$bte = new Bouteille();
+			$data = $bte->sauvgarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille);
+               
 		}
 		
 		private function boireBouteilleCellier()
