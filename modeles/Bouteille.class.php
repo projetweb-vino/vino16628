@@ -166,7 +166,40 @@ class Bouteille extends Modele {
 		//echo $requete;
         $res = $this->_db->query($requete);
         
-		return $res;
+		if ($res) {
+			$requete2 = "SELECT quantite From vino__cellier WHERE id = $id";
+			$res = $this->_db->query($requete2);
+	        $row = $res->fetch_assoc();
+    		return $row;
+		}else{
+			return $res;
+		}
+	}
+	/*
+	* function RecupererCellierParId Pour recuperer les detail d'une cellier par son id 
+	*/
+	public function RecupererCellierParId($id)
+	{
+		
+			
+		$requete = "SELECT * FROM vino__cellier  WHERE id = ". $id;
+		//echo $requete;
+        $res = $this->_db->query($requete);
+        $row = $res->fetch_assoc(); 	
+		return $row;
+	
+	}
+	/*
+	* focntion sauvgarderModife Pour souvgrader les modification sur le cellier 
+	*/
+	public function sauvgarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
+	{
+		
+			
+		$requete = "UPDATE vino__cellier SET quantite = GREATEST(quantite + ". $quantite. ", 0) ,  date_achat = ".$dateachat." ,  notes = ".$notes.",  Garde = ".$Garde.",  prix = ".$prix.",  millesime = ".$mille." WHERE id = ". $id;
+		//echo $requete;
+        $res = $this->_db->query($requete);
+       	
 	}
 }
 
