@@ -120,6 +120,23 @@ class Bouteille extends Modele {
 		//var_dump($rows);
 		return $rows;
 	}
+
+	/**
+	 * Cette méthode permet de récupérer la quantité 
+	 * 
+	 * @param int $id id de la bouteille
+	 * 
+	 * @return retourne l'occurence.
+	 */
+	public function recupererQuantite($id)
+	{
+			
+		$requete = "SELECT quantite From vino__cellier WHERE id = $id";
+		$res = $this->_db->query($requete);
+        $row = $res->fetch_assoc();
+		return $row;
+		
+	}
 	
 	
 	/**
