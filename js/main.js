@@ -31,6 +31,9 @@ window.addEventListener('load', function() {
                 console.debug(response);
                 // Stocker dans une variable le paragraphe 'Quantité' identifié par l'id bouteille
                 let quantite = document.getElementById('item'+id);
+
+                // Afficher la quantité retournée par la requête en l'injectant dans le paragraphe qu'elle appartienne
+                quantite.innerHTML = 'Quantité : '+ response.quantite;
               }).catch(error => {
                 console.error(error);
               });
