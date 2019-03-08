@@ -29,6 +29,8 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.debug(response);
+                // Stocker dans une variable le paragraphe 'Quantité' identifié par l'id bouteille
+                let quantite = document.getElementById('item'+id);
               }).catch(error => {
                 console.error(error);
               });
