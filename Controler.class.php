@@ -21,7 +21,7 @@ class Controler
 		public function gerer()
 		{
 			
-			switch ($_GET['requete']) {
+			switch ($_REQUEST['requete']) {
 				case 'listeBouteille':
 					$this->listeBouteille();
 					break;
@@ -41,7 +41,7 @@ class Controler
 				case 'sauvgarder':
 
 					$this->sauvgardeModifierCellier($_POST['id'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix'], $_POST['millesime']);
-					var_dump($_POST['id'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix'], $_POST['millesime']);
+					
 					break;		
 				case 'boireBouteilleCellier':
 					$this->boireBouteilleCellier();
@@ -117,7 +117,7 @@ class Controler
 		private function sauvgardeModifierCellier($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
 		{	
 			$bte = new Bouteille();
-			
+
 			$data = $bte->sauvgarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille);
 			$this->accueil();
                
