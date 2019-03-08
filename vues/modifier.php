@@ -26,7 +26,7 @@
       <input type="text" class="form-control" id="inputEmail4" name="millesime" value = "<?php echo $data['millesime']?>" >
     </div>
     <input type="submit"  class="btn" value="Enregistrer">
-    <input type="hidden" name="idOeuvre" value="<?= $data["id"]?>">
-    <input type="hidden" name="action" value="sauvgarder">
+    <input type="hidden" name="id" value="<?php echo $data["id"]?>">
+    <input type="hidden" name="requete" value="sauvgarder">
 </form>
 </div>
