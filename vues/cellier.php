@@ -17,7 +17,7 @@ foreach ($data as $cle => $bouteille) {
             <p><a href="<?php echo $bouteille['url_saq'] ?>">Voir SAQ</a></p>
         </div>
         <div class="options" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>">
-           <?php echo " <button><a  href='index.php?requete=modifier&id_bouteille_cellier=" . $bouteille['id_bouteille_cellier'] . "'>Modifier</a></button>";?>
+            <?php echo "<a  href='index.php?requete=modifier&id_bouteille_cellier=" . $bouteille['id_bouteille_cellier'] . "'>Modifier</a>";?>
             <!-- <button ><a href="index.php?requete=modifier&id_bouteille_cellier= <?php echo $bouteille['id_bouteille_cellier']; ?>">Modifier</a></button> -->
             <!-- <form method="POST" action="Controler.class.php">
                 <input type="submit"  class="btn" value="Modifier">
