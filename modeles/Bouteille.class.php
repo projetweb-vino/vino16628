@@ -196,7 +196,7 @@ class Bouteille extends Modele {
 	{
 		
 			
-		$requete = "UPDATE vino__cellier SET quantite = GREATEST(quantite + ". $quantite. ", 0) ,  date_achat = ".$dateachat." ,  notes = ".$notes.",  Garde = ".$Garde.",  prix = ".$prix.",  millesime = ".$mille." WHERE id = ". $id;
+		$requete = "UPDATE vino__cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = $Garde ,  prix = $prix,  millesime = $mille WHERE id = $id";
 		//echo $requete;
         $res = $this->_db->query($requete);
        	
