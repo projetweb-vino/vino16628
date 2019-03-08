@@ -117,7 +117,9 @@ class Controler
 		private function sauvgardeModifierCellier($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
 		{	
 			$bte = new Bouteille();
+			
 			$data = $bte->sauvgarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille);
+			$this->accueil();
                
 		}
 		
