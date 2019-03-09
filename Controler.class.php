@@ -20,27 +20,41 @@ class Controler
 		 */
 		public function gerer()
 		{
-			
-			switch ($_GET['requete']) {
-				case 'listeBouteille':
-					$this->listeBouteille();
-					break;
-				case 'autocompleteBouteille':
-					$this->autocompleteBouteille();
-					break;
-				case 'ajouterNouvelleBouteilleCellier':
-					$this->ajouterNouvelleBouteilleCellier();
-					break;
-				case 'ajouterBouteilleCellier':
-					$this->ajouterBouteilleCellier();
-					break;
-				case 'boireBouteilleCellier':
-					$this->boireBouteilleCellier();
-					break;
-				default:
-					$this->accueil();
-					break;
+			// Si le paramètre est envoyé
+			if (isset($_REQUEST['requete'])) {
+
+				switch ($_REQUEST['requete']) {
+					case 'listeBouteille':
+						$this->listeBouteille();
+						break;
+					case 'autocompleteBouteille':
+						$this->autocompleteBouteille();
+						break;
+					case 'ajouterNouvelleBouteilleCellier':
+						$this->ajouterNouvelleBouteilleCellier();
+						break;
+					case 'ajouterBouteilleCellier':
+						$this->ajouterBouteilleCellier();
+						break;
+					case 'modifierBouteilleCellier':
+							$id = $_GET["id"];
+							$this->modifierBouteilleCellier($id);
+							break;
+					case 'sauvegarder':
+							$this->sauvegardeModifierCellier($_POST['id'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix'], $_POST['millesime']);
+							break;		
+					case 'boireBouteilleCellier':
+						$this->boireBouteilleCellier();
+						break;
+					default:
+						$this->accueil();
+						break;
+				}
 			}
+			// Sinon on affiche l'accueil
+			else{
+				$this->accueil();
+			}		
 		}
 
 		private function accueil()
@@ -115,6 +129,34 @@ class Controler
 			// Fair appel à la fonction de récupération de la quantité
 			$resultat = $bte->recupererQuantite($body->id);
 			echo json_encode($resultat);
+		}
+		/**
+		* Fonction modifier cellier
+		* 
+		* @param $id id de la bouteille cellier
+		*/
+		private function modifierBouteilleCellier($id)
+		{	
+			$bte = new Bouteille();
+			// Récupérer la bouteille par id
+			$data = $bte->RecupererCellierParId($id);
+            include("vues/entete.php");
+            // Afficher la vue modifier
+			include("vues/modifier.php");
+			include("vues/pied.php");       
+		}
+		/**
+		* Fonction sauvgarder modifier cellier
+		* 
+		* @param $id id de la bouteille cellier
+		*/
+		private function sauvegardeModifierCellier($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
+		{
+			$bte = new Bouteille();
+			// Faire appel à la fonction de sauvegarde
+			$data = $bte->sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille);
+			// Afficher l'accueil
+			$this->accueil();
 		}
 		
 }
