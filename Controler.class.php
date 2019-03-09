@@ -121,10 +121,10 @@ class Controler
 			echo json_encode($resultat);
 		}
 		/**
-		 * Fonction modifier cellier
-		 * 
-		 * @param $id id de la bouteille cellier
-		 */
+		* Fonction modifier cellier
+		* 
+		* @param $id id de la bouteille cellier
+		*/
 		private function modifierBouteilleCellier($id)
 		{	
 			$bte = new Bouteille();
@@ -134,6 +134,19 @@ class Controler
             // Afficher la vue modifier
 			include("vues/modifier.php");
 			include("vues/pied.php");       
+		}
+		/**
+		* Fonction sauvgarder modifier cellier
+		* 
+		* @param $id id de la bouteille cellier
+		*/
+		private function sauvegardeModifierCellier($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
+		{
+			$bte = new Bouteille();
+			// Faire appel à la fonction de sauvegarde
+			$data = $bte->sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille);
+			// Afficher l'accueil
+			$this->accueil();
 		}
 		
 }
