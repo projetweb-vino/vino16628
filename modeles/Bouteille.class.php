@@ -214,7 +214,7 @@ class Bouteille extends Modele {
 	public function sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
 	{
 		
-		$requete = "UPDATE vino__cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = $Garde ,  prix = $prix,  millesime = $mille WHERE id = $id";
+		$requete = "UPDATE vino__cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = '$Garde' ,  prix = $prix,  millesime = $mille WHERE id = $id";
 		//echo $requete;
         $res = $this->_db->query($requete);
        	
