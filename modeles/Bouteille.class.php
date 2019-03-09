@@ -185,7 +185,42 @@ class Bouteille extends Modele {
         
 		return $res;
 	}
+	/**
+	 * Fonction RecupererCellierParId Pour récupérer les détails d'un cellier par son id 
+	 * 
+	 * @param $id id de la bouteille cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function RecupererCellierParId($id)
+	{
+				
+		$requete = "SELECT * FROM vino__cellier  WHERE id = ". $id;
+		$res = $this->_db->query($requete);
+        $row = $res->fetch_assoc(); 	
+		return $row;
+	
+	}
+	/**
+	* Fonction sauvegarderModife Pour souvgrader les modification sur le cellier
+	* 
+	* @param $id id de la bouteille cellier
+	* @param $dateachat date d'achat de la bouteille cellier
+	* @param $notes notes
+	* @param $quantite quantités
+	* @param $Garde à garder jusqu'à ? (date)
+	* @param $prix prix
+	* @param $mille millesime
+	 */
+	public function sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
+	{
+		
+		$requete = "UPDATE vino__cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = '$Garde' ,  prix = $prix,  millesime = $mille WHERE id = $id";
+		//echo $requete;
+        $res = $this->_db->query($requete);
+       	
+	}
 }
+
 
 
 
