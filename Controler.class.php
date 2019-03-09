@@ -37,7 +37,10 @@ class Controler
 				case 'modifierBouteilleCellier':
 						$id = $_GET["id"];
 						$this->modifierBouteilleCellier($id);
-						break;	
+						break;
+				case 'sauvegarder':
+						$this->sauvegardeModifierCellier($_POST['id'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix'], $_POST['millesime']);
+						break;		
 				case 'boireBouteilleCellier':
 					$this->boireBouteilleCellier();
 					break;
