@@ -117,6 +117,8 @@ class SAQ extends Modele {
 				$info -> prix = trim($node -> textContent);
 				preg_match("/ \r\n(.*)$/", $info -> prix, $aRes);
 				$info -> prix = utf8_decode(trim($aRes[1]));
+				// Remplacer la virgule avec un point
+				$info -> prix = preg_replace("/[,]/", '.', $info -> prix);
 			}
 		}
 
