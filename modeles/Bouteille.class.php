@@ -11,7 +11,7 @@
  * 
  */
 class Bouteille extends Modele {
-	const TABLE = 'vino__bouteille';
+	const TABLE = 'vino_bouteille';
     
 	public function getListeBouteille()
 	{
@@ -97,7 +97,7 @@ class Bouteille extends Modele {
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
 		//echo $nom;
-		$requete ='SELECT id, nom FROM vino__bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
+		$requete ='SELECT id, nom FROM vino_bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
 		//var_dump($requete);
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
@@ -132,7 +132,7 @@ class Bouteille extends Modele {
 	public function recupererQuantite($id)
 	{
 			
-		$requete = "SELECT quantite From vino__cellier WHERE id = $id";
+		$requete = "SELECT quantite From vino_cellier WHERE id = $id";
 		$res = $this->_db->query($requete);
         $row = $res->fetch_assoc();
 		return $row;
@@ -152,7 +152,7 @@ class Bouteille extends Modele {
 		//TODO : Valider les données.
 		//var_dump($data);	
 		
-		$requete = "INSERT INTO vino__cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
+		$requete = "INSERT INTO vino_cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
 		"'".$data->id_bouteille."',".
 		"'".$data->date_achat."',".
 		"'".$data->garde_jusqua."',".
@@ -180,7 +180,7 @@ class Bouteille extends Modele {
 		//TODO : Valider les données.
 			
 			
-		$requete = "UPDATE vino__cellier SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
+		$requete = "UPDATE vino_cellier SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
 		//echo $requete;
         $res = $this->_db->query($requete);
         
@@ -195,7 +195,7 @@ class Bouteille extends Modele {
 	public function RecupererCellierParId($id)
 	{
 				
-		$requete = "SELECT * FROM vino__cellier  WHERE id = ". $id;
+		$requete = "SELECT * FROM vino_cellier  WHERE id = ". $id;
 		$res = $this->_db->query($requete);
         $row = $res->fetch_assoc(); 	
 		return $row;
@@ -215,7 +215,7 @@ class Bouteille extends Modele {
 	public function sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
 	{
 		
-		$requete = "UPDATE vino__cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = '$Garde' ,  prix = $prix,  millesime = $mille WHERE id = $id";
+		$requete = "UPDATE vino_cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = '$Garde' ,  prix = $prix,  millesime = $mille WHERE id = $id";
 		//echo $requete;
         $res = $this->_db->query($requete);
        	
