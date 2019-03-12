@@ -132,14 +132,14 @@ class SAQ extends Modele {
 
 		var_dump($bte);
 		// Récupère le type
-		$rows = $this -> _db -> query("select id from vino__type where type = '" . $bte -> desc -> type . "'");
+		$rows = $this -> _db -> query("select id from vino_type where type = '" . $bte -> desc -> type . "'");
 		
 		if ($rows -> num_rows == 1) {
 			$type = $rows -> fetch_assoc();
 			var_dump($type);
 			$type = $type['id'];
 
-			$rows = $this -> _db -> query("select id from vino__bouteille where code_saq = '" . $bte -> desc -> code_SAQ . "'");
+			$rows = $this -> _db -> query("select id from vino_bouteille where code_saq = '" . $bte -> desc -> code_SAQ . "'");
 			if ($rows -> num_rows < 1) {
 				$this -> stmt -> bind_param("sissssssss", $bte -> nom, $type, $bte -> img, $bte -> desc -> code_SAQ, $bte -> desc -> pays, $bte -> desc -> texte, $bte -> prix, $bte -> url, $bte -> img, $bte -> desc -> format);
 				$retour -> succes = $this -> stmt -> execute();
