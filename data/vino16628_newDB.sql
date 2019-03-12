@@ -126,8 +126,10 @@ DROP TABLE IF EXISTS `vino_saq`;
 CREATE TABLE IF NOT EXISTS `vino_saq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(200) DEFAULT NULL,
+  `type` varchar(20) NOT NULL,
   `image` varchar(200) DEFAULT NULL,
   `code_saq` varchar(50) DEFAULT NULL,
+  `pays` varchar(50) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `prix_saq` float DEFAULT NULL,
   `url_saq` varchar(200) DEFAULT NULL,
@@ -135,7 +137,6 @@ CREATE TABLE IF NOT EXISTS `vino_saq` (
   `format` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -- --------------------------------------------------------
 
 --
