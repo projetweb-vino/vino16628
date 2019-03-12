@@ -195,7 +195,29 @@ class Bouteille extends Modele {
 	public function RecupererCellierParId($id)
 	{
 				
-		$requete = "SELECT * FROM vino_cellier  WHERE id = ". $id;
+		$requete = "SELECT 
+						vino_bouteille.id as id_bouteille_cellier,
+						vino_bouteille.nom,
+						vino_bouteille.image,
+						vino_bouteille.code_saq,
+						vino_bouteille.pays,
+						vino_bouteille.description,
+						vino_bouteille.prix_saq,
+						vino_bouteille.url_saq,
+						vino_bouteille.url_img,
+						vino_bouteille.format,
+						vino_bouteille.garde_jusqua,
+						vino_bouteille.millesime,
+						vino_contient.quantite,
+						vino_contient.date_achat,
+						vino_contient.notes,
+						vino_type.type
+
+						from vino_bouteille
+						INNER JOIN vino_contient ON vino_contient.bouteille_id = vino_bouteille.id
+						INNER JOIN vino_cellier ON vino_contient.cellier_id = vino_cellier.id
+						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
+						WHERE vino_bouteille.id = ". $id;
 		$res = $this->_db->query($requete);
         $row = $res->fetch_assoc(); 	
 		return $row;
@@ -215,10 +237,36 @@ class Bouteille extends Modele {
 	public function sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
 	{
 		
-		$requete = "UPDATE vino_cellier SET quantite = $quantite ,  date_achat = '$dateachat' ,  notes = '$notes',  garde_jusqua = '$Garde' ,  prix = $prix,  millesime = $mille WHERE id = $id";
+		$requete = "UPDATE vino_bouteille SET nom = '$nom', description = '$description' , garde_jusqua = '$Garde' , prix_saq = $prix,  millesime = $mille ,  type_id = $type_id  WHERE id = $id";
 		//echo $requete;
         $res = $this->_db->query($requete);
+
+        $requete = "UPDATE vino_contient SET quantite = $quantite, date_achat = '$dateachat' ,  notes = '$notes' WHERE bouteille_id = $id";
+        //echo $requete;
+        $res = $this->_db->query($requete);
        	
+	}
+
+	/**
+	* Fonction recuperer les Types
+	*
+	* @return $row détails d'un cellier
+	**/
+	public function RecupererTypes()
+	{
+				
+		$requete = "SELECT * FROM vino_type ORDER BY type DESC  ";
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($row = $res->fetch_assoc())
+			{
+				$rows[] = $row;
+			}
+		}
+		
+		return $rows;
+	
 	}
 }
 
