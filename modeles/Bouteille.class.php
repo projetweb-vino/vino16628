@@ -132,7 +132,7 @@ class Bouteille extends Modele {
 	public function recupererQuantite($id)
 	{
 			
-		$requete = "SELECT quantite From vino_cellier WHERE id = $id";
+		$requete = "SELECT quantite From vino_contient WHERE bouteille_id = $id";
 		$res = $this->_db->query($requete);
         $row = $res->fetch_assoc();
 		return $row;
