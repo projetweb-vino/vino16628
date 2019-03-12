@@ -234,7 +234,7 @@ class Bouteille extends Modele {
 	* @param $prix prix
 	* @param $mille millesime
 	 */
-	public function sauvegarderModife($id, $dateachat, $notes, $quantite, $Garde, $prix, $mille)
+	public function sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $mille ,$description, $type_id)
 	{
 		
 		$requete = "UPDATE vino_bouteille SET nom = '$nom', description = '$description' , garde_jusqua = '$Garde' , prix_saq = $prix,  millesime = $mille ,  type_id = $type_id  WHERE id = $id";
