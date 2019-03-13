@@ -20,7 +20,7 @@
     </div>
     <div class="form-group col-md-6">
       <label for="inputEmail4">Prix :  </label>
-      <input type="number" class="form-control"  name="prix_saq" value = "<?php echo $data['prix_saq']?>" >
+      <input type="text" class="form-control"  name="prix_saq" value = "<?php echo $data['prix_saq']?>" >
     </div>
     <div class="form-group col-md-6">
       <label for="inputEmail4">Quantité :  </label>
