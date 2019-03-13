@@ -40,7 +40,7 @@
     </div>
     <div class="form-group col-md-6">
       <label for="inputEmail4">Format :  </label>
-      <input type="text" class="form-control"  name="millesime" value = "<?php echo $data['format']?>" >
+      <input type="text" class="form-control"  name="format" value = "<?php echo $data['format']?>" >
     </div>
     <div class="form-group col-md-6">
       <label for="inputEmail4">Types :  </label>

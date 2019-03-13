@@ -237,7 +237,7 @@ class Bouteille extends Modele {
 	* @param $description description
 	* @param $type_id l'id du type
 	 */
-	public function sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $pays, $mille ,$description, $type_id)
+	public function sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $pays, $mille ,$description, $type_id, $format)
 	{
 		
 	    $sql = "UPDATE vino_bouteille, vino_contient SET 
@@ -250,12 +250,13 @@ class Bouteille extends Modele {
     		vino_bouteille.type_id=?,
     		vino_contient.quantite=?,
     		vino_contient.date_achat=?,
-    		vino_contient.notes=?
+    		vino_contient.notes=?,
+    		vino_bouteille.format=?
 			
     		WHERE vino_bouteille.id=?
     		AND vino_contient.bouteille_id = vino_bouteille.id";
 		$stmt = $this->_db->prepare($sql);
-		$stmt->bind_param('sssdssiissi', $nom, $description, $Garde, $prix, $pays, $mille, $type_id, $quantite, $dateachat, $notes, $id);
+		$stmt->bind_param('sssdssiisssi', $nom, $description, $Garde, $prix, $pays, $mille, $type_id, $quantite, $dateachat, $notes, $format, $id);
 		$stmt->execute();
       	
 	}
