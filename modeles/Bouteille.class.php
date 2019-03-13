@@ -224,7 +224,7 @@ class Bouteille extends Modele {
 	
 	}
 	/**
-	* Fonction sauvegarderModife Pour souvgrader les modification sur le cellier
+	* Fonction sauvegarderModife Pour souvgrader les modification dans le cellier
 	* 
 	* @param $id id de la bouteille cellier
 	* @param $dateachat date d'achat de la bouteille cellier
@@ -232,21 +232,33 @@ class Bouteille extends Modele {
 	* @param $quantite quantités
 	* @param $Garde à garder jusqu'à ? (date)
 	* @param $prix prix
+	* @param $pays
 	* @param $mille millesime
+	* @param $description description
+	* @param $type_id l'id du type
 	 */
-	public function sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $mille ,$description, $type_id)
+	public function sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $pays, $mille ,$description, $type_id)
 	{
 		
-		$requete = "UPDATE vino_bouteille SET nom = '$nom', description = '$description' , garde_jusqua = '$Garde' , prix_saq = $prix,  millesime = $mille ,  type_id = $type_id  WHERE id = $id";
-		//echo $requete;
-        $res = $this->_db->query($requete);
-
-        $requete = "UPDATE vino_contient SET quantite = $quantite, date_achat = '$dateachat' ,  notes = '$notes' WHERE bouteille_id = $id";
-        //echo $requete;
-        $res = $this->_db->query($requete);
-       	
+	    $sql = "UPDATE vino_bouteille, vino_contient SET 
+    		vino_bouteille.nom=?, 
+    		vino_bouteille.description=?, 
+    		vino_bouteille.garde_jusqua=?, 
+    		vino_bouteille.prix_saq=?,
+    		vino_bouteille.pays=?, 
+    		vino_bouteille.millesime=?, 
+    		vino_bouteille.type_id=?,
+    		vino_contient.quantite=?,
+    		vino_contient.date_achat=?,
+    		vino_contient.notes=?
+			
+    		WHERE vino_bouteille.id=?
+    		AND vino_contient.bouteille_id = vino_bouteille.id";
+		$stmt = $this->_db->prepare($sql);
+		$stmt->bind_param('sssdssiissi', $nom, $description, $Garde, $prix, $pays, $mille, $type_id, $quantite, $dateachat, $notes, $id);
+		$stmt->execute();
+      	
 	}
-
 	/**
 	* Fonction recuperer les Types
 	*
