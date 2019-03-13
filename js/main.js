@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
         console.log(element);
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+            let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
 
             fetch(requete)
             .then(response => {
@@ -45,7 +45,7 @@ window.addEventListener('load', function() {
         console.log(element);
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+            let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
 
             fetch(requete)
             .then(response => {
@@ -67,7 +67,18 @@ window.addEventListener('load', function() {
         })
 
     });
-   
+
+     // Selection de tous les boutons modifier
+    document.querySelectorAll(".btnModifier").forEach(function(element){
+
+      element.addEventListener("click", function(evt){
+        let id = evt.target.parentElement.dataset.id;
+        // Faire une redirection vers la page de modification 
+        window.location = "index.php?requete=modifierBouteilleCellier&id="+id;
+      })
+
+    });
+     
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     console.log(inputNomBouteille);
     let liste = document.querySelector('.listeAutoComplete');

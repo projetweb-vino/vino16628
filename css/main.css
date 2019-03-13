@@ -51,7 +51,7 @@ html, body {
 
 footer
 {
-	position: fixed;;
+	/*position: fixed;;*/
 	bottom:0px;
 	width: 100%;
 	padding-top:3px;
