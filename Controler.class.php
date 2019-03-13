@@ -163,11 +163,11 @@ class Controler
 		* @param $description la description de la bouteille cellier
 		* @param $type_id le id de type de la bouteille cellier
 		*/
-		private function sauvegardeModifierCellier($id, $nom,$dateachat, $notes, $quantite, $Garde, $prix, $mille, $description , $type_id)
+		private function sauvegardeModifierCellier($id, $nom,$dateachat, $notes, $quantite, $Garde, $prix, $pays, $mille, $description , $type_id)
 		{
 			$bte = new Bouteille();
 			// Faire appel à la fonction de sauvegarde
-			$data = $bte->sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $mille ,$description, $type_id);
+			$data = $bte->sauvegarderModife($id, $nom, $dateachat, $notes, $quantite, $Garde, $prix, $pays, $mille ,$description, $type_id);
 			// Afficher l'accueil
 			$this->accueil();
 		}
