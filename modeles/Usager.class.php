@@ -46,8 +46,10 @@ class Usager extends Modele {
 			$password = md5($password);
 			$requete = "INSERT into vino_usagers(username, password, nom, prenom) VALUE ('$username', '$password', '$nom', '$prenom')";
 			
-	        $resultat = mysqli_query($connexion, $requete);
-	        return $resultat;
+	        $res = $this->_db->query($requete);
+ 			$rangee= $res->fetch_assoc();
+ 			return $rangee;
+
 		}
 	public function getCellier()
 		{
