@@ -36,21 +36,38 @@
   <body class="text-center">
   	<div class="container">
   		<div class="col-lg-4 mx-auto">
-		    <form class="form-signin">
+  			<?php
+				if(!isset($_SESSION["UserID"]))
+				{
+			?>
+		
+		    <form method="POST" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
 			  <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 			  <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
-			  <input type="text" id="inputEmail" class="form-control" placeholder="Nom usager" required autofocus>
+			  <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Nom usager" required autofocus>
 			  <label for="inputPassword" class="sr-only">Mot de passe</label>
-			  <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
+			  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
 			  <div class="checkbox mb-3">
 			    <label>
 			      <input type="checkbox" value="remember-me">Se souvenir de moi
 			    </label>
 			  </div>
-			  <button class="btn btn-lg btn-outline-danger" type="submit">Se connecter</button>
+			  <button class="btn btn-lg btn-outline-danger" type="submit" value="Login>Se connecter</button>
+			  <input type="hidden" name="requete" value="Login">
 			  <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
 			</form>
+			<a href='<?php echo URL_ROOT; ?>index.php?requete=Enregistrer'>Enregistrer</a>
+		<?php
+				}
+				else
+				{
+					echo "<p>Vous êtes déjà connecté sous le nom " . $_SESSION["UserName"] . "</p>";
+					echo "<a href='".URL_ROOT."index.php?requete=Logout'>Se déconnecter</a>";
+				}
+			if(isset($messageErreur))
+				echo "<p>$messageErreur</p>";
+		?>	
 		</div>
 	</div>
 </body>
@@ -60,39 +77,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Login sur la base</title>
-		<style>
-			*{
-				text-decoration: none;
-				list-style: none;
-			}
-            .all{
-                width: 500px;
-                border: 2px solid;
-                background-color: antiquewhite;
-                color: #444242;
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 50px;
-            }
-            h1, h2{
-            	text-align: center;
-                color: #444242;
-            }
-            li{
-                padding: 15px;
-                flex-grow: 1;
-            }
-           input{
-               margin: 10px;
-           }
-           input:nth-child(5){
-               width: 75px;
-               margin-left: 200px;
-           }
-            form{
-                margin-left: 150px;
-            }
-        </style>
 	</head>
 	<body class="main">
 		<div class="all">
