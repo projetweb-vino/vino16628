@@ -23,8 +23,17 @@
 			<h1>Un petit verre de vino ?</h1>
 			<nav>
 				<ul>
-					<li><a href="?requete=accueil">Mon cellier</a></li>
-					<li><a href="?requete=ajouterNouvelleBouteilleCellier">Ajouter une bouteille au cellier</a></li>
+					<li><a href="<?php echo URL_ROOT; ?>?requete=cellier">Mon cellier</a></li>
+					<li><a href="<?php echo URL_ROOT; ?>?requete=ajouterNouvelleBouteilleCellier">Ajouter une bouteille au cellier</a></li>
+					Bonjour <?php echo $_SESSION["UserName"]; ?>
+					<?php
+                    if (!$_SESSION["UserName"]==null){
+                        echo "<a href='".URL_ROOT."index.php?requete=Logout'>Se déconnecter</a>";
+                    }
+                    else{
+                         echo "<a href='".URL_ROOT."index.php?requete=Login'>Se connecter</a>";
+                    }
+                    ?>
 				</ul>
 			</nav>
 		</header>

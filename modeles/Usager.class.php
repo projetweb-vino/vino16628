@@ -47,8 +47,8 @@ class Usager extends Modele {
 			$requete = "INSERT into vino_usagers(username, password, nom, prenom) VALUE ('$username', '$password', '$nom', '$prenom')";
 			
 	        $res = $this->_db->query($requete);
- 			$rangee= $res->fetch_assoc();
- 			return $rangee;
+ 			$resultat= $res->fetch_assoc();
+ 			return $resultat;
 
 		}
 	public function getCellier()

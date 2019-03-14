@@ -43,9 +43,9 @@
 			  <h1 class="h3 mb-3 font-weight-normal">Enregistrer </h1>
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
 			  <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Nom usager" required autofocus>
+
 			  <label for="inputPassword" class="sr-only">Mot de passe</label>
 			  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
-
 
 			  <label for="inputEmail" class="sr-only">Prenom usager</label>
 			  <input type="text" id="inputEmail" name="prenom" class="form-control" placeholder="Prenom usager" required autofocus>
@@ -59,9 +59,11 @@
 			      <input type="checkbox" value="remember-me">Se souvenir de moi
 			    </label>
 			  </div>
-			</form>
+			
 			<input type="submit"  value="Enregistrer"/>
-			<input type="hidden" name="requete" value="Enregistrer">
+			<input type="hidden" name="requete" value="Enregistrer"/>
+			</form>
+
 			<?php
 				}
 				else
