@@ -4,13 +4,11 @@
    */
    
    
-	if(empty($_GET['requete']))
-	{
-		$_GET['requete'] = '';
+	if(empty($_REQUEST["requete"])) {
+	$_REQUEST["requete"] = "Login";
 	}
-    
+	global $connexion;	
 	
+  	$connexion = mysqli_connect(HOST, USER, PASSWORD, DATABASE); 
 	
-   
-   
 ?>

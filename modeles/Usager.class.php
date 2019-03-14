@@ -19,6 +19,8 @@ class Usager extends Modele {
 	* 
 	* @param $username le nom de l'usager
 	* @param $password le mot de passe de l'usager
+	* @param $nom le nom de l'usager
+	* @param $prenom le prenom de l'usager
 	* @return $row ou false le mot de passe de l'usager
 
 	*/
