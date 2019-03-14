@@ -114,7 +114,18 @@ class Controler
 	                        require_once(__DIR__."/vues/formEnregistrer.php");
 	                    }
 			         	break;
-			         	 		
+			         	case "Logout":                           
+//delete la session en lui assignant un tableau vide
+		        	$_SESSION = array();
+//delete le cookie de session en créant un nouveau cookie avec la date d'expiration dans le passé
+		        	if(isset($_COOKIE[session_name()]))
+		        	{
+		        		setcookie(session_name(), '', time() - 3600);
+		        	}
+//détruire la session
+		        	session_destroy();
+		        	require_once(__DIR__."/vues/login.php");
+                break;     		
 					default:
 						$this->accueil();
 						break;
