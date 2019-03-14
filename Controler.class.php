@@ -50,7 +50,7 @@ class Controler
 						$this->boireBouteilleCellier();
 						break;
 					case "Login":
-					var_dump('login');                            
+					// var_dump('login');                            
 		        	if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]))
 		        	{
 		        		$usager = new Usager();
@@ -73,7 +73,48 @@ class Controler
 		        	{
 		        		require_once(__DIR__."/vues/login.php");
 		        	}
-		        		break; 	
+		        		break; 
+		        	case "Enregistrer":
+                    $err = array();
+		        	if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && !isset($_SESSION["UserID"]))
+		        	{
+		        		if(!preg_match("/^[a-zA-Z0-9]+$/",$_REQUEST['username']))
+                        {
+                            $err[] = "Login peut etre seulement de lettre et chifres";
+                        }
+                        if(strlen($_REQUEST['username']) < 3 or strlen($_REQUEST['username']) > 30)
+                        {
+                            $err[] = "Login dois avoir plus au moin du 3 simboles et pas plus 30";
+                        }
+
+                          # on verifi, si existe usager avec la meme nom
+                        global $connexion;
+                        $requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username='".$_REQUEST['username']."'";
+                        $resultat = mysqli_query($connexion, $requete);
+                        $resultat = $resultat->fetch_assoc();  
+                        if($resultat['c'] > 0)
+                        {
+                            $err[] = "Usager avec la meme nom existe";
+                        }
+                        if(count($err) == 0)
+                        {
+                            if(Enregistrer($_REQUEST['username'], $_REQUEST['password'], $_REQUEST['nom'], $_REQUEST['prenom'])) 
+                            { 
+                                $_SESSION["UserID"] = $_REQUEST["username"];
+                                header("Location: ".URL_ROOT."?requete=cellier");
+                            }
+                        }
+                        else{
+                            $messageErreur = implode(',', $err);
+                            require_once(__DIR__."/vues/formEnregistrer.php");
+                            }
+	                    }
+	                    else
+	                    {
+	                        require_once(__DIR__."/vues/formEnregistrer.php");
+	                    }
+			         	break;
+			         	 		
 					default:
 						$this->accueil();
 						break;
