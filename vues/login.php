@@ -41,7 +41,7 @@
 				{
 			?>
 		
-		    <form method="POST" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
+		    <form method="POST" action="<?php echo URL_ROOT; ?>index.php" class="form-signin">
 			  <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 			  <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
@@ -55,9 +55,9 @@
 			  </div>
 			  <button class="btn btn-lg btn-outline-danger" type="submit" value="Login">Se connecter</button>
 			  <input type="hidden" name="requete" value="Login">
-			  <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
 			</form>
 			<a href='<?php echo URL_ROOT; ?>index.php?requete=Enregistrer'>Enregistrer</a>
+			<p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
 		<?php
 				}
 				else
@@ -72,37 +72,3 @@
 	</div>
 </body>
 </html>
-
-<!-- <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Login sur la base</title>
-	</head>
-	<body class="main">
-		<div class="all">
-			<h1>Bienvenu dans notre site!</h1>
-			<h2>Entrez votre nom d’usager et mot de passe </h2>
-			<?php
-				if(!isset($_SESSION["UserID"]))
-				{
-			?>
-			<form method="POST" action="<?php echo URL_ROOT; ?>index.php">
-				Nom d'usager : <input type="text" name="username"/><br>
-				Mot de passe : <input type="password" name="password"/><br>
-				<input type="submit"  value="Login"/>
-				<input type="hidden" name="requete" value="Login">
-			</form>
-			<a href='<?php echo URL_ROOT; ?>index.php?requete=Enregistrer'>Enregistrer</a>
-		<?php
-				}
-				else
-				{
-					echo "<p>Vous êtes déjà connecté sous le nom " . $_SESSION["UserName"] . "</p>";
-					echo "<a href='".URL_ROOT."index.php?requete=Logout'>Se déconnecter</a>";
-				}
-			if(isset($messageErreur))
-				echo "<p>$messageErreur</p>";
-		?>	
-	</div>
-	</body>
-</html> -->
