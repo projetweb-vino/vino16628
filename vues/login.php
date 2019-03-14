@@ -53,7 +53,7 @@
 			      <input type="checkbox" value="remember-me">Se souvenir de moi
 			    </label>
 			  </div>
-			  <button class="btn btn-lg btn-outline-danger" type="submit" value="Login>Se connecter</button>
+			  <button class="btn btn-lg btn-outline-danger" type="submit" value="Login">Se connecter</button>
 			  <input type="hidden" name="requete" value="Login">
 			  <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
 			</form>
