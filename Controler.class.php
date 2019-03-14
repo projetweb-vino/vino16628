@@ -49,6 +49,31 @@ class Controler
 					case 'boireBouteilleCellier':
 						$this->boireBouteilleCellier();
 						break;
+					case "Login":
+					var_dump('login');                            
+		        	if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]))
+		        	{
+		        		$usager = new Usager();
+           				$data = $usager->Authentification($_REQUEST["username"],$_REQUEST["password"]);
+		        		
+		        		if($data)
+		        		{
+		        			$_SESSION["UserID"] = $data["id"];
+                            $_SESSION["UserName"] = $_REQUEST["username"];
+//                            $_SESSION["Role"] = $user['idRole'];
+		        			header("Location: ".URL_ROOT."?requete=cellier");
+		        		}
+		        		else
+		        		{
+		        			$messageErreur = "Mauvaise combinaison username/password";
+		        			require_once(__DIR__."/vues/login.php");
+		        		}
+		        	}
+		        	else
+		        	{
+		        		require_once(__DIR__."/vues/login.php");
+		        	}
+		        		break; 	
 					default:
 						$this->accueil();
 						break;
