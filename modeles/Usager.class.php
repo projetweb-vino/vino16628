@@ -22,7 +22,6 @@ class Usager extends Modele {
 	* @param $nom le nom de l'usager
 	* @param $prenom le prenom de l'usager
 	* @return $row ou false le mot de passe de l'usager
-
 	*/
 	public function Authentification($username, $password)
 	{
@@ -45,17 +44,13 @@ class Usager extends Modele {
 		{
 			$password = md5($password);
 			$requete = "INSERT into vino_usagers(username, password, nom, prenom) VALUE ('$username', '$password', '$nom', '$prenom')";
-			
-	        $res = $this->_db->query($requete);
- 			$resultat= $res->fetch_assoc();
- 			return $resultat;
-
-		}
-	public function getCellier()
+			$res = $this->_db->query($requete);
+ 		}
+	public function getCellier($idUsager)
 		{
 			global $connexion;
 	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
-	        $requete = "SELECT * from vino_cellier JOIN vino_contient ON vino_cellier.id=vino_contient.cellier_id JOIN vino_bouteille ON vino_contient.bouteille_id=vino_bouteille.id JOIN vino_type ON vino_type.id = vino_bouteille.type_id WHERE vino_cellier.usager_id = ".$_SESSION["UserID"];
+	        $requete = "SELECT * from vino_cellier JOIN vino_contient ON vino_cellier.id=vino_contient.cellier_id JOIN vino_bouteille ON vino_contient.bouteille_id=vino_bouteille.id JOIN vino_type ON vino_type.id = vino_bouteille.type_id WHERE vino_cellier.usager_id = ".$idUsager;
 	        $resultat = mysqli_query($connexion, $requete);
 			$rangees = array();
 	        while($rangee = mysqli_fetch_assoc($resultat))
@@ -64,8 +59,18 @@ class Usager extends Modele {
 			}
 			return $rangees;
 		}
+	
+	public function testUser($username)
+	{
+			global $connexion;
+	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
+	       			
+			$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$username."'";
+			$res = $this->_db->query($requete);
+	        $row = $res->fetch_assoc();
+			return $row;
 	}
-
+}
 
 
 
