@@ -10,7 +10,8 @@
  * 
  */
 
-
+  /* j'ai ajoute ca*/
+    session_start();
  
 	 /***************************************************/
     /** Fichier de configuration, contient les define et l'autoloader **/
