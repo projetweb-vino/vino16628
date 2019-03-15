@@ -53,7 +53,6 @@
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
 			  <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Nom usager" required autofocus>
 
-
 			  <div class="checkbox mb-3">
 			    <label>
 			      <input type="checkbox" value="remember-me">Se souvenir de moi
