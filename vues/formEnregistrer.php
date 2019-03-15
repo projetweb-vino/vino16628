@@ -58,7 +58,6 @@
 			      <input type="checkbox" value="remember-me">Se souvenir de moi
 			    </label>
 			  </div>
-			
 			<input type="submit"  value="Enregistrer"/>
 			<input type="hidden" name="requete" value="Enregistrer"/>
 			</form>
