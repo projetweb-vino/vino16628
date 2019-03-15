@@ -38,7 +38,7 @@
 				{
 			?>
 		
-		    <form method="POST" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
+		    <form method="GET" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
 			  <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 			  <h1 class="h3 mb-3 font-weight-normal">Enregistrer </h1>
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
@@ -51,7 +51,7 @@
 			  <input type="text" id="inputEmail" name="prenom" class="form-control" placeholder="Prenom usager" required autofocus>
 
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
-			  <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Nom usager" required autofocus>
+			  <input type="text" id="inputEmail" name="nom" class="form-control" placeholder="Nom usager" required autofocus>
 
 			  <div class="checkbox mb-3">
 			    <label>
