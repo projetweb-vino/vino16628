@@ -281,10 +281,52 @@ class Bouteille extends Modele {
 		return $rows;
 	
 	}
+
+    public function GetPays()
+	{
+				
+		$requete = "SELECT DISTINCT pays FROM vino_bouteille ORDER BY pays";
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($row = $res->fetch_assoc())
+			{
+				$rows[] = $row['pays'];
+			}
+		}
+		
+		return $rows;
+	
+	}
+
+/**
+	 * Fonction RecupererCellierParId Pour récupérer les détails d'un cellier par son id 
+	 * 
+	 * @param $id id de la bouteille cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function CellierParUsager($id)
+	{
+				
+		$requete = "SELECT 
+					vino_cellier.id,
+					vino_cellier.nom
+
+					from vino_cellier
+					JOIN vino_usagers ON vino_usagers.id = vino_cellier.usager_id
+					
+					WHERE vino_usagers.id = ". $id;
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($rangee = $res->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+	
+	}
+
 }
-
-
-
-
-
-?>
