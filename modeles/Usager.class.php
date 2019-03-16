@@ -46,11 +46,26 @@ class Usager extends Modele {
 			$requete = "INSERT into vino_usagers(username, password, nom, prenom) VALUE ('$username', '$password', '$nom', '$prenom')";
 			$res = $this->_db->query($requete);
  		}
-	public function getCellier($idUsager)
+	public function getCellier($idUsager, $filter = array())
 		{
 			global $connexion;
+			$where = '1';
+			if(!empty($filter['year'])) {
+				$where .= ' AND vino_bouteille.millesime = "'.$filter['year'].'"';
+			}
+			if(!empty($filter['name'])) {
+				$where .= ' AND vino_bouteille.nom LIKE "%'.$filter['name'].'%"';
+			}
+			if(!empty($filter['type'])) {
+				$where .= ' AND vino_bouteille.type_id = "'.$filter['type'].'"';
+			}
+			if(!empty($filter['country'])) {
+				$where .= ' AND vino_bouteille.pays LIKE "'.$filter['country'].'"';
+			}
+			
 	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
-	        $requete = "SELECT * from vino_cellier JOIN vino_contient ON vino_cellier.id=vino_contient.cellier_id JOIN vino_bouteille ON vino_contient.bouteille_id=vino_bouteille.id JOIN vino_type ON vino_type.id = vino_bouteille.type_id WHERE vino_cellier.usager_id = ".$idUsager;
+	        $requete = "SELECT * from vino_cellier JOIN vino_contient ON vino_cellier.id=vino_contient.cellier_id JOIN vino_bouteille ON vino_contient.bouteille_id=vino_bouteille.id JOIN vino_type ON vino_type.id = vino_bouteille.type_id WHERE vino_cellier.usager_id = ".$idUsager.' AND '.$where;
+	        //echo $requete;
 	        $resultat = mysqli_query($connexion, $requete);
 			$rangees = array();
 	        while($rangee = mysqli_fetch_assoc($resultat))
