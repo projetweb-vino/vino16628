@@ -127,8 +127,8 @@ class Controler
 				    	break;
 
 
-				    	case 'cellier':
-						    $this->cellierUsager($_SESSION["UserID"]);
+				    	case 'cellier': 
+						    $this->cellierUsager($_SESSION["UserID"], isset($_GET['filter']) && is_array($_GET['filter']) ? $_GET['filter'] : array());
 		                    require_once(__DIR__."/vues/cellier.php");
 						break; 
 			         	case "Logout":                           
@@ -159,16 +159,19 @@ class Controler
 		{
 			$bte = new Bouteille();
             $data = $bte->getListeBouteilleCellier();
-			include("vues/entete.php");
+            include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
                   
 		}
 
-		private function cellierUsager($idUsager)
+		private function cellierUsager($idUsager, $filter = array())
 		{
 			$bte = new Usager();
-            $data = $bte->getCellier($idUsager);
+            $data = $bte->getCellier($idUsager, $filter);
+            $cbte = new Bouteille();
+            $dat['cellier'] = $cbte->CellierParUsager($idUsager);
+            $pays = $cbte->GetPays();
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
