@@ -38,7 +38,7 @@
 				{
 			?>
 		
-		    <form method="GET" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
+		    <form method="POST" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
 			  <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 			  <h1 class="h3 mb-3 font-weight-normal">Enregistrer </h1>
 			  <label for="inputEmail" class="sr-only">Nom usager</label>
