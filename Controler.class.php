@@ -39,10 +39,21 @@ class Controler
 					case 'ajouterNouvelleBouteilleCellier':
 						$this->ajouterNouvelleBouteilleCellier();
 						break;
+						
 
 					case 'ajouterBouteilleCellier':
 						$this->ajouterBouteilleCellier();
 						break;
+
+					case 'ajouterBouteilleNonListe':
+						// $this->ajouterBouteilleNonListe();
+						// Tester si les paramêtres sont envoyés
+						if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
+
+							$this->ajouterBouteilleNonListe($_POST['id'], $_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'], $_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format']);
+						}
+						break;
+
 
 					case 'modifierBouteilleCellier':
 						$id = $_GET["id"];
@@ -53,9 +64,24 @@ class Controler
 						$this->accueil();
 						break;
 
+					case 'bouteilleParCellier':
+						$this->bouteilleParCellier($_REQUEST['id']);
+						break;
+
+					case 'importer':
+						require("dataconf.php");
+						require("config.php");
+						$debut = $_REQUEST['debut'];
+						$nombreProduit = $_REQUEST['nombre'];
+						
+						$saq = new SAQ();
+						$nombre = $saq->getProduits($nombreProduit,$debut);
+						echo json_encode($nombre);
+						break;
+
 					case 'sauvegarder':
-					// Tester si les paramêtres sont envoyés
-					if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
+						// Tester si les paramêtres sont envoyés
+						if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
 
 							$this->sauvegardeModifierCellier($_POST['id'], $_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'], $_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format']);
 						}
@@ -75,6 +101,11 @@ class Controler
 			        		if($data)
 			        		{
 			        			$_SESSION["UserID"] = $data["id"];
+			        			$_SESSION["nom"] = $data["nom"];
+			        			$_SESSION["prenom"] = $data["prenom"];
+			        			$_SESSION["admin"] = $data["admin"];
+
+
 	                            $_SESSION["UserName"] = $_REQUEST["username"];
 
 			        			$this->cellierUsager($_SESSION["UserID"]);
@@ -178,6 +209,9 @@ class Controler
 				echo json_encode($resultat);
 			}
 			else{
+				$bte = new Bouteille();
+				// $data = $bte->RecupererBouteilleParCellier($id);
+				$data = $bte->CellierParUsager($_SESSION["UserID"] );
 				include("vues/entete.php");
 				include("vues/ajouter.php");
 				include("vues/pied.php");
@@ -274,6 +308,39 @@ class Controler
 			include("vues/cellier.php");
 			include("vues/pied.php");
     	}
+
+    	/**
+		* Fonction de modification de la quantité dans le cellier
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function bouteilleParCellier($id)
+		{
+			// $body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			$data = $bte->RecupererBouteilleParCellier($id);
+			$dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
+			include("vues/entete.php");
+			include("vues/cellier.php");
+			include("vues/pied.php");
+		}
+
+		/**
+		* Fonction d'ajout d'une bouteille non listée
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format)
+		{
+			// $body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			$data = $bte->ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format);
+			// $dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
+			include("vues/entete.php");
+			include("vues/ajouter.php");
+			include("vues/pied.php");
+		}
+
 		
 }
 ?>

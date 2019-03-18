@@ -321,6 +321,61 @@ class Bouteille extends Modele {
 		return $rangees;
 	
 	}
+
+	/**
+	 * Fonction RecupererBouteilleParCellier Pour récupérer les détails d'un cellier par son id 
+	 * 
+	 * @param $id id du cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function RecupererBouteilleParCellier($id)
+	{
+				
+		$requete = "SELECT 
+						vino_bouteille.id as id_bouteille_cellier,
+						vino_bouteille.nom,
+						vino_bouteille.image,
+						vino_bouteille.code_saq,
+						vino_bouteille.pays,
+						vino_bouteille.description,
+						vino_bouteille.prix_saq,
+						vino_bouteille.url_saq,
+						vino_bouteille.url_img,
+						vino_bouteille.format,
+						vino_bouteille.garde_jusqua,
+						vino_bouteille.millesime,
+						vino_contient.quantite,
+						vino_contient.date_achat,
+						vino_contient.notes,
+						vino_type.type
+
+						from vino_bouteille
+						INNER JOIN vino_contient ON vino_contient.bouteille_id = vino_bouteille.id
+						INNER JOIN vino_cellier ON vino_contient.cellier_id = vino_cellier.id
+						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
+						WHERE vino_cellier.id = ". $id;
+
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($rangee = $res->fetch_assoc())
+				{
+					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					$rangees[] = $rangee;
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de donnée", 1);
+			 
+		}
+		
+		
+		
+		return $rangees;
+	}
 }
 
 

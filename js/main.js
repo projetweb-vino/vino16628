@@ -11,10 +11,15 @@
 // const BaseURL = "http://vino.jonathanmartel.info/";
 const BaseURL = document.baseURI;
 console.log(BaseURL);
+
+// Fonction d'affichage du toggle
+function toggle() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
 window.addEventListener('load', function() {
-    console.log("load");
+    // console.log("load");
     document.querySelectorAll(".btnBoire").forEach(function(element){
-        console.log(element);
+        // console.log(element);
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
@@ -39,6 +44,43 @@ window.addEventListener('load', function() {
               });
         })
 
+    });
+
+    
+
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+
+    
+    // Méthode d'affichage du toogle
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    document.getElementById("btnDown").addEventListener("click", function(evt){
+      toggle();
+      
     });
 
     document.querySelectorAll(".btnAjouter").forEach(function(element){
@@ -68,6 +110,32 @@ window.addEventListener('load', function() {
 
     });
 
+    // Importer des bouteilles dans la table vino_saq
+    document.getElementById("btnImport").addEventListener("click", function(evt){
+        console.log('importation');
+        let nombre = document.getElementById("nombre").value;
+        let debut = document.getElementById("debut").value;
+
+        let requete = new Request("index.php?requete=importer", {method: 'POST', body: 'nombre='+nombre+'&debut='+debut
+      });
+
+      fetch(requete)
+      .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error('Erreur');
+          }
+        })
+        .then(response => {
+          console.debug(response);
+          alert("L'importation est effectuée avec succès !")
+        }).catch(error => {
+          console.error(error);
+        });
+    });
+
+
      // Selection de tous les boutons modifier
     document.querySelectorAll(".btnModifier").forEach(function(element){
 
@@ -78,9 +146,12 @@ window.addEventListener('load', function() {
       })
 
     });
-     
+    
+
+    });
+       
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
-    console.log(inputNomBouteille);
+    
     let liste = document.querySelector('.listeAutoComplete');
 
     if(inputNomBouteille){
@@ -136,6 +207,10 @@ window.addEventListener('load', function() {
         }
       });
 
+
+
+   
+
       let btnAjouter = document.querySelector("[name='ajouterBouteilleCellier']");
       if(btnAjouter){
         btnAjouter.addEventListener("click", function(evt){
@@ -166,8 +241,11 @@ window.addEventListener('load', function() {
         
         });
       } 
+
+
   }
+
     
 
-});
+
 
