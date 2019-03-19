@@ -1,38 +1,52 @@
 <?php
 /**
- * Class Bouteille
- * Cette classe possède les fonctions de gestion des bouteilles dans le cellier et des bouteilles dans le catalogue complet.
+ * Class Controler
+ * Gère les requêtes HTTP
  * 
- * @author Jonathan Martel
+ * @author Foudil Benzaid, Galina Prima, Okba Benaissa, Jordan Williams
  * @version 1.0
- * @update 2019-01-21
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
+ * @update 2019-03-15
  * 
  */
+
+/*=============================================
+=               Classe Bouteille              =
+=============================================*/
 class Bouteille extends Modele {
 	const TABLE = 'vino_bouteille';
     
+    /**
+	 * Cette méthode récupère la liste des bouteilles
+	 * 
+	 * 
+	 * @return $rangees 
+	 */
 	public function getListeBouteille()
 	{
 		
-		$rows = Array();
+		$rangee = Array();
 		$res = $this->_db->query('Select * from '. self::TABLE);
 		if($res->num_rows)
 		{
-			while($row = $res->fetch_assoc())
+			while($rangee = $res->fetch_assoc())
 			{
-				$rows[] = $row;
+				$rangees[] = $rangee;
 			}
 		}
 		
-		return $rows;
+		return $rangees;
 	}
 	
+	/**
+	 * Cette méthode récupère la liste des bouteilles par cellier
+	 * 
+	 * 
+	 * @return $rangees 
+	 */
 	public function getListeBouteilleCellier()
 	{
 		
-		$rows = Array();
+		$rangees = Array();
 		$requete ='SELECT 
 						vino_bouteille.id as id_bouteille_cellier,
 						vino_bouteille.nom,
@@ -60,10 +74,10 @@ class Bouteille extends Modele {
 		{
 			if($res->num_rows)
 			{
-				while($row = $res->fetch_assoc())
+				while($rangee = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
-					$rows[] = $row;
+					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					$rangees[] = $rangee;
 				}
 			}
 		}
@@ -75,7 +89,7 @@ class Bouteille extends Modele {
 		
 		
 		
-		return $rows;
+		return $rangees;
 	}
 	
 	/**
@@ -92,7 +106,7 @@ class Bouteille extends Modele {
 	public function autocomplete($nom, $nb_resultat=10)
 	{
 		
-		$rows = Array();
+		$rangees = Array();
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
@@ -103,10 +117,10 @@ class Bouteille extends Modele {
 		{
 			if($res->num_rows)
 			{
-				while($row = $res->fetch_assoc())
+				while($rangee = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
-					$rows[] = $row;
+					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					$rangees[] = $rangee;
 					
 				}
 			}
@@ -116,10 +130,8 @@ class Bouteille extends Modele {
 			throw new Exception("Erreur de requête sur la base de données", 1);
 			 
 		}
-		
-		
-		//var_dump($rows);
-		return $rows;
+	
+		return $rangees;
 	}
 
 	/**
@@ -134,8 +146,8 @@ class Bouteille extends Modele {
 			
 		$requete = "SELECT quantite From vino_contient WHERE bouteille_id = $id";
 		$res = $this->_db->query($requete);
-        $row = $res->fetch_assoc();
-		return $row;
+        $rangee = $res->fetch_assoc();
+		return $rangee;
 		
 	}
 	
@@ -149,9 +161,7 @@ class Bouteille extends Modele {
 	 */
 	public function ajouterBouteilleCellier($data)
 	{
-		//TODO : Valider les données.
-		//var_dump($data);	
-		
+			
 		$requete = "INSERT INTO vino_cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
 		"'".$data->id_bouteille."',".
 		"'".$data->date_achat."',".
@@ -219,8 +229,8 @@ class Bouteille extends Modele {
 						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
 						WHERE vino_bouteille.id = ". $id;
 		$res = $this->_db->query($requete);
-        $row = $res->fetch_assoc(); 	
-		return $row;
+        $rangee = $res->fetch_assoc(); 	
+		return $rangee;
 	
 	}
 	/**
@@ -272,14 +282,99 @@ class Bouteille extends Modele {
 		$res = $this->_db->query($requete);
         if($res->num_rows)
 		{
-			while($row = $res->fetch_assoc())
+			while($rangee = $res->fetch_assoc())
 			{
-				$rows[] = $row;
+				$rangees[] = $rangee;
 			}
 		}
 		
-		return $rows;
+		return $rangees;
 	
+	}
+
+	/**
+	 * Fonction RecupererCellierParId Pour récupérer les détails d'un cellier par son id 
+	 * 
+	 * @param $id id de la bouteille cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function CellierParUsager($id)
+	{
+				
+		$requete = "SELECT 
+					vino_cellier.id,
+					vino_cellier.nom
+
+					from vino_cellier
+					JOIN vino_usagers ON vino_usagers.id = vino_cellier.usager_id
+					
+					WHERE vino_usagers.id = ". $id;
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($rangee = $res->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+	
+	}
+
+	/**
+	 * Fonction RecupererBouteilleParCellier Pour récupérer les détails d'un cellier par son id 
+	 * 
+	 * @param $id id du cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function RecupererBouteilleParCellier($id)
+	{
+				
+		$requete = "SELECT 
+						vino_bouteille.id as id_bouteille_cellier,
+						vino_bouteille.nom,
+						vino_bouteille.image,
+						vino_bouteille.code_saq,
+						vino_bouteille.pays,
+						vino_bouteille.description,
+						vino_bouteille.prix_saq,
+						vino_bouteille.url_saq,
+						vino_bouteille.url_img,
+						vino_bouteille.format,
+						vino_bouteille.garde_jusqua,
+						vino_bouteille.millesime,
+						vino_contient.quantite,
+						vino_contient.date_achat,
+						vino_contient.notes,
+						vino_type.type
+
+						from vino_bouteille
+						INNER JOIN vino_contient ON vino_contient.bouteille_id = vino_bouteille.id
+						INNER JOIN vino_cellier ON vino_contient.cellier_id = vino_cellier.id
+						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
+						WHERE vino_cellier.id = ". $id;
+
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($rangee = $res->fetch_assoc())
+				{
+					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					$rangees[] = $rangee;
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de donnée", 1);
+			 
+		}
+		
+		
+		
+		return $rangees;
 	}
 }
 
