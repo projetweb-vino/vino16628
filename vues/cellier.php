@@ -19,30 +19,32 @@
             </div>
             <?php 
             // L'importation est reservée à l'Administrateur
-            if ($_SESSION['admin'] =='oui') {
-                
-            ?>
-            <button class="collapsible">Importation</button>
-            <div class="content">
-                <br>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <input type="number" name="nombre" id="debut" class="form-control"  placeholder="Début">
-                        
+            if (isset($_SESSION['admin'])) {
+                if ($_SESSION['admin'] =='oui') {
+                    
+                ?>
+                <button class="collapsible">Importation</button>
+                <div class="content">
+                    <br>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="number" name="nombre" id="debut" class="form-control"  placeholder="Début">
+                            
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="number" name="debut" id="nombre" class="form-control"  placeholder="Nombre">
+                        </div>
+                                      
                     </div>
-                    <div class="form-group col-md-6">
-                        <input type="number" name="debut" id="nombre" class="form-control"  placeholder="Nombre">
+                    <div class="form-row">
+                        <div class="option form-group col-md-2">
+                            <button id="btnImport" class="btn btn-danger">Importer</button>
+                        </div>
                     </div>
-                                  
+                 
                 </div>
-                <div class="form-row">
-                    <div class="option form-group col-md-2">
-                        <button id="btnImport" class="btn btn-danger">Importer</button>
-                    </div>
-                </div>
-             
-            </div>
-            <?php 
+                <?php
+                }
             }
             ?>
    
