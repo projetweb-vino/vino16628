@@ -46,6 +46,8 @@
 			  <label for="inputPassword" class="sr-only">Mot de passe</label>
 			  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
 
+        <label for="inputPassword" class="sr-only">Entrer encore mot de passe</label>
+        <input type="password" id="inputPassword" name="passwordRepeat" class="form-control" placeholder="Entrer encore mot de passe" required>
 
 			  <label for="inputEmail" class="sr-only">Prenom usager</label>
 			  <input type="text" id="inputEmail" name="prenom" class="form-control" placeholder="Prenom usager" required autofocus>
