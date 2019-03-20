@@ -112,6 +112,24 @@ class Usager extends Modele {
 
 		return $rangees;
 	}
+	/**
+	* Fonction pour récupérer nombre d'usager avec ce nom d'usager
+	* 
+	* @param $usager nom de l'utilisateur
+	* @return $rangees résultat de la requête
+	*/
+	public function testUser($usager)
+	{
+			global $connexion;
+	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
+	       			
+			$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$username."'";
+			$resultat = $this->_db->query($requete);
+	        $rangee = $resultat->fetch_assoc();
+			return $rangee;
+
+	}
+
 
 }
 
