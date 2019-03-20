@@ -109,6 +109,17 @@ window.addEventListener('load', function() {
         })
 
     });
+    
+    // Selection de tous les boutons modifier
+    document.querySelectorAll(".btnModifier").forEach(function(element){
+
+      element.addEventListener("click", function(evt){
+        let id = evt.target.parentElement.dataset.id;
+        // Faire une redirection vers la page de modification 
+        window.location = "index.php?requete=modifierBouteilleCellier&id="+id;
+      })
+
+    });
 
     // Importer des bouteilles dans la table vino_saq
     document.getElementById("btnImport").addEventListener("click", function(evt){
@@ -136,16 +147,7 @@ window.addEventListener('load', function() {
     });
 
 
-     // Selection de tous les boutons modifier
-    document.querySelectorAll(".btnModifier").forEach(function(element){
-
-      element.addEventListener("click", function(evt){
-        let id = evt.target.parentElement.dataset.id;
-        // Faire une redirection vers la page de modification 
-        window.location = "index.php?requete=modifierBouteilleCellier&id="+id;
-      })
-
-    });
+     
     
 
     });
