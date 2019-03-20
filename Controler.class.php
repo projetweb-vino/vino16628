@@ -148,7 +148,12 @@ class Controler
 		        	case "ChangerMotDePass":
 		        		$error = '';
 		        		if(isset($_REQUEST["password"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) && ($_REQUEST["passwordNouveau"] == $_REQUEST["passwordRepeat"]))
-			        	{
+			        	{	
+			        		 if(strlen($_REQUEST['username']) < 3 or strlen($_REQUEST['username']) > 30)
+	                        {
+	                            $err[] .= "Login dois avoir plus au moin du 3 simboles et pas plus 30";
+	                        }
+	                        
 			        		$usager = new Usager();	
 			        		if(!$usager->ChangerMotDePass($_SESSION["UserName"],$_REQUEST["password"], $_REQUEST["passwordNouveau"])) {
 			        			$error = 'Invalid password';
