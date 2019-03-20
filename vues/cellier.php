@@ -50,10 +50,72 @@
    
         </div>
     </div>
-    <!-- /#sidebar-wrapper -->
+
     <div class="col-md-9 main-content" id="cellier">
+
+            <!-- /#sidebar-wrapper -->
+    <!-- recherche et filtre -->
+    <section class="search-sec">
+        <div class="container">
+            <form method="post" novalidate="novalidate">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="nom" placeholder="Nom">
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="pays" placeholder="Pays">
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="millesime" placeholder="Millesime">
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="quantite" placeholder="Quantité">
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="prix_saq" placeholder="Prix">
+                            </div>
+                            <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="type" placeholder="type">
+                            </div>
+                            <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
+                                <input type="submit"  class="btn btn-danger wrn-btn" value="Chercher">
+                                <input type="hidden" name="requete" value="recherche">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form method="post" novalidate="novalidate">
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
+                                <select class="form-control search-slt" id="exampleFormControlSelect1" name="filtre">
+                                    <option value = "nom ">nom </option>
+                                    <option value = "pays ">pays </option>
+                                    <option value = "millesime ">Millesime </option>
+                                    <option value = "quantite">Quantite </option>
+                                    <option value = "prix_saq ">Prix </option>
+                                    <option value = "date_achat ">Date d'achat </option>
+                                    <option value = "type ">Type </option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-md-2 float-lg-right col-sm-12 p-0">
+                                <input type="submit"  class="btn btn-danger wrn-btn" value="Appliquer">
+                                <input type="hidden" name="requete" value="CellierParFiltre">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- /#recherche et filtre -->
                 <?php
                     // Tester si le cellier n'est pas vide
+                  
                     if (count($data) !=0) {
                     
                     // Parcourir le tableau data
