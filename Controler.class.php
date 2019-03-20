@@ -73,7 +73,7 @@ class Controler
 						break;
 
 					case 'bouteilleParCellier':
-						$this->bouteilleParCellier($_REQUEST['id']);
+						$this->bouteilleParCellier($_REQUEST['id'], empty($_REQUEST['filter']) ? array() : $_REQUEST['filter']);
 						break;
 
 					case 'ajouterCellier':
@@ -145,7 +145,85 @@ class Controler
 			        		require_once(__DIR__."/vues/login.php");
 			        	}
 		        		break; 
+		        	case "ChangerMotDePass":
+		        		$error = '';
+		        		if(isset($_REQUEST["password"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) && ($_REQUEST["passwordNouveau"] == $_REQUEST["passwordRepeat"]))
+			        	{
+			        		$usager = new Usager();	
+			        		if(!$usager->ChangerMotDePass($_SESSION["UserName"],$_REQUEST["password"], $_REQUEST["passwordNouveau"])) {
+			        			$error = 'Invalid password';
+			        		}
+			        		else{
+			        			header('Location: '.URL_ROOT.'index.php?requete=cellier');
+			        			exit;
+			        		}
 
+			        	}	else {
+			        		$error = 'Invalid data';
+			        	}
+			        	require_once(__DIR__."/vues/changerMotDepass.php");
+		        	    break;
+		        		
+		        	case "Enregistrer":
+			        	
+	                    $err = array();
+	                   	if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]) && isset($_REQUEST["passwordRepeat"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && !isset($_SESSION["UserID"]))
+			        	{
+			        		if(!preg_match("/^[a-zA-Z0-9]+$/",$_REQUEST['username']))
+	                        {
+	                            $err[] = "Login peut avoir seulement de lettre et chifres";
+	                        }
+	                        if(($_REQUEST["passwordRepeat"]) != ($_REQUEST['password']))
+	                        {
+	                            $err[] .= "Mot de pass pas idantiques"."</br>";
+	                        }
+	                        if(strlen($_REQUEST['username']) < 3 or strlen($_REQUEST['username']) > 30)
+	                        {
+	                            $err[] .= "Login dois avoir plus au moin du 3 simboles et pas plus 30";
+	                        }
+	                        if(!preg_match("/^[a-zA-Z]+$/",$_REQUEST['nom']))
+	                        {
+	                            $err[] .= "Nom dois avoir que des lettres "."</br>";
+	                        }
+	                        if(!preg_match("/^[a-zA-Z]+$/",$_REQUEST['prenom']))
+	                        {
+	                            $err[] .= "Prenom dois avoir que des lettres"."</br>";
+	                        }
+	                        	                       
+	                        $usager = new Usager();
+							// Faire appel à la fonction de sauvegarde
+							$resultat = $usager->testUser($_REQUEST['username']);
+				
+	                        if($resultat['c'] > 0)
+	                        {
+	                            $err[] = "Usager avec la meme nom existe";
+	                        }
+	                        
+	                        if(count($err) == 0)
+	                        {
+	                        	$enregistrer = $usager->Enregistrer($_REQUEST['username'], $_REQUEST['password'], $_REQUEST['nom'], $_REQUEST['prenom']);
+	                  
+	                            if($enregistrer) 
+	                            { 
+
+                                   $_SESSION["UserID"] = $enregistrer["id"];
+					        	   $_SESSION["prenom"] = $_REQUEST["prenom"];
+	                               $_SESSION["UserName"] = $_REQUEST["username"];
+
+			                       $this->cellierUsager($_SESSION["UserID"]);
+	                            }
+	                        }
+	                        else{
+	                            $messageErreur = implode(' ', $err);
+	                            require_once(__DIR__."/vues/formEnregistrer.php");
+	                        }
+		                }
+		                else
+		                {
+		                        require_once(__DIR__."/vues/formEnregistrer.php");
+		                }
+				    	break;
+				    		
 		        	case "Logout":
 						//delete la session en lui assignant un tableau vide
 						$_SESSION = array();
@@ -200,7 +278,7 @@ class Controler
 		{
 			$bte = new Bouteille();
             $cellier = $bte->getListeBouteilleCellier();
-            
+             
             echo json_encode($cellier);
                   
 		}
@@ -371,14 +449,15 @@ class Controler
 		* 
 		* @return $resultat Sous format json
 		*/
-		private function bouteilleParCellier($id)
+		private function bouteilleParCellier($id, $filter = array())
 		{
 			// $body = json_decode(file_get_contents('php://input'));
 			$bte = new Bouteille();
-			$data = $bte->RecupererBouteilleParCellier($id);
+			$data = $bte->RecupererBouteilleParCellier($id, $filter);
 			$dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
 			$dat['nomCellier'] = $bte->cellierParId($id);
 			
+			$pays = $bte->GetPays();
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");

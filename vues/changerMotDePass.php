@@ -34,28 +34,23 @@
   	<div class="container">
   		<div class="col-lg-4 mx-auto">
   			<?php
-				if(!isset($_SESSION["UserID"]))
+				if(isset($_SESSION["UserID"]))
 				{
+          echo $error;
 			?>
 		
 		    <form method="POST" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
 			  <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-			  <h1 class="h3 mb-3 font-weight-normal">Enregistrer </h1>
-			  <label for="inputEmail" class="sr-only">Nom usager</label>
-			  <input type="text" id="inputName" name="username" class="form-control" placeholder="Nom usager" required autofocus>
-
+			  <h1 class="h3 mb-3 font-weight-normal">ChangerMotDePass </h1>
+			  
 			  <label for="inputPassword" class="sr-only">Mot de passe</label>
 			  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
 
+        <label for="inputPassword" class="sr-only">Nouveau mot de passe</label>
+        <input type="password" id="inputPassword" name="passwordNouveau" class="form-control" placeholder="Mot de passe" required>
+
         <label for="inputPassword" class="sr-only">Entrer encore mot de passe</label>
         <input type="password" id="inputPassword" name="passwordRepeat" class="form-control" placeholder="Entrer encore mot de passe" required>
-
-			  <label for="inputEmail" class="sr-only">Prenom usager</label>
-			  <input type="text" id="inputEmail" name="prenom" class="form-control" placeholder="Prenom usager" required autofocus>
-
-			  <label for="inputEmail" class="sr-only">Nom usager</label>
-			  <input type="text" id="inputEmail" name="nom" class="form-control" placeholder="Nom usager" required autofocus>
-
 
 			 <!--  <div class="checkbox mb-3">
 			    <label>
@@ -64,7 +59,7 @@
 			  </div> -->
 			
 			<input type="submit"  value="Enregistrer"/>
-			<input type="hidden" name="requete" value="Enregistrer">
+			<input type="hidden" name="requete" value="ChangerMotDePass">
       </form>
 			<?php
 				}

@@ -55,7 +55,11 @@ class Usager extends Modele {
 		$password = md5($password);
 		$requete = "INSERT into vino_usagers(username, password, nom, prenom) VALUE ('$username', '$password', '$nom', '$prenom')";
 		
-        $resultat = mysqli_query($connexion, $requete);
+        $resultat = $this->_db->query($requete);
+        if($resultat) {
+        	$resultat = $this->_db->query('SELECT * FROM `vino_usagers` WHERE `id`= LAST_INSERT_ID()');
+        	$resultat = $resultat->fetch_assoc();
+        }
         return $resultat;
 	}
 
@@ -67,8 +71,7 @@ class Usager extends Modele {
 	*/
 	public function getCellier($idUsager)
 	{
-		
-		$rows = Array();
+		$rangees = array();
         $requete = "SELECT 
         			vino_bouteille.id as id_bouteille_cellier,
 					vino_bouteille.nom,
@@ -92,7 +95,7 @@ class Usager extends Modele {
         			JOIN vino_usagers ON vino_usagers.id=vino_cellier.usager_id 
 
         			WHERE vino_cellier.usager_id = ".$idUsager;
- 
+ 		//die($requete);
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -120,14 +123,33 @@ class Usager extends Modele {
 	*/
 	public function testUser($usager)
 	{
-			global $connexion;
+			
 	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
 	       			
-			$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$username."'";
+			$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$usager."'";
 			$resultat = $this->_db->query($requete);
 	        $rangee = $resultat->fetch_assoc();
 			return $rangee;
 
+	}
+	public function ChangerMotDePass($usager, $password, $passwordNouveau)
+	{
+		$requete = "SELECT * from vino_usagers WHERE username = '" . $usager . "' AND password = '".md5($password)."'";
+
+		
+		$res = $this->_db->query($requete);
+ 		$rangee= $res->fetch_assoc();
+        
+		if($rangee)
+		{
+			$requete = "UPDATE vino_usagers SET password = '".md5($passwordNouveau)."' WHERE username= '".$usager."'";
+			$this->_db->query($requete);
+			return $rangee;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 
