@@ -31,6 +31,14 @@ class Controler
 					case 'listeBouteille':
 						$this->listeBouteille();
 						break;
+					case 'recherche':
+
+							$this->cellierUsagerFiltre($_SESSION["UserID"], $_POST['nom'],$_POST['type'], $_POST['pays'], $_POST['millesime'], $_POST['quantite'], $_POST['prix_saq'], $_POST['filtre']="");
+						break;
+					case 'CellierParFiltre':
+
+							$this->cellierUsagerFiltre($_SESSION["UserID"], $_POST['nom']="",$_POST['type']="", $_POST['pays']="", $_POST['millesime']="", $_POST['quantite']=0, $_POST['prix_saq']=0.0, $_POST['filtre']);
+						break;			
 
 					case 'autocompleteBouteille':
 						$this->autocompleteBouteille();
@@ -341,7 +349,35 @@ class Controler
 			include("vues/pied.php");
 		}
 
-		
+		/**
+		* Fonction affiche la listes des bouteille par usager et avec le triage et le recherche
+		* 
+		* @param $idUsager id de l'usager
+		* @param $nom nom de bouteille 
+		* @param $type type de bouteille 
+		* @param $pays pays de fabrication de bouteille
+		* @param $millesime annee
+		* @param $quantite la quantite des bouteilles
+		* @param $prix_saq de bouteille
+		* @param $filtre le variable de triage
+		*/
+		private function cellierUsagerFiltre($idUsager, $nom, $type, $pays, $millesime, $quantite, $prix_saq, $filtre)
+		{   
+				
+			$usg = new Usager();
+			
+			// Récupérer la liste des bouteilles par usager et avec les variables de recherche et le fariable de triage
+            $data = $usg->getCellierFiltre($idUsager, $nom, $type, $pays, $millesime, $quantite, $prix_saq, $filtre);
+            $cellier = new Bouteille();
+           
+            // Récupérer les cellier par usager authentifié
+            $dat['cellier'] = $cellier->CellierParUsager($idUsager);
+          
+			include("vues/entete.php");
+			include("vues/cellier.php");
+			include("vues/pied.php");
+    	}
+
 }
 ?>
 
