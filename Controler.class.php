@@ -93,9 +93,26 @@ class Controler
 
 					case 'sauvegarder':
 						// Tester si les paramêtres sont envoyés
-						if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
+						if (isset($_REQUEST['id'],$_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['notes'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'],$_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['type'], $_REQUEST['format']))
+						{
+							// Déclarer un tableau
+							$message = array();
 
-							$this->sauvegardeModifierCellier($_POST['id'], $_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'], $_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format']);
+							// Valider que les paramètres sont valides
+                            $message = $this->valideFormModif($_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'],$_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['format']);
+                            
+                            // Si le message est vide
+                            // Ce qui signifie qu'il y'a pas eu d'erreurs
+                            if(count($message) ==0)
+                            {
+                            	// On procède à la modification
+								$this->sauvegardeModifierCellier($_REQUEST['id'], $_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['notes'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'], $_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['type'], $_REQUEST['format']);
+							}
+							// Sinon on affiche le formulaire de modification avec l'ensemble des erreurs
+							else{
+								$this->modifierBouteilleCellier($_REQUEST['id'], $message);
+
+							}
 						}
 						break;
 
@@ -378,7 +395,7 @@ class Controler
 		* 
 		* @param $id id de la bouteille cellier
 		*/
-		private function modifierBouteilleCellier($id)
+		private function modifierBouteilleCellier($id, $message='')
 		{	
 			$bte = new Bouteille();
 			// Récupérer la bouteille par id
