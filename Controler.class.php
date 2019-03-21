@@ -541,6 +541,69 @@ class Controler
 			echo ($resultat);
 		}
 
+		/**
+		* Fonction de validation de modification d'une bouteille
+		* 
+		* @param $nom nom de la bouteille cellier
+		* @param $dateachat la date d'achat de la bouteille cellier
+		* @param $quantite la quantité de la bouteille cellier
+		* @param $Garde à garder jusqu'à quand la bouteille cellier
+		* @param $prix prix de la bouteille cellier
+		* @param $pays pays de la bouteille cellier
+		* @param $mille année de la bouteille cellier
+		* @param $description la description de la bouteille cellier
+		* @param $format le format de la bouteille cellier
+		* @return $msgErreur messages d'erreur
+		*/
+        public function valideFormModif($nom, $dateachat, $quantite, $Garde, $prix, $pays, $millesime ,$description, $format)
+        {
+            $msgErreur = array();
+           
+            // Trimer les variables
+            $nom = trim($nom);
+            $pays = trim($pays);
+            $format = trim($format);
+            $prix = trim($prix);
+            $quantite = trim($quantite);
+
+            // Validation du nom de la bouteille
+            if($nom == ""){
+                $msgErreur['erreur_nom'] = "Le nom ne peut être vide !";
+            }
+            
+            // Validation date d'achat
+            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $dateachat)) {
+			    $msgErreur['erreur_date_achat'] = "La date est invalide !";
+			}
+            
+            // Validation quantité
+            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
+                $msgErreur['erreur_quantite']= "La quantité est invalide !";
+            }
+            // Validation garder jusqu'à
+            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $Garde)) {
+			    $msgErreur['erreur_garde_jusqua'] = "La date est invalide !";
+			}
+
+			// Validation du millesime (année)
+            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
+			    $msgErreur['erreur_millesime'] = "La date est invalide !";
+			}
+
+			// Validation du prix
+			if(!is_float($prix) && !is_numeric($prix)){
+                $msgErreur['erreur_prix'] = "Le prix n'est pas valide !";
+			}
+
+			// Validation du pays
+			if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+                $msgErreur['erreur_pays'] = "Le pays ne peut être vide ou il est invalide !<br>";
+            }
+            
+            // Retourner un message d'erreur
+            return $msgErreur;
+        }
+
 		
 }
 ?>
