@@ -165,16 +165,19 @@
                                 <!-- Footer du card -->
                                 <div class="card-footer">
                                    
+                                    <!-- Bouton Facebook -->
                                     <div class="icon-bar" data-href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="<?php echo 'https://www.facebook.com/sharer/sharer.php?u='.$bouteille['url_saq'] ?>" class="fb-xfbml-parse-ignore facebook"><i class="fab fa-facebook-f"></i></a></div>
-                                   
+                                    
+                                    <!-- Bouton Twitter -->
                                     <div class="icon-bar"  data-layout="button" data-size="small">
                                     <a target="_blank" href="<?php echo 'https://twitter.com/share?ref_src='.$bouteille['url_saq'] ?>" class="fb-xfbml-parse-ignore twitter" data-show-count="false"><i class="fab fa-twitter"></i></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
-
-                                  <div class="icon-bar"  data-layout="button" data-size="small">
-                                  <a class="fb-xfbml-parse-ignore google" href="<?php echo 'https://plus.google.com/share?url='.$bouteille['url_saq'] ?>" onclick="javascript:window.open(this.href,
-                                  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fab fa-google-plus-g"></i></a>
-
+                                    
+                                    <!-- Bouton LinkedIn -->
+                                    <div class="icon-bar"  data-layout="button" data-size="small">
+                                        <a class="fb-xfbml-parse-ignore linkedin" href="<?php echo 'https://www.linkedin.com/shareArticle?mini=true&summary=saq&title=f1&url='.$bouteille['url_saq'] ?>" onclick="javascript:window.open(this.href,
+                                          '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fab fa-linkedin-in"></i></a>
                                     </div>
+
 
                                 </div>
                             </div>

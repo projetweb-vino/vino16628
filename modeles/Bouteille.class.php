@@ -202,9 +202,9 @@ class Bouteille extends Modele {
 	 * @param $id id de la bouteille cellier
 	 * @return $row détails d'un cellier
 	 */
-	public function RecupererCellierParId($id, $filter = array())
+	public function RecupererCellierParId($id)
 	{
-		
+				
 		$requete = "SELECT 
 						vino_bouteille.id as id_bouteille_cellier,
 						vino_bouteille.nom,
@@ -226,33 +226,12 @@ class Bouteille extends Modele {
 						from vino_bouteille
 						INNER JOIN vino_cellier ON vino_bouteille.cellier_id=vino_cellier.id 
 						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
-						WHERE vino_bouteille.id = ". $id.'AND '.$where;
-
-		if(($res = $this->_db->query($requete)) ==	 true)
-				{
-					if($res->num_rows)
-					{
-						while($rangee = $res->fetch_assoc())
-						{
-							$rangee['nom'] = trim(utf8_encode($rangee['nom']));
-							$rangees[] = $rangee;
-						}
-					}
-				}
-				else 
-				{
-					throw new Exception("Erreur de requête sur la base de donnée", 1);
-				}
-						
-				return $rangees;
-			}
-
-
-		// $res = $this->_db->query($requete);
-  //       $rangee = $res->fetch_assoc(); 	
-		// return $rangee;
+						WHERE vino_bouteille.id = ". $id;
+		$res = $this->_db->query($requete);
+        $rangee = $res->fetch_assoc(); 	
+		return $rangee;
 	
-	// }
+	}
 	/**
 	* Fonction sauvegarderModife Pour souvgrader les modification dans le cellier
 	* 
