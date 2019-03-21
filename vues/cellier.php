@@ -34,10 +34,10 @@
                 <span  class="bg-dark text-light">Liste des celliers :</span>
 
             <?php foreach ($dat['cellier'] as $key => $cellier) { 
-                $id =$cellier['id'];
+                $cid =$cellier['id'];
             ?>
 
-                <li class="list-group-item"><a class="lienCellier" data-id='<?php echo $cellier['id'] ?>' id="<?php echo $cellier['id'] ?>" href="<?php echo '?requete=bouteilleParCellier&id='.$id.'#cellier' ?>"><?php echo $cellier['nom'] ?></a></li>
+                <li class="list-group-item"><a class="lienCellier" data-id='<?php echo $cellier['id'] ?>' id="<?php echo $cellier['id'] ?>" href="<?php echo '?requete=bouteilleParCellier&id='.$cid.'#cellier' ?>"><?php echo $cellier['nom'] ?></a></li>
             <?php } ?>
             </ul>
             </div>
@@ -83,7 +83,41 @@
         }
         ?></h1>
         <!-- <p id="monCellier"><?php echo $dat['nomCellier']['nomCellier'] ?></p> -->
-
+         <form style="width:100%" class="form-inline">
+                <input type="hidden" value="bouteilleParCellier" name="requete" />
+                <input type="hidden" value="<?php echo $id; ?>" name="id" />
+                <div class="form-group">
+                   <label>Year</label> 
+                   <select name="filter[year]" class="form-control"><option value="">Any</option>
+                   <?php for($i = date('Y'); $i >= 1930; $i--) echo '<option '.(isset($filter['year']) && $filter['year'] == $i ? 'selected' : '').' value="'.$i.'">'.$i.'</option>'; ?>
+                    </select>
+                </div>  
+                <div class="form-group">
+                    <label>Nom</label> 
+                    <input name="filter[name]" class="form-control" type="text" value="<?php echo isset($filter['name']) ? $filter['name'] : ''; ?>">
+                </div> 
+                <div class="form-group">
+                    <label>Qty</label> 
+                    <input name="filter[qty-from]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-from']) ? $filter['qty-from'] : '0'; ?>">
+                    -
+                    <input name="filter[qty-till]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-till']) ? $filter['qty-till'] : '100'; ?>">
+                </div> 
+                <div class="form-group">
+                    <label>Type</label> 
+                    <select name="filter[type]" class="form-control">
+                        <option value="">Any</option>
+                        <option value="1" <?php echo isset($filter['type']) && $filter['type'] == 1 ? 'selected' : ''; ?>>Red</option>
+                        <option value="2" <?php echo isset($filter['type']) && $filter['type'] == 2 ? 'selected' : ''; ?>>White</option>   
+                    </select>
+                </div> 
+                <div class="form-group">
+                    <label>Pays</label> 
+                    <select name="filter[country]" class="form-control"><option value="">Any</option>
+                    <?php foreach($pays as $c) echo '<option '.(isset($filter['country']) && $filter['country'] == $c ? 'selected' : '').' value="'.$c.'">'.$c.'</option>'; ?>
+                    </select>
+                </div> 
+                <input type="submit" value="Filter" class="btn btn-primary">
+            </form>
                 <?php
                     
                     if (!empty($data)) {
@@ -113,17 +147,16 @@
                                             <li><small class="millesime text-muted">Millesime : <?php echo $bouteille['millesime'] ?></small></li>
                                             <li><small><a href="<?php echo $bouteille['url_saq'] ?>">Voir SAQ</a></small></li>
 
-                                             <div class="d-flex">
+                                              <div class="d-flex">
                                         <div class="options btn-group" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>">
                                           
                                             <button class="btnModifier btn btn-sm btn-outline-danger">Modifier</button>
                                             <button class='btnAjouter btn btn-sm btn-outline-danger'>Ajouter</button>
                                             <button class='btnBoire btn btn-sm btn-outline-danger'>Boire</button>
                                             <button class='btnRetirer btn btn-sm btn-outline-danger' title="Retirer cette bouteille"><i class="fas fa-trash-alt"></i></button>
-                                            
-
+    
                                         </div>
-                                    
+    
                                     </div>
                                             
                                         </div>

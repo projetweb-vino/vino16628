@@ -58,7 +58,7 @@
 						
 						<div id="myDropdown" class="dropdown-content text-left">
 							<a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i>Profil</a>
-						    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-cog"></i>Changer le mot de passe</a>
+						    <a class="dropdown-item" href='index.php?requete=ChangerMotDePass'><i class="fa fa-fw fa-cog"></i>Changer le mot de passe</a>
 						    <a class="dropdown-item" href='index.php?requete=Logout'><i class="fa fa-fw fa-power-off"></i>Se déconnecter</a>
 						</div>
 					</div>
