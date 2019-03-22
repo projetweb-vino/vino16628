@@ -263,6 +263,35 @@ window.addEventListener('load', function() {
     //     })
 
     // });
+     // Selection de tous les boutons modifier
+    document.querySelectorAll(".ajoutebouteille").forEach(function(element){
+
+      element.addEventListener("click", function(evt){
+        let id = evt.target.parentElement.dataset.id;
+        //recuperer les information de la bouteille selectionné
+        var nom = document.getElementById("nom"+id).innerHTML;
+        var image = document.getElementById("image"+id).innerHTML;
+        var code_saq = document.getElementById("code_saq"+id).innerHTML;
+        var pays = document.getElementById("pays"+id).innerHTML;
+        var description = document.getElementById("description"+id).innerHTML;
+        var prix_saq = document.getElementById("prix_saq"+id).innerHTML;
+        var url_saq = document.getElementById("url_saq"+id).innerHTML;
+        var url_img = document.getElementById("url_img"+id).innerHTML;
+        var format = document.getElementById("format"+id).innerHTML;
+        //remplire le formulaire d'ajoute une bouteille 
+        document.getElementById("nom").value = nom;
+        document.getElementById("image").value = image;
+        document.getElementById("code_saq").value = code_saq;
+        document.getElementById("pays").value = pays;
+        document.getElementById("description").value = description;
+        document.getElementById("prix").value = prix_saq;
+        document.getElementById("url_saq").value = url_saq;
+        document.getElementById("url_img").value = url_img;
+        document.getElementById("format").value = format;
+
+      })
+
+    });
 
     // Importer des bouteilles dans la table vino_saq
     document.getElementById("btnImport").addEventListener("click", function(evt){
@@ -302,7 +331,7 @@ window.addEventListener('load', function() {
     });
     
 
-    });
+});
        
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     
@@ -396,10 +425,14 @@ window.addEventListener('load', function() {
         });
       } 
 
+   /* ajouter une bouteille de la liste bouteilles */ 
+   // var ajoutebouteille = document.querySelectorAll(".ajoutebouteille");
+   // ajoutebouteille.addEventListener('click', function(){
 
-  }
+   //  var nom = document.querySelectorAll(".ajoutebouteille");
 
-    
+   // },false)
 
 
+}
 

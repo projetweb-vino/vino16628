@@ -69,7 +69,32 @@
             <?php 
             }
             ?>
-   
+            <button class="collapsible bg-dark"><i class="fas fa-sort-amount-up"></i> Triage</button>
+            <div class="content ">
+                <br>
+                <form method="post" novalidate="novalidate">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <select class="form-control search-slt" id="exampleFormControlSelect1" name="filter[filtre]">
+                                <option value = "nom">nom </option>
+                                <option value = "pays">pays </option>
+                                <option value = "millesime">Millesime </option>
+                                <option value = "quantite">Quantite </option>
+                                <option value = "prix_saq">Prix </option>
+                                <option value = "date_achat">Date d'achat </option>
+                                <option value = "type">Type </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="option form-group col-md-2">
+                            <input type="submit"  class="btn btn-danger wrn-btn" value="Appliquer">
+                            <input type="hidden" name="requete" value="bouteilleParCellier">
+                            <input type="hidden" value="<?php echo $id; ?>" name="id" />
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -117,6 +142,33 @@
                     </select>
                 </div> 
                 <input type="submit" value="Filter" class="btn btn-primary">
+            </form>
+            <form method="post" novalidate="novalidate">
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
+                                <span class="label label-success">Tri par</span>
+                            </div>    
+                            <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
+                                <select class="form-control search-slt" id="exampleFormControlSelect1" name="filter[filtre]">
+                                    <option value = "nom">nom </option>
+                                    <option value = "pays">pays </option>
+                                    <option value = "millesime">Millesime </option>
+                                    <option value = "quantite">Quantite </option>
+                                    <option value = "prix_saq">Prix </option>
+                                    <option value = "date_achat">Date d'achat </option>
+                                    <option value = "type">Type </option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-md-2 float-lg-right col-sm-12 p-0">
+                                <input type="submit"  class="btn btn-danger wrn-btn" value="Appliquer">
+                                <input type="hidden" name="requete" value="bouteilleParCellier">
+                                <input type="hidden" value="<?php echo $id; ?>" name="id" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
                 <?php
                     
