@@ -352,6 +352,7 @@ class Controler
 				$data = $bte->CellierParUsager($_SESSION["UserID"] );
 				// Récupérer la liste des bouteilles
 				$dat = $bte->getListeBouteille();
+				$datas = $bte->RecupererTypes();
 
 				include("vues/entete.php");
 				include("vues/ajouter.php");

@@ -368,6 +368,28 @@ class Bouteille extends Modele {
 		if(!empty($filter['qty-from'])) {
 			$where .= ' AND vino_bouteille.quantite >= "'.$filter['qty-from'].'"';
 		}
+		//variable par defaut de tri
+		$Tri ='vino_bouteille.nom';
+		//teste de variable pour le triage 
+		if( $filter['filtre'] == 'nom')
+		   $Tri ="  vino_bouteille.nom";
+		if( $filter['filtre'] == 'type')
+		   $Tri ="  vino_type.type";
+		if( $filter['filtre'] == 'pays')
+		   $Tri ="  vino_bouteille.pays ";
+		if( $filter['filtre'] == 'millesime')
+		   $Tri ="  vino_bouteille.millesime";
+		if( $filter['filtre'] == 'date_achat')
+		   $Tri ="  vino_bouteille.date_achat";
+		if( $filter['filtre'] == 'code_saq')
+		   $Tri ="  vino_bouteille.code_saq";
+		if( $filter['filtre'] == 'quantite')
+		   $Tri ="  vino_bouteille.quantite ";
+		if( $filter['filtre'] == 'notes')
+		   $Tri ="  vino_contient.notes ";
+		if( $filter['filtre'] == 'prix_saq')
+		   $Tri ="  vino_bouteille.prix_saq ";
+
 		$requete = "SELECT 
 						vino_bouteille.id as id_bouteille_cellier,
 						vino_bouteille.nom,
@@ -389,7 +411,7 @@ class Bouteille extends Modele {
 						from vino_bouteille
 						INNER JOIN vino_cellier ON vino_bouteille.cellier_id=vino_cellier.id 
 						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
-						WHERE vino_cellier.id = ". $id . ' AND ' . $where;
+						WHERE vino_cellier.id = ". $id . ' AND ' . $where." ORDER BY ".$Tri." ASC";
 
         $res = $this->_db->query($requete);
         $data = array();
