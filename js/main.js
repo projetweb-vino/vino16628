@@ -25,7 +25,7 @@ window.addEventListener('load', function() {
             let id = evt.target.parentElement.dataset.id;
             console.log(id);
             let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-
+            document.getElementById('reviewStars-input-' + id).style.display = 'block';          
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -46,6 +46,16 @@ window.addEventListener('load', function() {
               });
         })
 
+    });
+
+    document.querySelectorAll('.reviewStars-input input').forEach(function(element) {
+         element.addEventListener("click", function(evt) {
+            var id = this.parentNode.getAttribute('data-id');
+            //alert(id + ' / ' + this.value); 
+            let requete = new Request("index.php?requete=vote", {method: 'POST', body: '{"id": '+id+', "vote": '+this.value+'}'});
+            fetch(requete);
+          
+         });
     });
 
     document.querySelectorAll(".btnAjouter").forEach(function(element){

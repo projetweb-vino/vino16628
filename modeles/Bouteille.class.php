@@ -176,6 +176,12 @@ class Bouteille extends Modele {
 		return $res;
 	}
 	
+	public function vote($id, $vote)
+	{
+		$requete = "UPDATE vino_bouteille SET vote = '". $vote. "' WHERE id = ". $id;
+		$res = $this->_db->query($requete);
+        return $res;
+	}
 	
 	/**
 	 * Cette méthode change la quantité d'une bouteille en particulier dans le cellier
@@ -371,6 +377,7 @@ class Bouteille extends Modele {
 		//variable par defaut de tri
 		$Tri ='vino_bouteille.nom';
 		//teste de variable pour le triage 
+		if(!empty($filter['filtre'])) {
 		if( $filter['filtre'] == 'nom')
 		   $Tri ="  vino_bouteille.nom";
 		if( $filter['filtre'] == 'type')
@@ -389,10 +396,11 @@ class Bouteille extends Modele {
 		   $Tri ="  vino_contient.notes ";
 		if( $filter['filtre'] == 'prix_saq')
 		   $Tri ="  vino_bouteille.prix_saq ";
-
+		}
 		$requete = "SELECT 
 						vino_bouteille.id as id_bouteille_cellier,
 						vino_bouteille.nom,
+						vino_bouteille.vote,
 						vino_bouteille.image,
 						vino_bouteille.code_saq,
 						vino_bouteille.pays,

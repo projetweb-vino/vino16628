@@ -121,12 +121,12 @@
                     <label>Nom</label> 
                     <input name="filter[name]" class="form-control" type="text" value="<?php echo isset($filter['name']) ? $filter['name'] : ''; ?>">
                 </div> 
-                <div class="form-group">
+               <!--  <div class="form-group">
                     <label>Qty</label> 
                     <input name="filter[qty-from]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-from']) ? $filter['qty-from'] : '0'; ?>">
                     -
                     <input name="filter[qty-till]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-till']) ? $filter['qty-till'] : '100'; ?>">
-                </div> 
+                </div>  -->
                 <div class="form-group">
                     <label>Type</label> 
                     <select name="filter[type]" class="form-control">
@@ -143,7 +143,7 @@
                 </div> 
                 <input type="submit" value="Filter" class="btn btn-primary">
             </form>
-            <form method="post" novalidate="novalidate">
+           <!--  <form method="post" novalidate="novalidate">
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="row">
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </form> -->
                 <?php
                     
                     if (!empty($data)) {
@@ -182,36 +182,41 @@
                             <div class="card shadow-sm">
                                 <div class="bouteille" data-quantite="" >
                                     <div class="img">
-
-                                        
                                         <img src="https:<?php echo $bouteille['image'] ?>">
-
                                     </div>
+
+                                    <div data-vote="<?php echo $bouteille['vote']; ?>" class="reviewStars-input" id="reviewStars-input-<?php echo $bouteille['id_bouteille_cellier'] ?>" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>" style="display:<?php echo $bouteille['vote'] ? 'block' : 'none'; ?>">
+                                        <?php for($i = 4; $i >= 0; $i--) { ?>
+                                        <input <?php echo $bouteille['vote'] == $i + 1 ? 'checked' : '';  ?> id="star-<?php echo $i; ?>-<?php echo $bouteille['id_bouteille_cellier'] ?>" class="star-<?php echo $i; ?>" type="radio" name="reviewStars" value="<?php echo $i+1; ?>" />
+                                        <label title="gorgeous" for="star-<?php echo $i; ?>-<?php echo $bouteille['id_bouteille_cellier'] ?>"></label>
+                                        <?php } ?>
+                                    </div>
+                                    
                                     <ul class="list-unstyled mt-3 mb-4">
                                         <li class="nom text-danger font-weight-bold"><?php echo $bouteille['nom'] ?></li>
-                                        <div class="description text-left card-body">
+                                        <li>
+                                            <div class="description text-left card-body">
+                                                <ul>                     
+                                                    <!-- Ajouter l'attribut id en lui assignant l'id de la bouteille -->
+                                                    <li><small class="quantite text-muted" id="<?php echo 'item'.$bouteille['id_bouteille_cellier'] ?>">Quantité : <?php echo $bouteille['quantite'] ?></small></li>
+                                                    <li><small class="pays text-muted">Pays : <?php echo $bouteille['pays'] ?></small></li>
+                                                    <li><small class="type text-muted">Type : <?php echo $bouteille['type'] ?></small></li>
+                                                    <li><small class="millesime text-muted">Millesime : <?php echo $bouteille['millesime'] ?></small></li>
+                                                    <li><small><a href="<?php echo $bouteille['url_saq'] ?>">Voir SAQ</a></small></li>
 
-                                            
-                                            <!-- Ajouter l'attribut id en lui assignant l'id de la bouteille -->
-                                            <li><small class="quantite text-muted" id="<?php echo 'item'.$bouteille['id_bouteille_cellier'] ?>">Quantité : <?php echo $bouteille['quantite'] ?></small></li>
-                                            <li><small class="pays text-muted">Pays : <?php echo $bouteille['pays'] ?></small></li>
-                                            <li><small class="type text-muted">Type : <?php echo $bouteille['type'] ?></small></li>
-                                            <li><small class="millesime text-muted">Millesime : <?php echo $bouteille['millesime'] ?></small></li>
-                                            <li><small><a href="<?php echo $bouteille['url_saq'] ?>">Voir SAQ</a></small></li>
-
-                                              <div class="d-flex">
-                                        <div class="options btn-group" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>">
-                                          
-                                            <button class="btnModifier btn btn-sm btn-outline-danger">Modifier</button>
-                                            <button class='btnAjouter btn btn-sm btn-outline-danger'>Ajouter</button>
-                                            <button class='btnBoire btn btn-sm btn-outline-danger'>Boire</button>
-                                            <button class='btnRetirer btn btn-sm btn-outline-danger' title="Retirer cette bouteille"><i class="fas fa-trash-alt"></i></button>
-    
-                                        </div>
-    
-                                    </div>
-                                            
-                                        </div>
+                                                    <li>
+                                                        <div class="d-flex">
+                                                            <div class="options btn-group" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>">
+                                                                <button class="btnModifier btn btn-sm btn-outline-danger">Modifier</button>
+                                                                <button class='btnAjouter btn btn-sm btn-outline-danger'>Ajouter</button>
+                                                                <button class='btnBoire btn btn-sm btn-outline-danger'>Boire</button>
+                                                                <button class='btnRetirer btn btn-sm btn-outline-danger' title="Retirer cette bouteille"><i class="fas fa-trash-alt"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                                 <!-- Footer du card -->

@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `vino_bouteille` (
   `garde_jusqua` varchar(200) DEFAULT NULL,
   `millesime` int(11) DEFAULT NULL,
   `type_id` int(11) UNSIGNED NOT NULL,
+  `vote` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `type_id` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;

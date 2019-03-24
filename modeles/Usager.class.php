@@ -83,6 +83,7 @@ class Usager extends Modele {
 					vino_bouteille.url_saq,
 					vino_bouteille.url_img,
 					vino_bouteille.format,
+					vino_bouteille.vote,
 					vino_bouteille.garde_jusqua,
 					vino_bouteille.millesime,
 					vino_bouteille.quantite,
@@ -112,7 +113,7 @@ class Usager extends Modele {
 			throw new Exception("Erreur de requête sur la base de donnée", 1);
 			 
 		}
-
+       
 		return $rangees;
 	}
 	/**

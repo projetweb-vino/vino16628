@@ -245,7 +245,11 @@ class Controler
 		                        require_once(__DIR__."/vues/formEnregistrer.php");
 		                }
 				    	break;
-				    		
+				    
+				    case "vote":
+				    	$this->vote();
+				    	break;
+
 		        	case "Logout":
 						//delete la session en lui assignant un tableau vide
 						$_SESSION = array();
@@ -375,6 +379,17 @@ class Controler
 			echo json_encode($resultat);
 		}
 
+		private function vote()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			$vote = (int)$body->vote;
+			if($vote < 1 || $vote > 5) return;
+			$resultat = $bte->vote($body->id, $vote);
+			// Fair appel à la fonction de récupération de la quantité
+			echo json_encode($resultat);
+		}
+
 		/**
 		* Fonction d'ajout d'une bouteille dans le cellier
 		* 
@@ -462,6 +477,7 @@ class Controler
             // Récupérer les cellier par usager authentifié
             $dat['cellier'] = $cellier->CellierParUsager($idUsager);
             $dat['nomCellier'] = $cellier->cellierParId($id=1);
+            $pays = $cellier->GetPays();
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
