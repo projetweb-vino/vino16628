@@ -21,7 +21,7 @@ class SAQ extends Modele {
 
 	public function __construct() {
 		parent::__construct();
-		if (!($this -> stmt = $this -> _db -> prepare("INSERT INTO vino_saq(nom, type, image, code_saq, pays, description, prix_saq, url_saq, url_img, format) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($this -> stmt = $this -> _db -> prepare("INSERT INTO vino_saq(nom, image, code_saq, pays, description, prix_saq, url_saq, url_img, format, type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))) {
 			echo "Echec de la préparation : (" . $mysqli -> errno . ") " . $mysqli -> error;
 		}
 	}
@@ -34,10 +34,9 @@ class SAQ extends Modele {
 	public function getProduits($nombre = 100, $debut = 0) {
 		$s = curl_init();
 
-		//curl_setopt($s, CURLOPT_URL, "http://www.saq.com/webapp/wcs/stores/servlet/SearchDisplay?searchType=&orderBy=&categoryIdentifier=06&showOnly=product&langId=-2&beginIndex=".$debut."&tri=&metaData=YWRpX2YxOjA8TVRAU1A%2BYWRpX2Y5OjE%3D&pageSize=". $nombre ."&catalogId=50000&searchTerm=*&sensTri=&pageView=&facet=&categoryId=39919&storeId=20002");
 		curl_setopt($s, CURLOPT_URL, "https://www.saq.com/webapp/wcs/stores/servlet/SearchDisplay?categoryIdentifier=06&showOnly=product&langId=-2&beginIndex=" . $debut . "&pageSize=" . $nombre . "&catalogId=50000&searchTerm=*&categoryId=39919&storeId=20002");
 		curl_setopt($s, CURLOPT_RETURNTRANSFER, true);
-		//curl_setopt($s, CURLOPT_FOLLOWLOCATION, 1);
+	
 
 		self::$_webpage = curl_exec($s);
 		self::$_status = curl_getinfo($s, CURLINFO_HTTP_CODE);
@@ -50,18 +49,15 @@ class SAQ extends Modele {
 		$elements = $doc -> getElementsByTagName("div");
 		$i = 0;
 		foreach ($elements as $key => $noeud) {
-			//if ("resultats_product" == str$noeud -> getAttribute('class')) {
+		
 			if (strpos($noeud -> getAttribute('class'), "resultats_product") !== false) {
 
-				//echo $this->get_inner_html($noeud);
 				$info = self::recupereInfo($noeud);
-				//var_dump($info);
 				$retour = $this -> ajouteProduit($info);
 				if ($retour -> succes == false) {
 					echo "erreur : " . $retour -> raison . "<br>";
 					echo "<pre>";
-					var_dump($info);
-					echo "</pre>";
+				    echo "</pre>";
 					echo "<br>";
 				} else {
 					$i++;
@@ -69,7 +65,7 @@ class SAQ extends Modele {
 			}
 		}
 
-		return $i;
+       return $i;
 	}
 
 	private function get_inner_html($node) {
@@ -97,7 +93,6 @@ class SAQ extends Modele {
 				$res = preg_match_all("/\r\n\s*(.*)\r\n/", $info -> desc -> texte, $aDesc);
 				if (isset($aDesc[1][2])) {
 					preg_match("/\d{8}/", $aDesc[1][2], $aRes);
-					//var_dump($aRes);
 					$info -> desc -> code_SAQ = utf8_decode(trim($aRes[0]));
 				}
 				if (isset($aDesc[1][1])) {
@@ -130,18 +125,18 @@ class SAQ extends Modele {
 		$retour -> succes = false;
 		$retour -> raison = '';
 
-		var_dump($bte);
 		// Récupère le type
 		$rows = $this -> _db -> query("select id from vino_type where type = '" . $bte -> desc -> type . "'");
 		
 		if ($rows -> num_rows == 1) {
 			$type = $rows -> fetch_assoc();
-			var_dump($type);
+			// Charger le l'id du type
 			$type = $type['id'];
 
-			$rows = $this -> _db -> query("select id from vino_bouteille where code_saq = '" . $bte -> desc -> code_SAQ . "'");
+			$rows = $this -> _db -> query("select id from vino_bouteille where code_saq = '" . $bte->desc->code_SAQ . "'");
+
 			if ($rows -> num_rows < 1) {
-				$this -> stmt -> bind_param("sissssssss", $bte -> nom, $type, $bte -> img, $bte -> desc -> code_SAQ, $bte -> desc -> pays, $bte -> desc -> texte, $bte -> prix, $bte -> url, $bte -> img, $bte -> desc -> format);
+				$this -> stmt -> bind_param("sssssssssi", $bte->nom, $bte->img, $bte->desc->code_SAQ, $bte->desc->pays, $bte->desc->texte, $bte->prix, $bte->url, $bte->img, $bte->desc->format, $type);
 				$retour -> succes = $this -> stmt -> execute();
 
 			} else {
@@ -153,6 +148,7 @@ class SAQ extends Modele {
 			$retour -> raison = self::ERREURDB;
 
 		}
+		
 		return $retour;
 
 	}
