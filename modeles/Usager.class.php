@@ -95,7 +95,7 @@ class Usager extends Modele {
         			JOIN vino_usagers ON vino_usagers.id=vino_cellier.usager_id 
 
         			WHERE vino_cellier.usager_id = ".$idUsager;
- 		//die($requete);
+ 		
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -123,15 +123,21 @@ class Usager extends Modele {
 	*/
 	public function testUser($usager)
 	{
-			
-	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
-	       			
-			$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$usager."'";
-			$resultat = $this->_db->query($requete);
-	        $rangee = $resultat->fetch_assoc();
-			return $rangee;
+			       			
+		$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$usager."'";
+		$resultat = $this->_db->query($requete);
+        $rangee = $resultat->fetch_assoc();
+		return $rangee;
 
 	}
+	/**
+	* Fonction pour changer le mot de passe
+	* 
+	* @param $usager nom de l'utilisateur
+	* @param $password le mot de passe
+	* @param $passwordNouveau le nouveau mot de passe
+	* @return $rangees résultat de la requête
+	*/
 	public function ChangerMotDePass($usager, $password, $passwordNouveau)
 	{
 		$requete = "SELECT * from vino_usagers WHERE username = '" . $usager . "' AND password = '".md5($password)."'";
