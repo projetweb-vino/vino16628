@@ -84,14 +84,93 @@ class Bouteille extends Modele {
 		else 
 		{
 			throw new Exception("Erreur de requête sur la base de donnée", 1);
-			 //$this->_db->error;
+			
 		}
 		
 		
 		
 		return $rangees;
 	}
-	
+
+	/**
+	 * Cette méthode récupère la liste des bouteilles par cellier
+	 * 
+	 * 
+	 * @return $rangees 
+	 */
+	public function ListeBouteilleSAQ()
+	{
+		
+		$rangees = Array();
+		$requete ='SELECT 
+						vino_saq.id,
+						vino_saq.nom,
+						vino_saq.image,
+						vino_saq.code_saq,
+						vino_saq.pays,
+						vino_saq.description,
+						vino_saq.prix_saq,
+						vino_saq.url_saq,
+						vino_saq.url_img,
+						vino_saq.format,
+						vino_saq.type_id
+						
+
+						from vino_saq
+						
+						'; 
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($rangee = $res->fetch_assoc())
+				{
+					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					$rangees[] = $rangee;
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de donnée", 1);
+			
+		}
+		
+		
+		
+		return $rangees;
+	}
+
+	/**
+	 * Cette méthode récupère la liste des bouteilles par cellier
+	 * 
+	 * 
+	 * @return $rangees 
+	 */
+	public function saqParID($id)
+	{
+		
+		
+		$requete ='SELECT 
+						vino_saq.id,
+						vino_saq.nom,
+						vino_saq.image,
+						vino_saq.code_saq,
+						vino_saq.pays,
+						vino_saq.description,
+						vino_saq.prix_saq,
+						vino_saq.url_saq,
+						vino_saq.url_img,
+						vino_saq.format,
+						vino_saq.type_id
+						
+
+						FROM vino_saq
+						WHERE vino_saq.id = $id'; 
+		$res = $this->_db->query($requete);
+        $rangee = $res->fetch_assoc();
+		return $rangee;
+	}
 	/**
 	 * Cette méthode permet de retourner les résultats de recherche pour la fonction d'autocomplete de l'ajout des bouteilles dans le cellier
 	 * 
@@ -110,9 +189,9 @@ class Bouteille extends Modele {
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
-		//echo $nom;
+		
 		$requete ='SELECT id, nom FROM vino_bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
-		//var_dump($requete);
+		
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -169,6 +248,39 @@ class Bouteille extends Modele {
 		"'".$data->notes."',".
 		"'".$data->prix."',".
 		"'".$data->quantite."',".
+		"'".$data->millesime."')";
+
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+
+	/**
+	 * Cette méthode ajoute une ou des bouteilles au cellier
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function ajouterBouteilleSAQ($data)
+	{
+			
+		$requete = "INSERT INTO vino_bouteille(id_cellier, $nom, image, code_saq, pays, description, prix_saq, url_saq, url_img, format, type_id, quantite, notes, garde_jusqua,  notes, millesime, id_saq) VALUES (".
+		"'".$data->id_cellier."',".
+		"'".$data->nom."',".
+		"'".$data->image."',".
+		"'".$data->code_saq."',".
+		"'".$data->pays."',".
+		"'".$data->description."',".
+		"'".$data->prix_saq."',".
+		"'".$data->url_saq."',".
+		"'".$data->url_img."',".
+		"'".$data->format."',".
+		"'".$data->type_id."',".
+		"'".$data->quantite."',".
+		"'".$data->notes."',".
+		"'".$data->garde_jusqua."',".
+		"'".$data->notes."',".
 		"'".$data->millesime."')";
 
         $res = $this->_db->query($requete);
@@ -342,6 +454,31 @@ class Bouteille extends Modele {
 	}
 
 	/**
+	 * Fonction RecupererCellierParId Pour récupérer les détails d'un cellier par son id 
+	 * 
+	 * @param $id id de la bouteille cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function RecupererCellierParUsager($idUsager)
+	{
+				
+		$requete = "SELECT 
+					vino_cellier.id,
+					vino_cellier.nom as nomCellier
+
+					from vino_cellier
+					JOIN vino_usagers ON vino_usagers.id = vino_cellier.usager_id
+					
+					WHERE vino_usagers.id =  $idUsager
+					LIMIT 1";
+		$res = $this->_db->query($requete);
+  		
+		$rangee = $res->fetch_assoc();
+		return $rangee;
+	
+	}
+
+	/**
 	 * Fonction RecupererBouteilleParCellier Pour récupérer les détails d'un cellier par son id 
 	 * 
 	 * @param $id id du cellier
@@ -370,7 +507,10 @@ class Bouteille extends Modele {
 		}
 		//variable par defaut de tri
 		$Tri ='vino_bouteille.nom';
-		//teste de variable pour le triage 
+
+		//teste de variable pour le triage
+		if (isset($filter['filtre'])) {			
+
 		if( $filter['filtre'] == 'nom')
 		   $Tri ="  vino_bouteille.nom";
 		if( $filter['filtre'] == 'type')
@@ -389,7 +529,7 @@ class Bouteille extends Modele {
 		   $Tri ="  vino_contient.notes ";
 		if( $filter['filtre'] == 'prix_saq')
 		   $Tri ="  vino_bouteille.prix_saq ";
-
+		}
 		$requete = "SELECT 
 						vino_bouteille.id as id_bouteille_cellier,
 						vino_bouteille.nom,
@@ -485,7 +625,7 @@ class Bouteille extends Modele {
 	public function cellierParId($id)
 	{
 			
-		$requete = "SELECT nom as nomCellier From vino_cellier WHERE id = $id";
+		$requete = "SELECT id, nom as nomCellier From vino_cellier WHERE id = $id";
 		$res = $this->_db->query($requete);
         $rangee = $res->fetch_assoc();
 		return $rangee;
