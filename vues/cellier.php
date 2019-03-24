@@ -49,131 +49,145 @@
             <button class="collapsible bg-dark"><i class="fas fa-file-import"></i> Importation</button>
             <div class="content ">
                 <br>
+                <form method='GET'>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <input type="number" name="nombre" id="debut" class="form-control"  placeholder="Début">
+                        <input type="number" name="nombre" id="debut" class="form-control"  placeholder="Début" required>
                         
                     </div>
                     <div class="form-group col-md-6">
-                        <input type="number" name="debut" id="nombre" class="form-control"  placeholder="Nombre">
+                        <input type="number" name="debut" id="nombre" class="form-control"  placeholder="Nombre" required>
                     </div>
                                   
                 </div>
                 <div class="form-row">
                     <div class="option form-group col-md-2">
-                        <button id="btnImport" class="btn btn-outline-danger">Importer</button>
+                        <button type='submit' class="btn btn-outline-danger">Importer</button>
+                        <input type="hidden" name="requete" value='importer'>
                     </div>
                 </div>
+                </form>
              
             </div>
+
+
             <?php 
             }
             ?>
-            <button class="collapsible bg-dark"><i class="fas fa-sort-amount-up"></i> Triage</button>
-            <div class="content ">
-                <br>
-                <form method="post" novalidate="novalidate">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <select class="form-control search-slt" id="exampleFormControlSelect1" name="filter[filtre]">
-                                <option value = "nom">nom </option>
-                                <option value = "pays">pays </option>
-                                <option value = "millesime">Millesime </option>
-                                <option value = "quantite">Quantite </option>
-                                <option value = "prix_saq">Prix </option>
-                                <option value = "date_achat">Date d'achat </option>
-                                <option value = "type">Type </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="option form-group col-md-2">
-                            <input type="submit"  class="btn btn-danger wrn-btn" value="Appliquer">
-                            <input type="hidden" name="requete" value="bouteilleParCellier">
-                            <input type="hidden" value="<?php echo $id; ?>" name="id" />
-                        </div>
-                    </div>
-                </form>
-            </div>
+   
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
+    <?php 
+    if (!empty($data)) {
+    ?>
     <div class="col-md-9 main-content" id="cellier">
         
         <h1 class="border border-secondary bg-dark text-light"><?php 
         if (isset($dat['nomCellier'])) {
-            # code...
-        
+      
         echo $dat['nomCellier']['nomCellier'] ;
         }
         ?></h1>
-        <!-- <p id="monCellier"><?php echo $dat['nomCellier']['nomCellier'] ?></p> -->
-         <form style="width:100%" class="form-inline">
-                <input type="hidden" value="bouteilleParCellier" name="requete" />
-                <input type="hidden" value="<?php echo $id; ?>" name="id" />
-                <div class="form-group">
-                   <label>Year</label> 
-                   <select name="filter[year]" class="form-control"><option value="">Any</option>
-                   <?php for($i = date('Y'); $i >= 1930; $i--) echo '<option '.(isset($filter['year']) && $filter['year'] == $i ? 'selected' : '').' value="'.$i.'">'.$i.'</option>'; ?>
-                    </select>
-                </div>  
-                <div class="form-group">
-                    <label>Nom</label> 
-                    <input name="filter[name]" class="form-control" type="text" value="<?php echo isset($filter['name']) ? $filter['name'] : ''; ?>">
-                </div> 
-                <div class="form-group">
-                    <label>Qty</label> 
-                    <input name="filter[qty-from]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-from']) ? $filter['qty-from'] : '0'; ?>">
-                    -
-                    <input name="filter[qty-till]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-till']) ? $filter['qty-till'] : '100'; ?>">
-                </div> 
-                <div class="form-group">
-                    <label>Type</label> 
-                    <select name="filter[type]" class="form-control">
-                        <option value="">Any</option>
-                        <option value="1" <?php echo isset($filter['type']) && $filter['type'] == 1 ? 'selected' : ''; ?>>Red</option>
-                        <option value="2" <?php echo isset($filter['type']) && $filter['type'] == 2 ? 'selected' : ''; ?>>White</option>   
-                    </select>
-                </div> 
-                <div class="form-group">
-                    <label>Pays</label> 
-                    <select name="filter[country]" class="form-control"><option value="">Any</option>
-                    <?php foreach($pays as $c) echo '<option '.(isset($filter['country']) && $filter['country'] == $c ? 'selected' : '').' value="'.$c.'">'.$c.'</option>'; ?>
-                    </select>
-                </div> 
-                <input type="submit" value="Filter" class="btn btn-primary">
-            </form>
-            <form method="post" novalidate="novalidate">
-                <div class="row">
-                    <div class="col-lg-12 ">
+      
+            <!-- Le formulaire de filtre -->
+            <div class="container contact-form col-md-12">
+                <form>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="hidden" value="bouteilleParCellier" name="requete" />
+                            <input type="hidden" value="<?php echo $dat['nomCellier']['id']; ?>" name="id" />
+                        
+                           <label>Année</label> 
+                           <select name="filter[year]" class="form-control"><option value="">Tout</option>
+                           <?php for($i = date('Y'); $i >= 1930; $i--) echo '<option '.(isset($filter['year']) && $filter['year'] == $i ? 'selected' : '').' value="'.$i.'">'.$i.'</option>'; ?>
+                            </select>
+                        </div> 
+
+                        <div class="form-group col-md-4">
+                            <label>Nom</label> 
+                            <input name="filter[name]" class="form-control" type="text" value="<?php echo isset($filter['name']) ? $filter['name'] : ''; ?>">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label>Qté</label> 
+                            <input name="filter[qty-from]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-from']) ? $filter['qty-from'] : '0'; ?>">
+                            
+                            
+                        </div>
+
+                            
+                        <div class="form-group col-md-2">
+                            <label>Jusqu'à</label> 
+                            -<input name="filter[qty-till]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-till']) ? $filter['qty-till'] : '100'; ?>">
+                            
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Type</label> 
+                            <select name="filter[type]" class="form-control">
+                                <option value="">Tout</option>
+                                <option value="1" <?php echo isset($filter['type']) && $filter['type'] == 1 ? 'selected' : ''; ?>>Rouge</option>
+                                <option value="2" <?php echo isset($filter['type']) && $filter['type'] == 2 ? 'selected' : ''; ?>>Blanc</option>   
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Pays</label> 
+                            <select name="filter[country]" class="form-control"><option value="">Tout</option>
+                            <?php foreach($pays as $c) echo '<option '.(isset($filter['country']) && $filter['country'] == $c ? 'selected' : '').' value="'.$c.'">'.$c.'</option>'; ?>
+                            </select>
+                        </div>
+                        
+                        <!-- Le tri -->
+                        <form method="post" novalidate="novalidate">
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
-                                <span class="label label-success">Tri par</span>
-                            </div>    
-                            <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
-                                <select class="form-control search-slt" id="exampleFormControlSelect1" name="filter[filtre]">
-                                    <option value = "nom">nom </option>
-                                    <option value = "pays">pays </option>
-                                    <option value = "millesime">Millesime </option>
-                                    <option value = "quantite">Quantite </option>
-                                    <option value = "prix_saq">Prix </option>
-                                    <option value = "date_achat">Date d'achat </option>
-                                    <option value = "type">Type </option>
-                                </select>
-                            </div>
-                            <div class="col-lg-2 col-md-2 float-lg-right col-sm-12 p-0">
-                                <input type="submit"  class="btn btn-danger wrn-btn" value="Appliquer">
-                                <input type="hidden" name="requete" value="bouteilleParCellier">
-                                <input type="hidden" value="<?php echo $id; ?>" name="id" />
+                            <div class="col-lg-12 ">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
+                                        <span class="label label-success">Tri par</span>
+                                    </div>    
+                                    <div class="col-lg-3 col-md-3 col-sm-12 float-lg-right p-0">
+                                        <select class="form-control search-slt" id="exampleFormControlSelect1" name="filter[filtre]">
+                                            <option value = "nom">nom </option>
+                                            <option value = "pays">pays </option>
+                                            <option value = "millesime">Millesime </option>
+                                            <option value = "quantite">Quantite </option>
+                                            <option value = "prix_saq">Prix </option>
+                                            <option value = "date_achat">Date d'achat </option>
+                                            <option value = "type">Type </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 float-lg-right col-sm-12 p-0">
+                                        <input type="submit"  class="btn btn-danger wrn-btn" value="Appliquer">
+                                        <input type="hidden" name="requete" value="bouteilleParCellier">
+                                        <input type="hidden" value="<?php echo $dat['nomCellier']['id'];?>" name="id" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
+            </form>  
+
+                         
+                    </div> 
+
+                    <div class="form-row">
+                    
+                   
+                        <div class="form-group col-md-2 form-inline">
+
+                            <!-- <input type="submit" value="Filtrer" class="btn btn-outline-danger"> -->
+                            <button type="submit" class="btn btn-outline-danger"><i class="fas fa-filter"></i>Filtrer</button>
+                        </div> 
+                        
                     </div>
-                </div>
-            </form>
+                    
+                </form>
+            </div>
+            <!-- Fin du filtre -->
+
                 <?php
                     
-                    if (!empty($data)) {
-                    
+                                     
                     // Parcourir le tableau data
                     foreach ($data as $cle => $bouteille) {
                  
@@ -230,7 +244,6 @@
                                           '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fab fa-linkedin-in"></i></a>
                                     </div>
 
-
                                 </div>
                             </div>
 
@@ -239,11 +252,7 @@
                     <?php
                     } //Fin du foreach
                 }
-                // Sinon on affiche un message
-                else{
-                    echo "Votre Cellier est vide !";
-                }
-
+               
                 ?>  
         </div>
     </div>
