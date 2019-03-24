@@ -1,30 +1,13 @@
 <div class="ajouter">
-
-    <!-- <div class="nouvelleBouteille" vertical layout>
-        Recherche : <input type="text" name="nom_bouteille">
-        <ul class="listeAutoComplete">
-
-        </ul>
-            <div >
-                <p>Nom : <span data-id="" class="nom_bouteille"></span></p>
-                <p>Millesime : <input name="millesime"></p>
-                <p>Quantite : <input name="quantite" value="1"></p>
-                <p>Date achat : <input name="date_achat"></p>
-                <p>Prix : <input name="prix"></p>
-                <p>Garde : <input name="garde_jusqua"></p>
-                <p>Notes <input name="notes"></p>
-            </div>
-            <button name="ajouterBouteilleCellier">Ajouter la bouteille</button>
-        </div>
-    </div> -->
+    <!-- Le formulaire d'ajout d'une bouteille -->
     <div class="container contact-form col-md-6">
 
-        <form method="GET">
+        <form method="POST">
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="cellier">Celliers :  </label>
-                    <select class="form-control" name="cellier">
+                    <select class="form-control" name="id_cellier">
                     <?php foreach ($data as $key => $cellier) { ?>
                         <option value="<?php echo $cellier['id'] ?>"><?php echo $cellier['nom'] ?></option>
                         <?php } ?>
@@ -43,9 +26,9 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="type">Type :  </label>
-                    <select class="form-control" name="type">
+                    <select class="form-control" name="type_id">
                     <?php foreach ($datas as $key => $type) { ?>
-                        <option value="<?php echo $type['type'] ?>"><?php echo $type['type'] ?></option>
+                        <option value="<?php echo $type['id'] ?>"><?php echo $type['type'] ?></option>
                         <?php } ?>
                     </select>
                 </div>    
@@ -125,7 +108,7 @@
             </div>    
             <div class="form-row col-md-4">
                     <div class="form-group">
-                        <input type="hidden" name="requete" value="ajouterBouteilleNonListe">
+                        <input type="hidden" name="requete" value="ajouterBouteilleSAQ">
                         <button type="submit"  class="btn btn-primary">Ajouter</button>
                     </div>
                 </div>
