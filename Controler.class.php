@@ -40,6 +40,10 @@ class Controler
 						$this->autocompleteBouteille();
 						break;
 
+					case 'ajouterBouteilleSAQ':
+						$this->ajouterBouteilleSAQ($_POST['id_cellier'], $_POST['nom'], $_POST['image'], $_POST['code_saq'], $_POST['pays'], $_POST['description'], $_POST['prix_saq'], $_POST['url_saq'], $_POST['url_img'], $_POST['format'], $_POST['type_id'], $_POST['quantite'], $_POST['notes'], $_POST['garde_jusqua'],  $_POST['notes'], $_POST['millesime']);
+						break;
+
 					case 'ajouterNouvelleBouteilleCellier':
 						$this->ajouterNouvelleBouteilleCellier();
 						break;
@@ -81,14 +85,16 @@ class Controler
 						break;
 
 					case 'importer':
-						require("dataconf.php");
-						require("config.php");
+					   
+						
 						$debut = $_REQUEST['debut'];
 						$nombreProduit = $_REQUEST['nombre'];
-						
+				        require_once(__DIR__."/dataconf.php");
+				        require_once(__DIR__."/config.php");
+				
 						$saq = new SAQ();
 						$nombre = $saq->getProduits($nombreProduit,$debut);
-						echo json_encode($nombre);
+				        $this->accueil();
 						break;
 
 					case 'sauvegarder':
@@ -163,17 +169,22 @@ class Controler
 			        	}
 		        		break; 
 		        	case "ChangerMotDePass":
-		        		$error = '';
-		        		if(isset($_REQUEST["password"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) && ($_REQUEST["passwordNouveau"] == $_REQUEST["passwordRepeat"]))
-			        	{	
-			        		 if(strlen($_REQUEST['username']) < 3 or strlen($_REQUEST['username']) > 30)
+		        	    
+		        		$erreur = array();
+		        		if(isset($_REQUEST["password"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) )
+			        	{
+			        		if(trim($_REQUEST["passwordNouveau"])  ==  trim($_REQUEST["passwordRepeat"]))
 	                        {
-	                            $err[] .= "Login dois avoir plus au moin du 3 simboles et pas plus 30";
+	                            $erreur['erreur_identique'] = "Le mot de passe n'est pas identique !";
+	                        }	
+			        		if(strlen(trim($_REQUEST["passwordNouveau"])) < 6)
+	                        {
+	                            $erreur['erreur_longueur'] = "Le mot de passe doit avoir au moins 6 caractères.";
 	                        }
 	                        
 			        		$usager = new Usager();	
 			        		if(!$usager->ChangerMotDePass($_SESSION["UserName"],$_REQUEST["password"], $_REQUEST["passwordNouveau"])) {
-			        			$error = 'Invalid password';
+			        			 $erreur['erreur_invalide']= 'Mot de passe invalide';
 			        		}
 			        		else{
 			        			header('Location: '.URL_ROOT.'index.php?requete=cellier');
@@ -181,68 +192,53 @@ class Controler
 			        		}
 
 			        	}	else {
-			        		$error = 'Invalid data';
+			        		 $erreur['erreur_data']= 'Invalid data';
 			        	}
-			        	require_once(__DIR__."/vues/changerMotDepass.php");
+			        	
+			        	require_once(__DIR__."/vues/changerMotDePass.php");
 		        	    break;
 		        		
 		        	case "Enregistrer":
 			        	
-	                    $err = array();
 	                   	if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]) && isset($_REQUEST["passwordRepeat"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && !isset($_SESSION["UserID"]))
 			        	{
-			        		if(!preg_match("/^[a-zA-Z0-9]+$/",$_REQUEST['username']))
-	                        {
-	                            $err[] = "Login peut avoir seulement de lettre et chifres";
-	                        }
-	                        if(($_REQUEST["passwordRepeat"]) != ($_REQUEST['password']))
-	                        {
-	                            $err[] .= "Mot de pass pas idantiques"."</br>";
-	                        }
-	                        if(strlen($_REQUEST['username']) < 3 or strlen($_REQUEST['username']) > 30)
-	                        {
-	                            $err[] .= "Login dois avoir plus au moin du 3 simboles et pas plus 30";
-	                        }
-	                        if(!preg_match("/^[a-zA-Z]+$/",$_REQUEST['nom']))
-	                        {
-	                            $err[] .= "Nom dois avoir que des lettres "."</br>";
-	                        }
-	                        if(!preg_match("/^[a-zA-Z]+$/",$_REQUEST['prenom']))
-	                        {
-	                            $err[] .= "Prenom dois avoir que des lettres"."</br>";
-	                        }
-	                        	                       
-	                        $usager = new Usager();
-							// Faire appel à la fonction de sauvegarde
-							$resultat = $usager->testUser($_REQUEST['username']);
-				
-	                        if($resultat['c'] > 0)
-	                        {
-	                            $err[] = "Usager avec la meme nom existe";
-	                        }
+			        		// Déclarer un tableau
+							$message = array();
+
+							// Valider les paramètres
+                            $message = $this->valideFormEnregistrer($_REQUEST['nom'], $_REQUEST['prenom'], $_REQUEST['username'], $_REQUEST['password'], $_REQUEST['passwordRepeat']);
+                     	                        
 	                        
-	                        if(count($err) == 0)
+	                        // Si le message est vide
+                            // Ce qui signifie qu'il y'a pas eu d'erreurs
+                            // On procède à l'enregistrement
+                            if(count($message) ==0)
 	                        {
+	                        	
+	                        	$usager = new Usager();
+
 	                        	$enregistrer = $usager->Enregistrer($_REQUEST['username'], $_REQUEST['password'], $_REQUEST['nom'], $_REQUEST['prenom']);
 	                  
 	                            if($enregistrer) 
 	                            { 
 
                                    $_SESSION["UserID"] = $enregistrer["id"];
-					        	   $_SESSION["prenom"] = $_REQUEST["prenom"];
-	                               $_SESSION["UserName"] = $_REQUEST["username"];
+                                   $_SESSION["nom"] = $_REQUEST["nom"];
+			        			   $_SESSION["prenom"] = $_REQUEST["prenom"];
+					        	   $_SESSION["UserName"] = $_REQUEST["username"];
+	                               $_SESSION["admin"] = 'non';
 
 			                       $this->cellierUsager($_SESSION["UserID"]);
 	                            }
 	                        }
 	                        else{
-	                            $messageErreur = implode(' ', $err);
+	                            // $messageErreur = implode(' ', $message);
 	                            require_once(__DIR__."/vues/formEnregistrer.php");
 	                        }
 		                }
 		                else
 		                {
-		                        require_once(__DIR__."/vues/formEnregistrer.php");
+		                    require_once(__DIR__."/vues/formEnregistrer.php");
 		                }
 				    	break;
 				    		
@@ -259,7 +255,7 @@ class Controler
 						
 						//détruire la session
 						session_destroy();
-						require_once("vues/Login.php");
+						require_once("vues/login.php");
 						break;
 					// Par défaut afficher l'accueil (login ou cellier)
 					default:
@@ -351,7 +347,8 @@ class Controler
 				// Récupérer la liste des celliers par usager
 				$data = $bte->CellierParUsager($_SESSION["UserID"] );
 				// Récupérer la liste des bouteilles
-				$dat = $bte->getListeBouteille();
+				$dat = $bte->ListeBouteilleSAQ();
+				// Récupérer les types
 				$datas = $bte->RecupererTypes();
 
 				include("vues/entete.php");
@@ -461,7 +458,13 @@ class Controler
             $cellier = new Bouteille();
             // Récupérer les cellier par usager authentifié
             $dat['cellier'] = $cellier->CellierParUsager($idUsager);
-            $dat['nomCellier'] = $cellier->cellierParId($id=1);
+
+
+
+            // $dat['nomCellier'] = $cellier->cellierParId($id=1);
+            $dat['nomCellier'] = $cellier->RecupererCellierParUsager($idUsager);
+                      
+
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
@@ -474,6 +477,7 @@ class Controler
 		*/
 		private function bouteilleParCellier($id, $filter = array())
 		{
+
 			// $body = json_decode(file_get_contents('php://input'));
 			$bte = new Bouteille();
 			$data = $bte->RecupererBouteilleParCellier($id, $filter);
@@ -493,10 +497,10 @@ class Controler
 		*/
 		private function ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format)
 		{
-			// $body = json_decode(file_get_contents('php://input'));
+			
 			$bte = new Bouteille();
 			$data = $bte->ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format);
-			// $dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
+			
 			include("vues/entete.php");
 			include("vues/ajouter.php");
 			include("vues/pied.php");
@@ -523,7 +527,7 @@ class Controler
     			
     		}
 			$dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
-			// $dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
+		
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
@@ -545,6 +549,22 @@ class Controler
 		}
 
 		/**
+		* Fonction d'ajout d'une bouteille dans le cellier
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function ajouterBouteilleSAQ($id_cellier, $nom, $image, $code_saq, $pays, $description, $prix_saq, $url_saq, $url_img, $format, $type_id, $quantite, $notes, $garde_jusqua, $millesime)
+		{
+			
+			
+			$bte = new Bouteille();
+			
+			$resultat = $bte->ajouterBouteilleSAQ($id_cellier, $nom, $image, $code_saq, $pays, $description, $prix_saq, $url_saq, $url_img, $format, $type_id, $quantite, $notes, $garde_jusqua,  $notes, $millesime);
+			
+			$this->accueil();
+		}
+
+		/**saqParID
 		* Fonction d'ajout d'une bouteille dans le cellier
 		* 
 		* @return $resultat Sous format json
@@ -621,6 +641,67 @@ class Controler
             // Retourner un message d'erreur
             return $msgErreur;
         }
+
+        /**
+		* Fonction de validation du formulaire d'enregistrement
+		* 
+		* @param $nom nom de l'usager
+		* @param $prenom le prénom de l'usager
+		* @param $nomUsager le nom d'utilisateur
+		* @param $motDePasse le mot de passe
+		* @param $motDePasseConfirm le mot de passe de confirmation
+		* @return $msgErreur messages d'erreur
+		*/
+        public function valideFormEnregistrer($nom, $prenom, $nomUsager, $motDePasse, $motDePasseConfirm)
+        {
+            $msgErreur = array();
+           
+            // Trimer les variables
+            $nom = trim($nom);
+            $prenom = trim($prenom);
+            $nomUsager = trim($nomUsager);
+            $motDePasse = trim($motDePasse);
+            $motDePasseConfirm = trim($motDePasseConfirm);
+
+            // Validation du nom
+            if($nom == "" || !preg_match("/^[a-zA-Z]+$/i", $nom)){
+                $msgErreur['erreur_nom'] = "Le nom doit avoir que des lettres !";
+            }
+
+            // Validation du prénom
+            if($prenom == "" || !preg_match("/^[a-zA-Z]+$/i", $prenom)){
+                $msgErreur['erreur_prenom'] = "Le prénom doit avoir que des lettres !";
+            }
+
+            // Validation du nom d'usager 
+            if($nomUsager == "" || !preg_match("/^[A-Za-z][A-Za-z0-9_]{5,29}$/i", $nomUsager)){
+                $msgErreur['erreur_nomUsager'] = "Le nom d'usager doit avoir minimum 5 lettres et ne doit pas commencer par un chiffre !";
+            }
+                            
+            // Validation du mot de passe
+            if($motDePasse == '' || !preg_match("/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,20}$/i", $motDePasse) ){
+                $msgErreur['erreur_motDePasse']= "Le mot de passe doit avoir minimum une lettre, un chiffre et doit être d'une longueur minimum de 6 caractères !";
+            }
+
+            // Validation du mot de passe de confirmation
+            if($motDePasse != $motDePasseConfirm){
+                $msgErreur['erreur_motDePasseConfirm']= "Le mot de passe doit être identique !";
+            }
+
+            // Verifier si un usager portant le même nom d'utilisateur existe déjà
+            $usager = new Usager();
+			// Faire appel à la fonction de sauvegarde
+			$resultat = $usager->testUser($nomUsager);
+
+            if($resultat['c'] > 0)
+            {
+                $msgErreur['erreur_existe'] = "Ce nom d'utilisateur existe déjà !";
+            }
+
+            // Retourner un message d'erreur
+            return $msgErreur;
+        }
+
 
 		
 }
