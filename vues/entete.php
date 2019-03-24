@@ -17,9 +17,10 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 		
 		<base href="<?php echo BASEURL; ?>">
-		<!--<script src="./js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>-->
-		<!-- <script src="./js/plugins.js"></script> -->
+	
 		<script src="./js/main.js"></script>
+
+	
 	</head>
 	<body class="text-center">
 		<header class="container-fluid">
@@ -35,31 +36,78 @@
 
 				  	
 					<ul class="nav">
-						<li class="nav-item"><a class="nav-link active" href="?requete=CellierParUsager">Mon cellier</a></li>
-						<li class="nav-item"><a class="nav-link" href="?requete=ajouterNouvelleBouteilleCellier">Ajouter une bouteille au cellier</a></li>
-					
-
+						<li class="nav-item"><a class="nav-link text-white" href="?requete=CellierParUsager">Mes celliers</a></li>
 					</ul>
 					
 					
 					<div class="dropdown">
-						<!-- <div class="float-left"> -->
-							<a id="stats" href="#"><i class="fa fa-chart-bar" title="Statistiques"></i></a>
-						<!-- </div> -->
-						<button id="btnDown" class="dropbtn"><a  href="#"  >
+						
+						<a id="stats" href="#"></a>
+						
+						<button id="btnDown" class="dropbtn">
 
 							<img alt="" class="rounded-circle" src="images/user.png" width="30"> 
 							<?php if (isset($_SESSION ['nom']) && isset($_SESSION ['prenom'])):
 							 ?>
-							<span ><?php 	echo $_SESSION ['nom']. ' ' . $_SESSION ['prenom']	?> <i class="fa fa-caret-down"></i></span> 
+							<span class="dropbtn" ><?php 	echo $_SESSION ['nom']. ' ' . $_SESSION ['prenom']	?> <i class="fa fa-caret-down"></i></span> 
 							<?php endif ?>
-							</a>
+							
 						</button>
 						
 						<div id="myDropdown" class="dropdown-content text-left">
-							<a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i>Profil</a>
-						    <a class="dropdown-item" href='index.php?requete=ChangerMotDePass'><i class="fa fa-fw fa-cog"></i>Changer le mot de passe</a>
-						    <a class="dropdown-item" href='index.php?requete=Logout'><i class="fa fa-fw fa-power-off"></i>Se déconnecter</a>
+						
+						    <div class="container contact-form">
+						    	<div class="form-group col-md-12">
+								  
+		                            <div class="navbar-login ">
+		                                <div class="row">
+		                                    <div class="col-lg-4">
+		                                        <p class="text-center">
+		                                            <span class="glyphicon glyphicon-user icon-size"><img alt="" class="rounded-circle deuxieme" src="images/user.png" width="80"></span>
+		                                        </p>
+		                                    </div>
+		                                    <div class="col-lg-8">
+		                                    	<br>
+		                                        <p class="text-left">
+		                                     
+												<?php if (isset($_SESSION ['nom']) && isset($_SESSION ['prenom'])):
+												 ?>
+												<strong><?php 	echo $_SESSION ['nom']. ' ' . $_SESSION ['prenom']	?></i></strong> 
+												<?php endif ?>
+
+		                                        <!-- Mahesh</strong> -->
+		                                        </p>
+		                                        <p class="text-left small">
+		                                        	<?php if (isset($_SESSION['admin'])){
+		                                        		if ($_SESSION['admin'] == 'oui') {
+		                                        	
+		                                        			echo('Administrateur');
+		                                        		}
+		                                        		else{
+		                                        			echo('Usager');
+
+		                                        		}
+		                                        	}
+												 	?>
+												</p>
+		                                        <p class="text-left">
+		                                            <a href='index.php?requete=Logout' class="btn btn-primary btn-block btn-sm"><i class="fa fa-fw fa-power-off"></i> Déconnecter</a>
+		                                        </p>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                          	<hr>
+		                            <div class="navbar-login navbar-login-session">
+		                                <div class="row">
+		                                    <div class="col-lg-12">
+		                                   
+		                                        <a href='index.php?requete=ChangerMotDePass' class="btn btn-danger"><i class="fa fa-fw fa-cog"></i> Changer le mot de passe</a>
+		                                        
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+							</div>
 						</div>
 					</div>
 
