@@ -168,6 +168,19 @@ class Controler
 			        		require_once(__DIR__."/vues/login.php");
 			        	}
 		        		break; 
+
+		        	case 'removeUsager':
+                        $this->supprimerUsager();
+                        break; 
+
+		        	case 'prendreUsagers':
+                        $usager = new Usager();	
+		        		$data = $usager->prendreUsagers();
+		        		require_once(__DIR__."/vues/entete.php");
+		        		require_once(__DIR__."/vues/pageUsagers.php");
+		        		require_once(__DIR__."/vues/pied.php");
+						break;
+
 		        	case "ChangerMotDePass":
 		        	    
 		        		$erreur = array();
@@ -241,7 +254,11 @@ class Controler
 		                    require_once(__DIR__."/vues/formEnregistrer.php");
 		                }
 				    	break;
-				    		
+
+				    case "vote":
+				    	$this->vote();
+				    	break;	
+
 		        	case "Logout":
 						//delete la session en lui assignant un tableau vide
 						$_SESSION = array();
@@ -356,6 +373,35 @@ class Controler
 				include("vues/pied.php");
 			}
 		}
+		/**
+		* Fonction voter, on peux mettre des etoiles apres boire la bouteille
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function vote()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			$vote = (int)$body->vote;
+			if($vote < 1 || $vote > 5) return;
+			$resultat = $bte->vote($body->id, $vote);
+			echo json_encode($resultat);
+		}
+		/**
+		* Fonction suprimerUsager, admin peux suprimer usager avec ses cellier
+		* 
+		* @return $resultat Sous format json
+		*/
+
+        private function supprimerUsager()
+		{
+			if(strtolower($_SESSION['admin']) != 'oui') die ('access denied');
+			$body = json_decode(file_get_contents('php://input'));
+			$usager = new Usager(); 
+			$resultat = $usager->supprimerUsager($body->id);			
+			// Fair appel à la fonction de récupération de la quantité
+			echo json_encode($resultat);
+		}
 		
 		/**
 		* Fonction de modification de la quantité dans le cellier
@@ -458,12 +504,9 @@ class Controler
             $cellier = new Bouteille();
             // Récupérer les cellier par usager authentifié
             $dat['cellier'] = $cellier->CellierParUsager($idUsager);
-
-
-
-            // $dat['nomCellier'] = $cellier->cellierParId($id=1);
-            $dat['nomCellier'] = $cellier->RecupererCellierParUsager($idUsager);
-                      
+            $dat['nomCellier'] = $cellier->cellierParId($id=1);
+            // $dat['nomCellier'] = $cellier->RecupererCellierParUsager($idUsager);
+            $pays = $cellier->GetPays();          
 
 			include("vues/entete.php");
 			include("vues/cellier.php");
@@ -701,8 +744,6 @@ class Controler
             // Retourner un message d'erreur
             return $msgErreur;
         }
-
-
 		
 }
 ?>
