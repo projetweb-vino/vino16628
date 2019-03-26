@@ -254,6 +254,19 @@ class Bouteille extends Modele {
         
 		return $res;
 	}
+	/**
+	 * Cette méthode permet de ajouter des vote vers la bouteille 
+	 * 
+	 * @param int $id id de la bouteille
+	 * @param int $vote etoile qu'on a donne pour la bouteille
+	 * @return retourne l'occurence.
+	 */
+	public function vote($id, $vote)
+	{
+		$requete = "UPDATE vino_bouteille SET vote = '". $vote. "' WHERE id = ". $id;
+		$res = $this->_db->query($requete);
+        return $res;
+	}
 
 	/**
 	 * Cette méthode ajoute une ou des bouteilles au cellier
@@ -533,6 +546,7 @@ class Bouteille extends Modele {
 		$requete = "SELECT 
 						vino_bouteille.id as id_bouteille_cellier,
 						vino_bouteille.nom,
+						vino_bouteille.vote,
 						vino_bouteille.image,
 						vino_bouteille.code_saq,
 						vino_bouteille.pays,

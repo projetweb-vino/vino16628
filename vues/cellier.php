@@ -105,24 +105,24 @@
                             </select>
                         </div> 
 
-                        <div class="form-group col-md-4">
+                        <!-- <div class="form-group col-md-4">
                             <label>Nom</label> 
                             <input name="filter[name]" class="form-control" type="text" value="<?php echo isset($filter['name']) ? $filter['name'] : ''; ?>">
-                        </div>
+                        </div> -->
 
-                        <div class="form-group col-md-2">
+                       <!--  <div class="form-group col-md-2">
                             <label>Qté</label> 
                             <input name="filter[qty-from]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-from']) ? $filter['qty-from'] : '0'; ?>">
                             
                             
-                        </div>
+                        </div> -->
 
                             
-                        <div class="form-group col-md-2">
+                        <!-- <div class="form-group col-md-2">
                             <label>Jusqu'à</label> 
                             -<input name="filter[qty-till]" class="form-control" type="number" min="0" value="<?php echo isset($filter['qty-till']) ? $filter['qty-till'] : '100'; ?>">
                             
-                        </div>
+                        </div> -->
                         <div class="form-group col-md-2">
                             <label>Type</label> 
                             <select name="filter[type]" class="form-control">
@@ -187,7 +187,7 @@
 
                 <?php
                     
-                                     
+                 if (!empty($data)) {                     
                     // Parcourir le tableau data
                     foreach ($data as $cle => $bouteille) {
                  
@@ -201,8 +201,16 @@
                                         <img src="https:<?php echo $bouteille['image'] ?>">
 
                                     </div>
+
+                                    <div data-vote="<?php echo $bouteille['vote']; ?>" class="reviewStars-input" id="reviewStars-input-<?php echo $bouteille['id_bouteille_cellier'] ?>" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>" style="display:<?php echo $bouteille['vote'] ? 'block' : 'none'; ?>">
+                                        <?php for($i = 4; $i >= 0; $i--) { ?>
+                                        <input <?php echo $bouteille['vote'] == $i + 1 ? 'checked' : '';  ?> id="star-<?php echo $i; ?>-<?php echo $bouteille['id_bouteille_cellier'] ?>" class="star-<?php echo $i; ?>" type="radio" name="reviewStars[<?php echo $bouteille['id_bouteille_cellier'] ?>]" value="<?php echo $i+1; ?>" />
+                                        <label title="gorgeous" for="star-<?php echo $i; ?>-<?php echo $bouteille['id_bouteille_cellier'] ?>"></label>
+                                        <?php } ?>
+                                    </div>
                                     <ul class="list-unstyled mt-3 mb-4">
                                         <li class="nom text-danger font-weight-bold"><?php echo $bouteille['nom'] ?></li>
+                                        
                                         <div class="description text-left card-body">
 
                                             
@@ -252,7 +260,11 @@
                     <?php
                     } //Fin du foreach
                 }
-               
+                }
+                // Sinon on affiche un message
+                else{
+                    echo "Votre Cellier est vide !";
+                }
                 ?>  
         </div>
     </div>

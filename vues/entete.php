@@ -37,6 +37,12 @@
 				  	
 					<ul class="nav">
 						<li class="nav-item"><a class="nav-link text-white" href="?requete=CellierParUsager">Mes celliers</a></li>
+						<?php 
+			            // L'Administrateur peut voir list usagers
+			            if ($_SESSION['admin'] =='oui') {?>
+			                <li class="nav-item"><a class="nav-link active" href="?requete=prendreUsagers">Tous les usagers</a></li>
+			            <?php 
+			            }?>
 					</ul>
 					
 					
