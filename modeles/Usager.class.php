@@ -83,6 +83,7 @@ class Usager extends Modele {
 					vino_bouteille.url_saq,
 					vino_bouteille.url_img,
 					vino_bouteille.format,
+					vino_bouteille.vote,
 					vino_bouteille.garde_jusqua,
 					vino_bouteille.millesime,
 					vino_bouteille.quantite,
@@ -95,7 +96,7 @@ class Usager extends Modele {
         			JOIN vino_usagers ON vino_usagers.id=vino_cellier.usager_id 
 
         			WHERE vino_cellier.usager_id = ".$idUsager;
- 		
+ 		//die($requete);
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -112,7 +113,7 @@ class Usager extends Modele {
 			throw new Exception("Erreur de requête sur la base de donnée", 1);
 			 
 		}
-
+       
 		return $rangees;
 	}
 	/**
@@ -123,21 +124,36 @@ class Usager extends Modele {
 	*/
 	public function testUser($usager)
 	{
-			       			
-		$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$usager."'";
-		$resultat = $this->_db->query($requete);
-        $rangee = $resultat->fetch_assoc();
-		return $rangee;
+			
+	//		$requete = "SELECT * from vino_cellier JOIN vino_bouteille ON vino_cellier.id_bouteille=vino_bouteille.id WHERE vino_cellier.id_usager = ".$_SESSION["UserID"];
+	       			
+			$requete = "SELECT COUNT(id) as c FROM vino_usagers WHERE username= '".$usager."'";
+			$resultat = $this->_db->query($requete);
+	        $rangee = $resultat->fetch_assoc();
+			return $rangee;
 
 	}
 	/**
-	* Fonction pour changer le mot de passe
+	* Fonction pour récupérer des usagers 
 	* 
 	* @param $usager nom de l'utilisateur
-	* @param $password le mot de passe
-	* @param $passwordNouveau le nouveau mot de passe
 	* @return $rangees résultat de la requête
 	*/
+	public function prendreUsagers()
+	{
+				       			
+			$requete = "SELECT vino_usagers.*, GROUP_CONCAT(vino_cellier.nom  SEPARATOR ', ') as cnom FROM vino_usagers 
+						left JOIN vino_cellier ON vino_usagers.id=vino_cellier.usager_id
+						WHERE vino_usagers.admin='non' GROUP BY vino_usagers.id";
+			$resultat = $this->_db->query($requete);
+			$rangees=array();
+			while($rangee = $resultat->fetch_assoc())
+			{
+	        	$rangees[] = $rangee;
+	   		}
+			return $rangees;
+
+	}
 	public function ChangerMotDePass($usager, $password, $passwordNouveau)
 	{
 		$requete = "SELECT * from vino_usagers WHERE username = '" . $usager . "' AND password = '".md5($password)."'";
@@ -156,6 +172,22 @@ class Usager extends Modele {
 		{
 			return false;
 		}
+	}
+	public function supprimerUsager($id)
+	{
+			$requete = "SELECT id FROM vino_cellier WHERE vino_cellier.usager_id = $id";
+			$res = $this->_db->query($requete);
+			while($r = $res->fetch_assoc()) {
+				$this->_db->query("DELETE from vino_bouteille WHERE cellier_id = ".$r['id']);
+			}
+
+			$requete = "DELETE from vino_cellier WHERE vino_cellier.usager_id = $id";
+			if($this->_db->query($requete)) {
+				$requete = "DELETE from vino_usagers WHERE vino_usagers.id = $id";
+				return $this->_db->query($requete);
+			}
+			return false;
+
 	}
 
 
