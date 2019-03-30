@@ -104,7 +104,7 @@ class Usager extends Modele {
 		}
 				
         $resultat = $stmt->execute();
-        var_dump($resultat);
+        
         if($resultat) {
         	$resultat = $this->_db->query("SELECT * FROM vino_usagers WHERE vino_usagers.id = $id");
         	$resultat = $resultat->fetch_assoc();
