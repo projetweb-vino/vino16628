@@ -1,53 +1,123 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+    <!-- https://fonts.google.com/specimen/Open+Sans -->
+    <link rel="stylesheet" href="css/fontawesome.min.css" />
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- Notre style -->
+    <link rel="stylesheet" href="css/style.css">
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-
-    <!-- Bootstrap core CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+   	
   </head>
-  <body class="text-center">
-  	<div class="container">
-  		<div class="col-lg-4 mx-auto">
-  			<?php
-				if(!isset($_SESSION["UserID"]))
-				{
-			?>
-		
-		    <form method="POST" class="form-signin" action="<?php echo URL_ROOT; ?>index.php">
-			  <img class="mb-6" src="images/logo.png" alt="" width="72">
-			  <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-			  <label for="inputEmail" class="sr-only">Nom usager</label>
-			  <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Nom usager" required autofocus>
-			  <label for="inputPassword" class="sr-only">Mot de passe</label>
-			  <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
-			  <button class="btn btn-lg btn-outline-danger btn-block" type="submit" value="Login">Se connecter</button>
-			  <input type="hidden" name="requete" value="Login">
-			  <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
-			</form>
-			<a href='<?php echo URL_ROOT; ?>index.php?requete=Enregistrer'>Enregistrer</a>
-		<?php
-				}
-				else
-				{
-					echo "<p>Vous êtes déjà connecté sous le nom " . $_SESSION["UserName"] . "</p>";
-					echo "<a href='".URL_ROOT."index.php?requete=Logout'>Se déconnecter</a>";
-				}
-			if(isset($messageErreur))
-				echo "<p>$messageErreur</p>";
-		?>	
-		</div>
-	</div>
-</body>
-</html>
 
+  <body>
+  	<?php
+		if(!isset($_SESSION["UserID"]))
+		{
+	?>
+    <div class="container tm-mt-big tm-mb-big">
+	
+      <div class="row">
+        <div class="col-12 mx-auto tm-login-col">
+          <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="row">
+              <div class="col-12 text-center">
+                <h2 class="tm-block-title mb-4 text-dark">Bienvenu</h2>
+                <?php 
+                // On affiche un message d'erreur si le nom d'utilisateur et mot de passe sont invalides
+                if(isset($messageErreur)){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                  <?php 
+                    echo $messageErreur;
+                  ?>
+                </div>
+                <?php 
+                }
+                ?>
+              </div>
+              
+              
+            </div>
+            <div class="row mt-2">
+              <div class="col-12">
+                <form  method="post" class="tm-login-form" action="<?php echo URL_ROOT; ?>index.php">
+                  <div class="form-group">
+                    <label for="username">Nom d'usager</label>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"><i class="far fa-user"></i></span>
+                   
+                    <input
+                      name="username"
+                      type="text"
+                      class="form-control validate"
+                      id="username"
+                      value=""
+                      required
+                    />
+                     </div>
+                  </div>
+                  <div class="form-group mt-3">
+                    <label for="password">Mot de passe</label>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                    <input
+                      name="password"
+                      type="password"
+                      class="form-control validate"
+                      id="password"
+                      value=""
+                      required
+                    />
+                    </div>
+                  </div>
+                  <div class="form-group mt-4">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-block text-uppercase"
+                    >
+                      Se connecter
+                    </button>
+                  </div>
+                  <input type="hidden" name="requete" value="Login">
+                  
+                </form>
+                
+                <a class="mt-5 btn btn-primary btn-block text-uppercase" href='<?php echo URL_ROOT; ?>index.php?requete=Enregistrer'>S'enregistrer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <footer class="tm-footer bg-dark row tm-mt-small">
+      <div class="col-12 font-weight-light">
+        <p class="text-center text-white mb-0 px-4 small">
+          Copyright &copy; <b>2019</b> Tous droits réservés. 
+          
+          Réalisé par : <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Foudil Benzaid, Okba Benaissa, Galina Prima, Jordan Williams</a>
+        </p>
+      </div>
+    </footer>
+    <?php
+		}
+		else
+		{
+			echo "<p>Vous êtes déjà connecté sous le nom " . $_SESSION["UserName"] . "</p>";
+			echo "<a href='".URL_ROOT."index.php?requete=Logout'>Se déconnecter</a>";
+		}
+		
+	?>	
+  </body>
+</html>
