@@ -14,303 +14,22 @@ console.log(BaseURL);
 
 // Fonction d'affichage du toggle
 function toggle() {
-  document.getElementById("myDropdown").classList.toggle("show");
+  document.getElementById("navbarSupportedContent").classList.toggle("show");
 }
+
 window.addEventListener('load', function() {
-    // console.log("load");
-    document.querySelectorAll(".btnBoire").forEach(function(element){
-        // console.log(element);
-        element.addEventListener("click", function(evt){
-          console.log('boire');
-            let id = evt.target.parentElement.dataset.id;
-            console.log(id);
-            let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-            document.getElementById('reviewStars-input-' + id).style.display = 'block';
-            fetch(requete)
-            .then(response => {
-                if (response.status === 200) {
-                  return response.json();
-                } else {
-                  throw new Error('Erreur');
-                }
-              })
-              .then(response => {
-                console.debug(response);
-                // Stocker dans une variable le paragraphe 'Quantité' identifié par l'id bouteille
-                let quantite = document.getElementById('item'+id);
 
-                // Afficher la quantité retournée par la requête en l'injectant dans le paragraphe qu'elle appartienne
-                quantite.innerHTML = 'Quantité : '+ response.quantite;
-              }).catch(error => {
-                console.error(error);
-              });
-        })
-
-    });
-
-     document.querySelectorAll('.reviewStars-input input').forEach(function(element) {
-         element.addEventListener("click", function(evt) {
-            var id = this.parentNode.getAttribute('data-id');
-            //alert(id + ' / ' + this.value); 
-            let requete = new Request("index.php?requete=vote", {method: 'POST', body: '{"id": '+id+', "vote": '+this.value+'}'});
-            fetch(requete);
-          
-         });
-    });
-
-    document.querySelectorAll(".btnAjouter").forEach(function(element){
-        console.log(element);
-        element.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-
-            fetch(requete)
-            .then(response => {
-                if (response.status === 200) {
-                  return response.json();
-                } else {
-                  throw new Error('Erreur');
-                }
-              })
-              .then(response => {
-                console.debug(response);
-                // Stocker dans une variable le paragraphe 'Quantité' identifié par l'id bouteille
-                let quantite = document.getElementById('item'+id);
-                // Afficher la quantité retournée par la requête en l'injectant dans le paragraphe qu'elle appartient
-                quantite.innerHTML = 'Quantité : '+ response.quantite;
-              }).catch(error => {
-                console.error(error);
-              });
-        })
-
-    });
-    
-    
-    
-    /*=================================================================*
-    =               Retrait d'une bouteille dans un cellier            =
-    ===================================================================*/
-    
-    document.querySelectorAll(".btnRetirer").forEach(function(element){
-        console.log(element);
-        element.addEventListener("click", function(evt){
-          // Boite de dialogue 
-          if ( confirm( "Voulez-vous retirer cette bouteille du cellier ?" ) ) {
-            // Si l'usager clique sur OK           
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=retirerBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-
-            fetch(requete)
-            .then(response => {
-                if (response.status === 200) {
-                  return response;
-                } else {
-                  throw new Error('Erreur');
-                }
-              })
-              .then(response => {
-                console.debug(response);
-                console.log('retrait');
-                window.location = "index.php?requete=CellierParUsager";
-                
-              }).catch(error => {
-                console.error(error);
-              });
-          } 
-
-        })
-
-    });
-
-
-
-    
-
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.maxHeight){
-          content.style.maxHeight = null;
-        } else {
-          content.style.maxHeight = content.scrollHeight + "px";
-        } 
-      });
-    }
-
-    
-    // Méthode d'affichage du toogle
-    window.onclick = function(event) {
-      if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
-
-    document.getElementById("btnDown").addEventListener("click", function(evt){
-      toggle();
-      
-    });
-
-    /*=============================================
-    =       Fonction Ajax détails bouteille       =
-    =============================================*/
-    var select = document.getElementById('bouteille');
-    if (select != null) {
-      // statement
-    
-      select.addEventListener("change", function(evt){
-            // let id = evt.target.parentElement.dataset.id;
-            let id = document.getElementById('bouteille').value;
-
-            console.log(id);
-            let requete = new Request("index.php?requete=bouteilleParId", {method: 'POST', body: '{"id": '+id+'}'});
-
-            fetch(requete)
-            .then(response => {
-                if (response.status === 200) {
-                  return response.json();
-                } else {
-                  throw new Error('Erreur');
-                }
-              })
-              .then(response => {
-                console.debug(response);
-                document.getElementById('nom').value = response.nom;
-                document.getElementById('millesime').value = response.millesime;
-                document.getElementById('format').value = response.format;
-                document.getElementById('garde_jusqua').value = response.garde_jusqua;
-                document.getElementById('prix').value = response.prix_saq;
-                document.getElementById('pays').value = response.pays;
-                document.getElementById('description').value = response.description;
-                document.getElementById('nom').value = response.nom;
-
-              }).catch(error => {
-                console.error(error);
-              });
-        })
-      }
-
-    
-    
-    
-    /*=====  Fin de la fonction Ajax  ======*/
-    
-
+  /*=================================================================*
+  =                 Enlever la quantité dans le cellier              =
+  ==================================================================*/
    
-    // document.querySelectorAll(".lienCellier").forEach(function(element){
-        
-    //     element.addEventListener("click", function(evt){
-    //       console.log(element);
-    //        var coll = document.getElementsByClassName("collapsible");
-    // var i;
-
-    // for (i = 0; i < coll.length; i++) {
-    //   coll[i].addEventListener("click", function() {
-    //     this.classList.toggle("active");
-    //     var content = this.nextElementSibling;
-    //     if (content.style.maxHeight){
-    //       content.style.maxHeight = null;
-    //     } else {
-    //       content.style.maxHeight = content.scrollHeight + "px";
-    //     } 
-    //   });
-    // }
-
-    
-    // // Méthode d'affichage du toogle
-    // window.onclick = function(event) {
-    //   if (!event.target.matches('.dropbtn')) {
-    //     var dropdowns = document.getElementsByClassName("dropdown-content");
-    //     var i;
-    //     for (i = 0; i < dropdowns.length; i++) {
-    //       var openDropdown = dropdowns[i];
-    //       if (openDropdown.classList.contains('show')) {
-    //         openDropdown.classList.remove('show');
-    //       }
-    //     }
-    //   }
-    // }
-           
-    //     })
-
-    // });
-
-    
-    // document.querySelectorAll(".lienCellier").forEach(function(element){
-        
-    //     element.addEventListener("click", function(evt){
-    //         console.log(element);
-    //         let id = evt.target.parentElement.dataset.id;
-    //         console.log(id);
-    //         let requete = new Request("index.php?requete=cellierParid", {method: 'POST', body: '{"id": '+id+'}'});
-
-    //         fetch(requete)
-    //         .then(response => {
-    //             if (response.status === 200) {
-    //               return response.json();
-    //             } else {
-    //               throw new Error('Erreur');
-    //             }
-    //           })
-    //           .then(response => {
-    //             console.debug(response);
-    //             let cellier = document.getElementById('monCellier');
-    //             // Afficher la quantité retournée par la requête en l'injectant dans le paragraphe qu'elle appartient
-    //             cellier.innerHTML = response.nom;
-    //           }).catch(error => {
-    //             console.error(error);
-    //           });
-    //     })
-
-    // });
-     // Selection de tous les boutons modifier
-    document.querySelectorAll(".ajoutebouteille").forEach(function(element){
-
-      element.addEventListener("click", function(evt){
-        let id = evt.target.parentElement.dataset.id;
-        //recuperer les information de la bouteille selectionné
-        var nom = document.getElementById("nom"+id).innerHTML;
-        var image = document.getElementById("image"+id).innerHTML;
-        var code_saq = document.getElementById("code_saq"+id).innerHTML;
-        var pays = document.getElementById("pays"+id).innerHTML;
-        var description = document.getElementById("description"+id).innerHTML;
-        var prix_saq = document.getElementById("prix_saq"+id).innerHTML;
-        var url_saq = document.getElementById("url_saq"+id).innerHTML;
-        var url_img = document.getElementById("url_img"+id).innerHTML;
-        var format = document.getElementById("format"+id).innerHTML;
-        //remplire le formulaire d'ajoute une bouteille 
-        document.getElementById("nom").value = nom;
-        document.getElementById("image").value = image;
-        document.getElementById("code_saq").value = code_saq;
-        document.getElementById("pays").value = pays;
-        document.getElementById("description").value = description;
-        document.getElementById("prix").value = prix_saq;
-        document.getElementById("url_saq").value = url_saq;
-        document.getElementById("url_img").value = url_img;
-        document.getElementById("format").value = format;
-
-      })
-
-    });
-
-    // Importer des bouteilles dans la table vino_saq
-    document.getElementById("btnImport").addEventListener("click", function(evt){
-        console.log('importation');
-        let nombre = document.getElementById("nombre").value;
-        let debut = document.getElementById("debut").value;
-
-        let requete = new Request("index.php?requete=importer", {method: 'POST', body: 'nombre='+nombre+'&debut='+debut
-      });
+  document.querySelectorAll(".btnBoire").forEach(function(element){
+      
+    element.addEventListener("click", function(evt){
+      console.log('boire');
+      let id = evt.target.parentElement.dataset.id;
+      console.log(id);
+      let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
 
       fetch(requete)
       .then(response => {
@@ -322,24 +41,244 @@ window.addEventListener('load', function() {
         })
         .then(response => {
           console.debug(response);
-          alert("L'importation est effectuée avec succès !")
+          // Stocker dans une variable le paragraphe 'Quantité' identifié par l'id bouteille
+          let quantite = document.getElementById('item'+id);
+
+          // Afficher la quantité retournée par la requête en l'injectant dans le paragraphe qu'elle appartienne
+          quantite.innerHTML = 'Quantité : '+ response.quantite;
         }).catch(error => {
           console.error(error);
-        });
-    });
+      });
+    })
 
+  });
 
-     // Selection de tous les boutons modifier
-    document.querySelectorAll(".btnModifier").forEach(function(element){
+  /*=================================================================*
+  =                 Ajouter la quantité dans le cellier              =
+  ==================================================================*/
 
+  document.querySelectorAll(".btnAjouter").forEach(function(element){
+      console.log(element);
       element.addEventListener("click", function(evt){
-        let id = evt.target.parentElement.dataset.id;
-        // Faire une redirection vers la page de modification 
-        window.location = "index.php?requete=modifierBouteilleCellier&id="+id;
+          let id = evt.target.parentElement.dataset.id;
+          let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+
+          fetch(requete)
+          .then(response => {
+              if (response.status === 200) {
+                return response.json();
+              } else {
+                throw new Error('Erreur');
+              }
+            })
+            .then(response => {
+              console.debug(response);
+              // Stocker dans une variable le paragraphe 'Quantité' identifié par l'id bouteille
+              let quantite = document.getElementById('item'+id);
+              // Afficher la quantité retournée par la requête en l'injectant dans le paragraphe qu'elle appartient
+              quantite.innerHTML = 'Quantité : '+ response.quantite;
+            }).catch(error => {
+              console.error(error);
+            });
       })
 
-    });
+  });
     
+    
+    
+  /*=================================================================*
+  =               Retrait d'une bouteille dans un cellier            =
+  ===================================================================*/
+  
+  document.querySelectorAll(".btnRetirer").forEach(function(element){
+      console.log(element);
+      element.addEventListener("click", function(evt){
+        // Boite de dialogue 
+        if ( confirm( "Voulez-vous retirer cette bouteille du cellier ?" ) ) {
+          // Si l'usager clique sur OK           
+          let id = evt.target.parentElement.dataset.id;
+          let requete = new Request("index.php?requete=retirerBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+
+          fetch(requete)
+          .then(response => {
+              if (response.status === 200) {
+                return response;
+              } else {
+                throw new Error('Erreur');
+              }
+            })
+            .then(response => {
+              console.debug(response);
+              console.log('retrait');
+              window.location = "index.php?requete=CellierParUsager";
+              
+            }).catch(error => {
+              console.error(error);
+            });
+        } 
+
+      })
+
+  });
+
+  /*=================================================================*
+  =               Suppression d'un usager par l'Admin                =
+  ===================================================================*/
+  document.querySelectorAll(".btnSupprimerUsager").forEach(function(element){
+      
+    element.addEventListener("click", function(evt){
+      // Boite de dialogue 
+      if ( confirm( "Voulez-vous supprimer cet usager ?" ) ) {
+      // Si l'usager clique sur OK
+      
+        let id = evt.target.dataset.id;
+        console.log('suppression '+id);
+        
+        let requete = new Request("index.php?requete=supprimerUsagers", {method: 'POST', body: '{"id": '+id+'}'});
+               
+        fetch(requete).then(response => {
+          if (response.status === 200) {
+            const tr = this.parentNode.parentNode;
+            tr.parentNode.removeChild(tr);
+          } else {
+            throw new Error('Erreur');
+          }
+        });
+      }
+    })
+
+  });
+
+  /*=================================================================*
+  =                        Notation par étoiles                      =
+  ==================================================================*/
+  document.querySelectorAll('.reviewStars-input input').forEach(function(element) {
+    element.addEventListener("click", function(evt) {
+      var id = this.parentNode.getAttribute('data-id');
+      let requete = new Request("index.php?requete=vote", {method: 'POST', body: '{"id": '+id+', "vote": '+this.value+'}'});
+      fetch(requete);
+    
+    });
+  });
+
+
+
+
+    
+  /*=================================================================*
+  =                        Gérer l'accordéon                         =
+  ==================================================================*/
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      } 
+    });
+  }
+
+    
+  // Méthode d'affichage du toogle
+  window.onclick = function(event) {
+    if (!event.target.matches('.navbar-toggler')) {
+      var dropdowns = document.getElementsByClassName("collapse");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  // Afficher le toggle
+  document.getElementById("toggle").addEventListener("click", function(evt){
+    document.getElementById("navbarSupportedContent").classList.add("show");
+         
+  });
+
+ 
+  // Selection de tous les boutons modifier
+  document.querySelectorAll(".ajoutebouteille").forEach(function(element){
+
+    element.addEventListener("click", function(evt){
+      let id = evt.target.parentElement.dataset.id;
+      //recuperer les information de la bouteille selectionné
+      var nom = document.getElementById("nom"+id).innerHTML;
+      var image = document.getElementById("image"+id).innerHTML;
+      var code_saq = document.getElementById("code_saq"+id).innerHTML;
+      var pays = document.getElementById("pays"+id).innerHTML;
+      var description = document.getElementById("description"+id).innerHTML;
+      var prix_saq = document.getElementById("prix_saq"+id).innerHTML;
+      var url_saq = document.getElementById("url_saq"+id).innerHTML;
+      var url_img = document.getElementById("url_img"+id).innerHTML;
+      var format = document.getElementById("format"+id).innerHTML;
+      //remplire le formulaire d'ajoute une bouteille 
+      document.getElementById("nom").value = nom;
+      document.getElementById("image").value = image;
+      document.getElementById("code_saq").value = code_saq;
+      document.getElementById("pays").value = pays;
+      document.getElementById("description").value = description;
+      document.getElementById("prix").value = prix_saq;
+      document.getElementById("url_saq").value = url_saq;
+      document.getElementById("url_img").value = url_img;
+      document.getElementById("format").value = format;
+
+    })
+
+  });
+
+    
+   // Selection de tous les boutons modifier
+  document.querySelectorAll(".btnModifier").forEach(function(element){
+
+    element.addEventListener("click", function(evt){
+
+      let id = evt.target.parentElement.dataset.id;
+      console.log('id bouteille '+id);
+      // Faire une redirection vers la page de modification 
+      window.location = "index.php?requete=modifierBouteilleCellier&id="+id;
+    })
+
+  });
+
+  /*=================================================================*
+  = Gérer l'affichage des boutons de partage sur les réseaux sociaux =
+  ==================================================================*/
+  document.querySelectorAll(".fa-share-alt-square").forEach(function(element){
+
+    element.addEventListener("click", function(evt){
+
+      let id = evt.target.parentElement.dataset.share;
+      console.log('share'+id);
+      var x =document.getElementById('b-share'+id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    })
+
+     element.addEventListener("mouseover", function(evt){
+
+      let id = evt.target.parentElement.dataset.share;
+      console.log('share'+id);
+      var x =document.getElementById('b-share'+id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    })
+
+  });
 
 });
        
@@ -435,14 +374,10 @@ window.addEventListener('load', function() {
         });
       } 
 
-   /* ajouter une bouteille de la liste bouteilles */ 
-   // var ajoutebouteille = document.querySelectorAll(".ajoutebouteille");
-   // ajoutebouteille.addEventListener('click', function(){
 
-   //  var nom = document.querySelectorAll(".ajoutebouteille");
+  }
 
-   // },false)
+    
 
 
-}
 
