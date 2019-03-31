@@ -153,4 +153,40 @@
     </nav>
     <!-- Fin du menu -->
 
+    <!-- Le modal-->
+    <div id="myModal" class="modal">
+
+      <!-- Le contenu du modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="tm-block-title text-white"><i class="fas fa-file-import"></i> Importation depuis la SAQ</h2>
+          <span class="close">&times;</span>
+          
+        </div>
+        <div class="modal-body">
+            <form method='GET'>
+                <div class="row tm-content-row">
+                    <div class="form-group col-md-6">
+                        <label for="type">Nombre de Bouteilles</label>
+                        <input type="number" name="nombre" id="debut" class="form-control validate"   required>
+                        
+                    </div>
+                                                      
+                </div>
+                <div class="form-row">
+                    <div class="option form-group col-md-4">
+                        <button type='submit' class="btn btn-primary btn-block text-uppercase"><i class="fas fa-file-import"></i> Importer</button>
+                        <input type="hidden" name="requete" value='importer'>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          
+        </div>
+      </div>
+
+    </div>
+    
+
 			
