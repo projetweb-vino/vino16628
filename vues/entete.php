@@ -124,7 +124,7 @@
                         </span>
                         
 
-                        <a class="nav-link d-block" href="#">
+                        <a class="nav-link d-block" href="#" title='Importer depuis la SAQ'>
                        
                         <img id="myBtn" src="images/Logo-SAQ.png" style="width: 30px;">
                         </a>
