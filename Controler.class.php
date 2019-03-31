@@ -90,13 +90,13 @@ class Controler
 					case 'importer':
 					   
 						
-						$debut = $_REQUEST['debut'];
+						// $debut = $_REQUEST['debut'];
 						$nombreProduit = $_REQUEST['nombre'];
 				        require_once(__DIR__."/dataconf.php");
 				        require_once(__DIR__."/config.php");
 				
 						$saq = new SAQ();
-						$nombre = $saq->getProduits($nombreProduit,$debut);
+						$nombre = $saq->getProduits($nombreProduit,0);
 				        $this->accueil();
 						break;
 
