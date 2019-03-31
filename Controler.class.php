@@ -939,6 +939,22 @@ class Controler
 			$resultat = $bte->vote($body->id, $vote);
 			echo json_encode($resultat);
 		}
+
+		/**
+		* Fonction de récupération du nombre de bouteille de la SAQ importées
+		* 
+		*/
+		private function nombreSAQ()
+		{
+			
+            $cellier = new Bouteille();
+           
+            // Récupérer le nombre de bouteilles SAQ importées
+            $nombreSAQ = $cellier->nombreBouteillesSAQimporte();
+
+            return $nombreSAQ;
+
+    	}
 }
 ?>
 
