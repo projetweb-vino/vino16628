@@ -203,7 +203,7 @@ class Controler
 					        	    $_SESSION["UserName"] = $_REQUEST["username"];
 	                                $_SESSION["admin"] = 'non';
 
-			                       
+			                       	$nombreSAQ = $this->nombreSAQ();
 			                        require_once(__DIR__."/vues/entete.php");
 		        				    require_once(__DIR__."/vues/monCompte.php");
 		        				    require_once(__DIR__."/vues/pied.php");
@@ -211,7 +211,7 @@ class Controler
 	                            }
 	                        }
 	                        else{
-	                          
+	                          	$nombreSAQ = $this->nombreSAQ();
 	                            require_once(__DIR__."/vues/entete.php");
 		        				require_once(__DIR__."/vues/monCompte.php");
 		        				require_once(__DIR__."/vues/pied.php");
@@ -219,6 +219,7 @@ class Controler
 		                }
 		                else
 		                {
+		                	$nombreSAQ = $this->nombreSAQ();
 		                    $this->monCompte();
 		                }
 				    	break;
@@ -304,6 +305,7 @@ class Controler
 						if (isset($_SESSION["UserID"]) &&  $_SESSION["admin"] =='oui') {
 	                        $usager = new Usager();	
 			        		$data = $usager->listeUsagers();
+			        		$nombreSAQ = $this->nombreSAQ();
 			        		require_once(__DIR__."/vues/entete.php");
 			        		require_once(__DIR__."/vues/pageUsagers.php");
 			        		require_once(__DIR__."/vues/pied.php");
@@ -468,6 +470,7 @@ class Controler
 				// Récupérer la bouteille par id
 				$data = $bte->RecupererCellierParId($id);
 				$data['types'] = $bte->RecupererTypes();
+				$nombreSAQ = $this->nombreSAQ();
 	            include("vues/entete.php");
 	            // Afficher la vue modifier
 				include("vues/modifier.php");
@@ -533,6 +536,8 @@ class Controler
             $cellier = new Bouteille();
             // Récupérer les cellier par usager authentifié
             $dat= $cellier->CellierParUsager($idUsager);
+            // Récupérer le nombre de bouteilles SAQ importées
+            $nombreSAQ = $this->nombreSAQ();
 
 			include("vues/entete.php");
 			include("vues/mesCelliers.php");
@@ -552,7 +557,7 @@ class Controler
 				$bte = new Usager();
 				$data = $bte->obtenirUsager($_SESSION['UserID']);
 	                  
-
+				$nombreSAQ = $this->nombreSAQ();
 				include("vues/entete.php");
 				include("vues/monCompte.php");
 				include("vues/pied.php");
@@ -577,6 +582,7 @@ class Controler
 				$dat['nomCellier'] = $bte->cellierParId($id);
 							
 				$pays = $bte->GetPays();
+				$nombreSAQ = $this->nombreSAQ();
 				include("vues/entete.php");
 				include("vues/cellier.php");
 				include("vues/pied.php");
@@ -597,7 +603,7 @@ class Controler
 			
 			$bte = new Bouteille();
 			$data = $bte->ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format);
-			
+			$nombreSAQ = $this->nombreSAQ();
 			include("vues/entete.php");
 			include("vues/ajouter.php");
 			include("vues/pied.php");
@@ -623,7 +629,7 @@ class Controler
     			
     		}
 			$dat = $bte->CellierParUsager($_SESSION["UserID"] );
-		
+			$nombreSAQ = $this->nombreSAQ();
 			include("vues/entete.php");
 			include("vues/mesCelliers.php");
 			include("vues/pied.php");
@@ -902,7 +908,7 @@ class Controler
             // La valeur des bouteilles par usager
             $valeurBouteilleParUsager = $cellier->valeurBouteilleParUsager();
 
-
+            $nombreSAQ = $this->nombreSAQ();
             include("vues/entete.php");
             // Afficher la vue statistiques
 			include("vues/statistiques.php");
