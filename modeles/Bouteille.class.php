@@ -684,6 +684,21 @@ class Bouteille extends Modele {
 	}
 
 	/**
+	* Fonction pour récupérer nombre de bouteilles de SAQ importées
+	* @return $rangees résultat de la requête
+	*/
+	public function nombreBouteillesSAQimporte()
+	{
+			       			
+		$requete = "SELECT COUNT(id) as nombreSAQ FROM vino_saq";
+		$resultat = $this->_db->query($requete);
+        $rangee = $resultat->fetch_assoc();
+		return $rangee;
+
+	}
+
+
+	/**
 	* Fonction pour récupérer nombre de celliers par usager
 	* @return $rangees résultat de la requête
 	*/
