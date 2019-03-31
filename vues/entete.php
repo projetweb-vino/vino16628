@@ -109,6 +109,31 @@
                     ?>
                 </ul>
 
+                 <!-- Menu d'importation -->
+                <ul class="navbar-nav">
+                    <!-- On affiche le menu importation SAQ uniquement pour l'administrateur -->
+                    <?php 
+                    if ($_SESSION['admin']=='oui') {
+                    ?>
+                    <li class="nav-item">
+                        
+                        <span id="nombreSAQ" class="badge">
+                        <?php
+                            echo $nombreSAQ['nombreSAQ']; 
+                        ?>
+                        </span>
+                        
+
+                        <a class="nav-link d-block" href="#">
+                       
+                        <img id="myBtn" src="images/Logo-SAQ.png" style="width: 30px;">
+                        </a>
+                    </li>
+                    <?php 
+                    }
+                    ?>
+                </ul>
+
                 <!-- Menu déconnexion -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
