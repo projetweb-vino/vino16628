@@ -83,6 +83,35 @@ window.addEventListener('load', function() {
       })
 
   });
+
+  /*=================================================================*
+  =                  Affichage du modal importation                  =
+  ==================================================================*/
+  var modal = document.getElementById('myModal');
+
+  // Obtenir le bouton
+  var btn = document.getElementById("myBtn");
+
+  // Obtenir le bouton de fermeture
+  var span = document.getElementsByClassName("close")[0];
+
+  // Quand on clique sur le bouton importation, on affiche le modal
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // Qaund on clique sur le bouton de fermeture, on ferme le modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // Quand on clique en dehors du modal, on ferme le modal
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
     
     
     
