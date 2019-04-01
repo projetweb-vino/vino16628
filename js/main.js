@@ -293,19 +293,14 @@ window.addEventListener('load', function() {
       } else {
         x.style.display = "none";
       }
-    })
 
-     element.addEventListener("mouseover", function(evt){
-
-      let id = evt.target.parentElement.dataset.share;
-      console.log('share'+id);
-      var x =document.getElementById('b-share'+id);
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
+      x.addEventListener("mouseleave", function(evt){
+      
         x.style.display = "none";
-      }
+      
+      })
     })
+
 
   });
 
