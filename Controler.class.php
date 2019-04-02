@@ -639,6 +639,26 @@ class Controler
 			$bte = new Bouteille();
 			$data = $bte->ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img);
 		}
+		/**
+		* Fonction affiche les deux formulaires avec les messages d'erreurs
+		* 
+		*/
+		private function afficheformulaireMessages($erreurs)
+		{	
+			$message = array();
+			$message = $erreurs;
+			$bte = new Bouteille();
+			// Récupérer la liste des celliers par usager
+			$data = $bte->CellierParUsager($_SESSION["UserID"] );
+			// Récupérer la liste des bouteilles
+			// $dat = $bte->ListeBouteilleSAQ();
+			$dat = $bte->getListeBouteille();
+			// Récupérer les types
+			$datas = $bte->RecupererTypes();
+			require_once(__DIR__."/vues/entete.php");
+		    require_once(__DIR__."/vues/ajouter.php");
+		    require_once(__DIR__."/vues/pied.php");
+    	}
 
 		/**
 		* Fonction d'ajout d'un cellier
