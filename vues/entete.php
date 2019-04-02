@@ -38,9 +38,9 @@
                 <img src="images/vino_logo.png" style="width: 80px;">
             </a>
             <!-- Le bouton toggle -->
-            <button id="toggle" class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            <button id="toggle" class="navbar-toggler ml-auto mr-0 fas fa-bars text-white border-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars tm-nav-icon"></i>
+                <!-- <i class="fas fa-bars tm-nav-icon"></i> -->
             </button>
             <!-- Le menu -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
