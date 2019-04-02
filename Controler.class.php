@@ -629,19 +629,15 @@ class Controler
 		}
 
 		/**
-		* Fonction d'ajout d'une bouteille non listée
+		* Fonction d'ajout d'une bouteille non listées et listées
 		* 
 		* @return $resultat Sous format json
 		*/
-		private function ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format)
+		private function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
 		{
-			
+				
 			$bte = new Bouteille();
-			$data = $bte->ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format);
-			$nombreSAQ = $this->nombreSAQ();
-			include("vues/entete.php");
-			include("vues/ajouter.php");
-			include("vues/pied.php");
+			$data = $bte->ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img);
 		}
 
 		/**
