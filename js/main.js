@@ -234,7 +234,9 @@ window.addEventListener('load', function() {
   });
 
  
-  // Selection de tous les boutons modifier
+  /*=============================================
+  =      formulaire des bouteilles listées      =
+  =============================================*/
   document.querySelectorAll(".ajoutebouteille").forEach(function(element){
 
     element.addEventListener("click", function(evt){
