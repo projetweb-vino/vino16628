@@ -54,11 +54,33 @@ class Controler
 						break;
 
 					case 'ajouterBouteilleNonListe':
-						// Tester si les paramêtres sont envoyés
-						if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
+						// Déclarer un tableau
+							$message = array();
+							
+							// Validation de formulaire
+                            $message = $this->valideFormAjout($_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
 
-							$this->ajouterBouteilleNonListe($_POST['id'], $_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'], $_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format']);
-						}
+							if(count($message) ==0){
+							//tester si la bouteille existe déja
+								$bouteilleNonlistee = $this->verifierbouteille($_REQUEST['nom'],$_REQUEST['cellier_id']);
+								
+								if($bouteilleNonlistee == ''){
+																
+								$this->ajouterBouteilleNonListe($_REQUEST['cellier_id'], $_REQUEST['nom'], $_REQUEST['type_id'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['notes'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['image'], $_REQUEST['description'], $_REQUEST['code_saq'], $_REQUEST['url_saq'], $_REQUEST['url_img']);
+								$this->accueil();
+								}else{
+									if (isset($_REQUEST['id_formulaire'])) {
+
+										$message['vide1'] = "la bouteille existe déjà";
+									}else{
+										$message['vide2'] = "la bouteille existe déjà";
+									}
+									
+			        				$this->afficheformulaireMessages($message);
+								}
+							}else{
+								$this->afficheformulaireMessages($message);
+							}
 						break;
 
 
