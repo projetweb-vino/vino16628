@@ -614,6 +614,19 @@ class Controler
 				require_once(__DIR__."/vues/login.php");
 			}
 		}
+		/**
+		* Fonction Pour vérifier si la bouteille si existe ou non dans le cellier
+		* 
+		* @return $data
+		*/
+		private function verifierbouteille($nom, $cellier_id)
+		{
+				
+			$bte = new Bouteille();
+			$data = $bte->verifierbouteilleNonlistee($nom, $cellier_id);
+			return $data ;
+			
+		}
 
 		/**
 		* Fonction d'ajout d'une bouteille non listée
