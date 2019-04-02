@@ -263,6 +263,75 @@ window.addEventListener('load', function() {
     })
 
   });
+  /*=============================================
+  =       image de formulaire d'ajout      =
+  =============================================*/
+  var input = document.getElementById("image_uploads");
+  var preview = document.querySelector('.preview');
+  
+  input.addEventListener('change', updateImageDisplay);
+  function updateImageDisplay() {
+    var imagesuprimer = document.getElementById("image1");
+    var curFiles = input.files;
+    if(curFiles.length === 0) {
+      var para = document.createElement('p');
+      para.textContent = 'Aucun fichier sélectionné pour le moment';
+    } else {
+
+      for(var i = 0; i < curFiles.length; i++) {
+
+        var para = document.createElement('p');
+        para.setAttribute("id", "paga1")
+        var divimage = document.getElementById("imagecharger");
+
+        if (imagesuprimer) {
+          imagesuprimer.remove();
+        }else {
+          document.getElementById("paga1").remove();
+        }
+        if(validFileType(curFiles[i])) {
+          para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
+
+          var image = document.createElement('img');
+          image.src = window.URL.createObjectURL(curFiles[i]);
+          
+          image.style.width = '300px';
+          image.style.height = '380px';
+          image.setAttribute("id", "image1") 
+          divimage.appendChild(image);
+          
+        } else {
+          para.textContent = 'Nom de fichier ' + curFiles[i].name + ': le type pas valide .';
+          divimage.appendChild(para);
+
+        }
+      }
+    }
+  }
+  var fileTypes = [
+    'image/jpeg',
+    'image/pjpeg',
+    'image/png'
+  ]
+
+  function validFileType(file) {
+    for(var i = 0; i < fileTypes.length; i++) {
+      if(file.type === fileTypes[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }function returnFileSize(number) {
+    if(number < 1024) {
+      return number + ' octets';
+    } else if(number >= 1024 && number < 1048576) {
+      return (number/1024).toFixed(1) + ' Ko';
+    } else if(number >= 1048576) {
+      return (number/1048576).toFixed(1) + ' Mo';
+    }
+  }
+
 
     
    // Selection de tous les boutons modifier
