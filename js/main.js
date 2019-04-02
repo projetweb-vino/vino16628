@@ -261,6 +261,11 @@ window.addEventListener('load', function() {
       document.getElementById("url_saq").value = url_saq;
       document.getElementById("url_img").value = url_img;
       document.getElementById("format").value = format;
+      //afficher l'image dans le formulaire listées
+      var image = document.getElementById("imagelistee").childNodes[1];
+      image.setAttribute("src", url_img);
+      //fermer le popup
+      document.location.href = "#"; 
 
     })
 
