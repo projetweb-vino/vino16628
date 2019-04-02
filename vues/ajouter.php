@@ -394,7 +394,6 @@
     </div>
 </div>
 <!-- Popup de liste des bouteilles -->
-    
 <div id="popup1" class="overlay">
     <div class="popup">
         <h5>La liste des bouteilles</h5>
