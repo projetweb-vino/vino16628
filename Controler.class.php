@@ -443,6 +443,7 @@ class Controler
 				$dat = $bte->getListeBouteille();
 				// Récupérer les types
 				$datas = $bte->RecupererTypes();
+				$nombreSAQ = $this->nombreSAQ();
 
 				include("vues/entete.php");
 				include("vues/ajouter.php");
@@ -656,6 +657,7 @@ class Controler
 			$dat = $bte->getListeBouteille();
 			// Récupérer les types
 			$datas = $bte->RecupererTypes();
+			$nombreSAQ = $this->nombreSAQ();
 			require_once(__DIR__."/vues/entete.php");
 		    require_once(__DIR__."/vues/ajouter.php");
 		    require_once(__DIR__."/vues/pied.php");
