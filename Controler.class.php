@@ -439,8 +439,8 @@ class Controler
 				// Récupérer la liste des celliers par usager
 				$data = $bte->CellierParUsager($_SESSION["UserID"] );
 				// Récupérer la liste des bouteilles
-				//$dat = $bte->ListeBouteilleSAQ();
-				$dat = $bte->getListeBouteille();
+				$dat = $bte->ListeBouteilleSAQ();
+				// $dat = $bte->getListeBouteille();
 				// Récupérer les types
 				$datas = $bte->RecupererTypes();
 				$nombreSAQ = $this->nombreSAQ();
