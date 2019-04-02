@@ -270,6 +270,39 @@ class Bouteille extends Modele {
         
 		return $res;
 	}
+	/**
+	 * Cette méthode ajoute une  bouteilles au cellier listées ou non listées
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
+	{
+		$vote ='';	
+		$requete = "INSERT INTO vino_bouteille(cellier_id, nom, type_id, millesime, quantite, pays, prix_saq, notes, format, date_achat, garde_jusqua, image, description, code_saq, url_saq, vote, url_img)VALUES (".
+		"'".$cellier_id."',".
+		"'".$nom."',".
+		"'".$type_id."',".
+		"'".$millesime."',".
+		"'".$quantite."',".
+		"'".$pays."',".
+		"'".$prix_saq."',".
+		"'".$notes."',".
+		"'".$format."',".
+		"'".$date_achat."',".
+		"'".$garde_jusqua."',".
+		"'".$image_uploads."',".
+		"'".$description."',".
+		"'".$code_saq."',".
+		"'".$url_saq."',".
+		"'".$vote."',".
+		"'".$url_img."')";
+
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
 
 	/**
 	 * Cette méthode ajoute une ou des bouteilles au cellier
