@@ -765,6 +765,141 @@ class Controler
             // Retourner un message d'erreur
             return $msgErreur;
         }
+        /**
+		* Fonction de validation d'ajout d'une bouteille listées et non listées
+		* 
+		* @param $nom nom de la bouteille cellier
+		* @param $date_achat la date d'achat de la bouteille cellier
+		* @param $quantite la quantité de la bouteille cellier
+		* @param $garde_jusqua à garder jusqu'à quand la bouteille cellier
+		* @param $prix prix de la bouteille cellier
+		* @param $pays pays de la bouteille cellier
+		* @param $millesime année de la bouteille cellier
+		* @param $format le format de la bouteille cellier
+		* @param $description la description de la bouteille cellier
+		* @param $notes les notes de la bouteille cellier
+		* @param $image l'image de la bouteille cellier
+		* @return $msgErreur messages d'erreur
+		*/
+        public function valideFormAjout($nom, $millesime , $quantite, $pays, $prix, $format, $date_achat, $garde_jusqua, $id_formulaire, $description, $notes, $image)
+        {
+            $msgErreur = array();
+           
+            // Trimer les variables
+            $nom = trim($nom);
+            $pays = trim($pays);
+            $format = trim($format);
+            $prix = trim($prix);
+            $quantite = trim($quantite);
+            $millesime = trim($millesime);
+            if ($id_formulaire == '1') {
+            
+	            // Validation du nom de la bouteille
+	            if($nom == ""){
+	                $msgErreur['erreur_nom'] = "Le nom ne peut être vide !";
+	            }
+	            // Validation du description de la bouteille
+	            if($description == ""){
+	                $msgErreur['erreur_description'] = "La description ne peut être vide !";
+	            }
+	            // Validation du image de la bouteille
+	            if($image == ""){
+	                $msgErreur['erreur_image'] = "L'image ne peut être vide !";
+	            }
+	            // Validation du notes de la bouteille
+	             if($notes == ""){
+	                $msgErreur['erreur_notes'] = "les notes ne peut être vide !";
+	            }
+	            
+	            // Validation date d'achat
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $date_achat)) {
+				    $msgErreur['erreur_date_achat'] = "La date est invalide !";
+				}
+	            
+	            // Validation quantité
+	            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
+	                $msgErreur['erreur_quantite']= "La quantité est invalide !";
+	            }
+	            // Validation garder jusqu'à
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $garde_jusqua)) {
+				    $msgErreur['erreur_garde_jusqua'] = "La date est invalide !";
+				}
+
+				// Validation du millesime (année)
+	            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
+				    $msgErreur['erreur_millesime'] = "La date est invalide !";
+				}
+
+				// Validation du prix
+				if(!is_float($prix) && !is_numeric($prix)){
+	                $msgErreur['erreur_prix'] = "Le prix n'est pas valide !";
+				}
+
+				// Validation du pays
+				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+	                $msgErreur['erreur_pays'] = "Le pays est invalide !<br>";
+	            }
+	            // Validation du format
+				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
+				    $msgErreur['erreur_format'] = "La format est invalide !";
+				}
+			}
+			   if ($id_formulaire == '2') {
+            
+	            // Validation du nom de la bouteille
+	            if($nom == ""){
+	                $msgErreur['erreur_nom2'] = "Le nom ne peut être vide !";
+	            }
+	            // Validation du description de la bouteille
+	            if($description == ""){
+	                $msgErreur['erreur_description2'] = "La description ne peut être vide !";
+	            }
+	            // Validation du image de la bouteille
+	            if($image == ""){
+	                $msgErreur['erreur_image2'] = "L'image ne peut être vide !";
+	            }
+	            // Validation du notes de la bouteille
+	             if($notes == ""){
+	                $msgErreur['erreur_notes2'] = "les notes ne peut être vide !";
+	            }
+	            
+	            // Validation date d'achat
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $date_achat)) {
+				    $msgErreur['erreur_date_achat2'] = "La date d'achat est invalide !";
+				}
+	            
+	            // Validation quantité
+	            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
+	                $msgErreur['erreur_quantite2']= "La quantité est invalide !";
+	            }
+	            // Validation garder jusqu'à
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $garde_jusqua)) {
+				    $msgErreur['erreur_garde_jusqua2'] = "La date est invalide !";
+				}
+
+				// Validation du millesime (année)
+	            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
+				    $msgErreur['erreur_millesime2'] = "La date est invalide !";
+				}
+
+				// Validation du prix
+				if(!is_float($prix) && !is_numeric($prix)){
+	                $msgErreur['erreur_prix2'] = "Le prix n'est pas valide !";
+				}
+
+				// Validation du pays
+				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+	                $msgErreur['erreur_pays2'] = "Le pays est invalide !<br>";
+	            }
+	            // Validation du format
+				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
+				    $msgErreur['erreur_format2'] = "La format est invalide !";
+				}
+			}
+            
+            // Retourner un message d'erreur
+            return $msgErreur;
+        }
 
         /**
 		* Fonction de validation du formulaire d'enregistrement
