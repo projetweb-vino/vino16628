@@ -275,8 +275,10 @@ window.addEventListener('load', function() {
   =============================================*/
   var input = document.getElementById("image_uploads");
   var preview = document.querySelector('.preview');
+  if (input =='') {
+    input.addEventListener('change', updateImageDisplay);
+  }
   
-  input.addEventListener('change', updateImageDisplay);
   function updateImageDisplay() {
     var imagesuprimer = document.getElementById("image1");
     var curFiles = input.files;
