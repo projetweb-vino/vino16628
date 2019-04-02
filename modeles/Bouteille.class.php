@@ -279,7 +279,7 @@ class Bouteille extends Modele {
 	 */
 	public function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
 	{
-		$vote ='';	
+		$vote =0;	
 		$requete = "INSERT INTO vino_bouteille(cellier_id, nom, type_id, millesime, quantite, pays, prix_saq, notes, format, date_achat, garde_jusqua, image, description, code_saq, url_saq, vote, url_img)VALUES (".
 		"'".$cellier_id."',".
 		"'".$nom."',".
