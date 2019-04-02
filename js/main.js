@@ -30,7 +30,7 @@ window.addEventListener('load', function() {
       let id = evt.target.parentElement.dataset.id;
       console.log(id);
       let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-
+      document.getElementById('reviewStars-input-' + id).style.display = 'block';
       fetch(requete)
       .then(response => {
           if (response.status === 200) {
