@@ -254,19 +254,6 @@ class Bouteille extends Modele {
         
 		return $res;
 	}
-	/**
-	 * Cette méthode permet de ajouter des vote vers la bouteille 
-	 * 
-	 * @param int $id id de la bouteille
-	 * @param int $vote etoile qu'on a donne pour la bouteille
-	 * @return retourne l'occurence.
-	 */
-	public function vote($id, $vote)
-	{
-		$requete = "UPDATE vino_bouteille SET vote = '". $vote. "' WHERE id = ". $id;
-		$res = $this->_db->query($requete);
-        return $res;
-	}
 
 	/**
 	 * Cette méthode ajoute une ou des bouteilles au cellier
@@ -565,7 +552,8 @@ class Bouteille extends Modele {
 						from vino_bouteille
 						INNER JOIN vino_cellier ON vino_bouteille.cellier_id=vino_cellier.id 
 						INNER JOIN vino_type ON vino_bouteille.type_id = vino_type.id
-						WHERE vino_cellier.id = ". $id . ' AND ' . $where." ORDER BY ".$Tri." ASC";
+						JOIN vino_usagers ON vino_usagers.id = vino_cellier.usager_id
+						WHERE vino_usagers.id = " .$_SESSION["UserID"]." AND vino_cellier.id = ". $id . ' AND ' . $where." ORDER BY ".$Tri." ASC";
 
         $res = $this->_db->query($requete);
         $data = array();
@@ -678,6 +666,218 @@ class Bouteille extends Modele {
 		return $rangee;
 		
 	}
+
+	// LES STATISTIQUES---------------------------------*
+
+	/**
+	* Fonction pour récupérer nombre de celliers
+	* @return $rangees résultat de la requête
+	*/
+	public function nombreCelliers()
+	{
+			       			
+		$requete = "SELECT COUNT(id) as nombreCelliers FROM vino_cellier";
+		$resultat = $this->_db->query($requete);
+        $rangee = $resultat->fetch_assoc();
+		return $rangee;
+
+	}
+
+	/**
+	* Fonction pour récupérer nombre de bouteilles de SAQ importées
+	* @return $rangees résultat de la requête
+	*/
+	public function nombreBouteillesSAQimporte()
+	{
+			       			
+		$requete = "SELECT COUNT(id) as nombreSAQ FROM vino_saq";
+		$resultat = $this->_db->query($requete);
+        $rangee = $resultat->fetch_assoc();
+		return $rangee;
+
+	}
+
+
+	/**
+	* Fonction pour récupérer nombre de celliers par usager
+	* @return $rangees résultat de la requête
+	*/
+	public function nombreCelliersParUsager()
+	{
+			       			
+		$requete = "SELECT vino_usagers.nom, vino_usagers.prenom,  COUNT(vino_cellier.usager_id) as nombreCelliersParUsager 
+					FROM vino_usagers
+					LEFT JOIN vino_cellier ON vino_usagers.id = vino_cellier.usager_id
+					Group by vino_usagers.id
+					Order by nombreCelliersParUsager DESC";
+
+		$resultat = $this->_db->query($requete);
+  
+		if($resultat->num_rows)
+		{
+			while($rangee = $resultat->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+
+	}
+
+	/**
+	* Fonction pour récupérer nombre de bouteilles par cellier et calculer la valeur des bouteilles par cellier
+	* @return $rangees résultat de la requête
+	*/
+	public function nombreBouteillesParCellier()
+	{
+			       			
+		$requete = "SELECT vino_cellier.nom, COUNT(vino_bouteille.id) as nombreBouteillesParCellier, 
+					sum(vino_bouteille.prix_saq) as valeurBouteillesParCellier
+					FROM vino_cellier
+					LEFT JOIN vino_bouteille ON vino_bouteille.cellier_id = vino_cellier.id
+					Group by vino_cellier.id
+					Order by nombreBouteillesParCellier DESC";
+
+		$resultat = $this->_db->query($requete);
+  
+		if($resultat->num_rows)
+		{
+			while($rangee = $resultat->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		 
+		return $rangees;
+
+	}
+
+	/**
+	* Fonction pour récupérer nombre de bouteilles par usager et calculer la valeur des bouteilles par usager
+	* @return $rangees résultat de la requête
+	*/
+	public function nombreBouteillesParUsager()
+	{
+			       			
+		$requete = "SELECT vino_usagers.nom, vino_usagers.prenom,  
+
+					COUNT(vino_bouteille.cellier_id) as nombreBouteillesParUsager,
+					SUM(vino_bouteille.prix_saq) as valeurBouteillesParUsager
+					FROM vino_usagers
+					LEFT JOIN vino_cellier ON vino_usagers.id = vino_cellier.usager_id
+					LEFT JOIN vino_bouteille ON vino_cellier.id = vino_bouteille.cellier_id 
+					Group by vino_usagers.id
+					Order by nombreBouteillesParUsager DESC";
+
+		$resultat = $this->_db->query($requete);
+  
+		if($resultat->num_rows)
+		{
+			while($rangee = $resultat->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+
+	}
+
+	/**
+	* Fonction pour calculer la valeur de toutes les bouteilles
+	* @return $rangees résultat de la requête
+	*/
+	public function valeurBouteilleTous()
+	{
+			       			
+		$requete = "SELECT sum(vino_bouteille.prix_saq) as valeurBouteilleTous
+					FROM vino_bouteille";
+		$resultat = $this->_db->query($requete);
+        $rangee = $resultat->fetch_assoc();
+		return $rangee;
+
+	}
+
+
+	/**
+	* Fonction pour calculer la valeur des bouteilles par usager
+	* @return $rangees résultat de la requête
+	*/
+	public function valeurBouteilleParUsager()
+	{
+			       			
+		$requete = "SELECT vino_usagers.nom, vino_usagers.prenom, sum(vino_bouteille.prix_saq) as valeurBouteilleParUsager
+			FROM vino_usagers
+			LEFT JOIN vino_cellier ON vino_usagers.id = vino_cellier.usager_id
+			LEFT JOIN vino_bouteille ON vino_cellier.id = vino_bouteille.cellier_id 
+			Group by vino_usagers.id
+			Order by valeurBouteilleParUsager DESC
+			";
+
+		$resultat = $this->_db->query($requete);
+  
+		if($resultat->num_rows)
+		{
+			while($rangee = $resultat->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+
+	}
+
+	/**
+	 * Fonction RecupererBouteillesParUsager Pour récupérer la liste des bouteilles par usager
+	 * 
+	 * @param $id id de la bouteille cellier
+	 * @return $row détails d'un cellier
+	 */
+	public function RecupererBouteillesParUsager($idUsager, $idCellier)
+	{
+		$rangees = array();		
+		$requete = "SELECT 
+					count(vino_bouteille.id) as nombreBouteilles
+					
+
+					from vino_cellier
+					JOIN vino_usagers ON vino_usagers.id = vino_cellier.usager_id
+					JOIN vino_bouteille ON vino_cellier.id = vino_bouteille.cellier_id
+
+					
+					WHERE vino_usagers.id = ". $id;
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($rangee = $res->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+	
+	}
+
+	/**
+	 * Cette méthode permet de ajouter des vote vers la bouteille 
+	 * 
+	 * @param int $id id de la bouteille
+	 * @param int $vote etoile qu'on a donne pour la bouteille
+	 * @return retourne l'occurence.
+	 */
+	public function vote($id, $vote)
+	{
+		$requete = "UPDATE vino_bouteille SET vote = '". $vote. "' WHERE id = ". $id;
+		$res = $this->_db->query($requete);
+        return $res;
+	}
+
+
+
+
 
 
 }

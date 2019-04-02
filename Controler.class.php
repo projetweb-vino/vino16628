@@ -54,7 +54,6 @@ class Controler
 						break;
 
 					case 'ajouterBouteilleNonListe':
-						// $this->ajouterBouteilleNonListe();
 						// Tester si les paramêtres sont envoyés
 						if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
 
@@ -76,6 +75,10 @@ class Controler
 						$this->cellierParid();
 						break;
 
+					case 'monCompte':
+						$this->monCompte();
+						break;
+
 					case 'bouteilleParCellier':
 						$this->bouteilleParCellier($_REQUEST['id'], empty($_REQUEST['filter']) ? array() : $_REQUEST['filter']);
 						break;
@@ -87,13 +90,13 @@ class Controler
 					case 'importer':
 					   
 						
-						$debut = $_REQUEST['debut'];
+						// $debut = $_REQUEST['debut'];
 						$nombreProduit = $_REQUEST['nombre'];
 				        require_once(__DIR__."/dataconf.php");
 				        require_once(__DIR__."/config.php");
 				
 						$saq = new SAQ();
-						$nombre = $saq->getProduits($nombreProduit,$debut);
+						$nombre = $saq->getProduits($nombreProduit,0);
 				        $this->accueil();
 						break;
 
@@ -144,22 +147,22 @@ class Controler
 			        	{
 			        		$usager = new Usager();
 	           				$data = $usager->Authentification($_REQUEST["username"],$_REQUEST["password"]);
-			        		
+			        		// Si l'authentification est effectuée avec succès
 			        		if($data)
 			        		{
+			        			// Initialiser les variables session
 			        			$_SESSION["UserID"] = $data["id"];
 			        			$_SESSION["nom"] = $data["nom"];
 			        			$_SESSION["prenom"] = $data["prenom"];
 			        			$_SESSION["admin"] = $data["admin"];
-
-
 	                            $_SESSION["UserName"] = $_REQUEST["username"];
 
 			        			$this->cellierUsager($_SESSION["UserID"]);
 			        		}
+			        		// Sinon on affiche un message d'erreur dans la page login
 			        		else
 			        		{
-			        			$messageErreur = "Mauvaise combinaison username/password";
+			        			$messageErreur = "Nom d'utilisateur ou mot de passe invalide";
 			        			require_once(__DIR__."/vues/login.php");
 			        		}
 			        	}
@@ -169,47 +172,57 @@ class Controler
 			        	}
 		        		break; 
 
-		        	case 'removeUsager':
-                        $this->supprimerUsager();
-                        break; 
-
-		        	case 'prendreUsagers':
-                        $usager = new Usager();	
-		        		$data = $usager->prendreUsagers();
-		        		require_once(__DIR__."/vues/entete.php");
-		        		require_once(__DIR__."/vues/pageUsagers.php");
-		        		require_once(__DIR__."/vues/pied.php");
-						break;
-
 		        	case "ChangerMotDePass":
 		        	    
-		        		$erreur = array();
-		        		if(isset($_REQUEST["password"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) )
+		        	    if(isset($_REQUEST["password"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && isset($_REQUEST["username"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) )
 			        	{
-			        		if(trim($_REQUEST["passwordNouveau"])  ==  trim($_REQUEST["passwordRepeat"]))
-	                        {
-	                            $erreur['erreur_identique'] = "Le mot de passe n'est pas identique !";
-	                        }	
-			        		if(strlen(trim($_REQUEST["passwordNouveau"])) < 6)
-	                        {
-	                            $erreur['erreur_longueur'] = "Le mot de passe doit avoir au moins 6 caractères.";
-	                        }
-	                        
-			        		$usager = new Usager();	
-			        		if(!$usager->ChangerMotDePass($_SESSION["UserName"],$_REQUEST["password"], $_REQUEST["passwordNouveau"])) {
-			        			 $erreur['erreur_invalide']= 'Mot de passe invalide';
-			        		}
-			        		else{
-			        			header('Location: '.URL_ROOT.'index.php?requete=cellier');
-			        			exit;
-			        		}
 
-			        	}	else {
-			        		 $erreur['erreur_data']= 'Invalid data';
-			        	}
-			        	
-			        	require_once(__DIR__."/vues/changerMotDePass.php");
-		        	    break;
+			        		// Déclarer un tableau
+							$message = array();
+
+							// Valider les paramètres
+                            $message = $this->valideFormModifierUsager($_REQUEST['nom'], $_REQUEST['prenom'], $_REQUEST['username'], $_REQUEST['passwordNouveau'], $_REQUEST['passwordRepeat'], $_REQUEST['password']);
+                                       
+                            // Si le message est vide
+                            // Ce qui signifie qu'il y'a pas eu d'erreurs
+                            // On procède à la modification des informations
+                            if(count($message) ==0)
+	                        {
+	                        		                        	
+	                        	$usager = new Usager();
+
+	                        	$data = $usager->modifierUsager($_SESSION["UserID"], $_REQUEST['username'], $_REQUEST['passwordNouveau'], $_REQUEST['nom'], $_REQUEST['prenom']);
+	                        	
+	                  
+	                            if($data) 
+	                            { 
+	                            	// Initialiser les variables session
+                                    $_SESSION["UserID"] = $data["id"];
+                                    $_SESSION["nom"] = $_REQUEST["nom"];
+			        			    $_SESSION["prenom"] = $_REQUEST["prenom"];
+					        	    $_SESSION["UserName"] = $_REQUEST["username"];
+	                                $_SESSION["admin"] = 'non';
+
+			                       	$nombreSAQ = $this->nombreSAQ();
+			                        require_once(__DIR__."/vues/entete.php");
+		        				    require_once(__DIR__."/vues/monCompte.php");
+		        				    require_once(__DIR__."/vues/pied.php");
+			                       
+	                            }
+	                        }
+	                        else{
+	                          	$nombreSAQ = $this->nombreSAQ();
+	                            require_once(__DIR__."/vues/entete.php");
+		        				require_once(__DIR__."/vues/monCompte.php");
+		        				require_once(__DIR__."/vues/pied.php");
+	                        }
+		                }
+		                else
+		                {
+		                	$nombreSAQ = $this->nombreSAQ();
+		                    $this->monCompte();
+		                }
+				    	break;
 		        		
 		        	case "Enregistrer":
 			        	
@@ -234,7 +247,7 @@ class Controler
 	                  
 	                            if($enregistrer) 
 	                            { 
-
+	                               // Initialiser les variables session
                                    $_SESSION["UserID"] = $enregistrer["id"];
                                    $_SESSION["nom"] = $_REQUEST["nom"];
 			        			   $_SESSION["prenom"] = $_REQUEST["prenom"];
@@ -245,7 +258,7 @@ class Controler
 	                            }
 	                        }
 	                        else{
-	                            // $messageErreur = implode(' ', $message);
+	                            
 	                            require_once(__DIR__."/vues/formEnregistrer.php");
 	                        }
 		                }
@@ -254,11 +267,7 @@ class Controler
 		                    require_once(__DIR__."/vues/formEnregistrer.php");
 		                }
 				    	break;
-
-				    case "vote":
-				    	$this->vote();
-				    	break;	
-
+				    		
 		        	case "Logout":
 						//delete la session en lui assignant un tableau vide
 						$_SESSION = array();
@@ -278,6 +287,50 @@ class Controler
 					default:
 						$this->accueil();
 						break;
+
+					// Statistiques
+					case 'statistiques':
+						// Si l'usager est authentifié et Administrateur
+						if (isset($_SESSION["UserID"]) &&  $_SESSION["admin"] =='oui') {
+							$this->statistiques();
+						}
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
+						break;
+
+					case 'listeUsagers':
+						// Si l'usager est authentifié et Admnistrateur
+						if (isset($_SESSION["UserID"]) &&  $_SESSION["admin"] =='oui') {
+	                        $usager = new Usager();	
+			        		$data = $usager->listeUsagers();
+			        		$nombreSAQ = $this->nombreSAQ();
+			        		require_once(__DIR__."/vues/entete.php");
+			        		require_once(__DIR__."/vues/pageUsagers.php");
+			        		require_once(__DIR__."/vues/pied.php");
+							break;
+						}
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
+
+					// Gestion des usagers
+					case 'supprimerUsagers':
+						// Si l'usager est authentifié et Admnistrateur
+						if (isset($_SESSION["UserID"]) &&  $_SESSION["admin"] =='oui') {
+                        	$this->supprimerUsagers();
+                        }
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
+                        break; 
+
+                    case "vote":
+				    	$this->vote();
+				    	break;	
 				}
 			}
 			// Sinon on affiche l'accueil (soit login ou les celliers par usager)
@@ -373,35 +426,6 @@ class Controler
 				include("vues/pied.php");
 			}
 		}
-		/**
-		* Fonction voter, on peux mettre des etoiles apres boire la bouteille
-		* 
-		* @return $resultat Sous format json
-		*/
-		private function vote()
-		{
-			$body = json_decode(file_get_contents('php://input'));
-			$bte = new Bouteille();
-			$vote = (int)$body->vote;
-			if($vote < 1 || $vote > 5) return;
-			$resultat = $bte->vote($body->id, $vote);
-			echo json_encode($resultat);
-		}
-		/**
-		* Fonction suprimerUsager, admin peux suprimer usager avec ses cellier
-		* 
-		* @return $resultat Sous format json
-		*/
-
-        private function supprimerUsager()
-		{
-			if(strtolower($_SESSION['admin']) != 'oui') die ('access denied');
-			$body = json_decode(file_get_contents('php://input'));
-			$usager = new Usager(); 
-			$resultat = $usager->supprimerUsager($body->id);			
-			// Fair appel à la fonction de récupération de la quantité
-			echo json_encode($resultat);
-		}
 		
 		/**
 		* Fonction de modification de la quantité dans le cellier
@@ -440,16 +464,25 @@ class Controler
 		* @param $id id de la bouteille cellier
 		*/
 		private function modifierBouteilleCellier($id, $message='')
-		{	
-			$bte = new Bouteille();
-			// Récupérer la bouteille par id
-			$data = $bte->RecupererCellierParId($id);
-			$data['types'] = $bte->RecupererTypes();
-            include("vues/entete.php");
-            // Afficher la vue modifier
-			include("vues/modifier.php");
-			include("vues/pied.php");       
+		{
+			if (isset($_SESSION["UserID"])) {	
+				$bte = new Bouteille();
+				// Récupérer la bouteille par id
+				$data = $bte->RecupererCellierParId($id);
+				$data['types'] = $bte->RecupererTypes();
+				$nombreSAQ = $this->nombreSAQ();
+	            include("vues/entete.php");
+	            // Afficher la vue modifier
+				include("vues/modifier.php");
+				include("vues/pied.php"); 
+			} 
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
+			}
+
 		}
+
 
 		/**
 		* Fonction sauvgarder modifier cellier
@@ -500,17 +533,39 @@ class Controler
 		{
 			$bte = new Usager();
 			// Récupérer la liste des bouteilles par cellier que possède un usager authentifié
-            $data = $bte->getCellier($idUsager);
             $cellier = new Bouteille();
             // Récupérer les cellier par usager authentifié
-            $dat['cellier'] = $cellier->CellierParUsager($idUsager);
-            $dat['nomCellier'] = $cellier->cellierParId($id=1);
-            // $dat['nomCellier'] = $cellier->RecupererCellierParUsager($idUsager);
-            $pays = $cellier->GetPays();          
+            $dat= $cellier->CellierParUsager($idUsager);
+            // Récupérer le nombre de bouteilles SAQ importées
+            $nombreSAQ = $this->nombreSAQ();
 
 			include("vues/entete.php");
-			include("vues/cellier.php");
+			include("vues/mesCelliers.php");
 			include("vues/pied.php");
+    	}
+
+    	/**
+		* Fonction de gestion d'un compte
+		* 
+		* @param $idUsager id de l'usager
+		*/
+		private function monCompte()
+		{
+			if (isset($_SESSION["UserID"])) {
+			
+		
+				$bte = new Usager();
+				$data = $bte->obtenirUsager($_SESSION['UserID']);
+	                  
+				$nombreSAQ = $this->nombreSAQ();
+				include("vues/entete.php");
+				include("vues/monCompte.php");
+				include("vues/pied.php");
+			}
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
+			}
     	}
 
     	/**
@@ -520,17 +575,22 @@ class Controler
 		*/
 		private function bouteilleParCellier($id, $filter = array())
 		{
-
-			// $body = json_decode(file_get_contents('php://input'));
-			$bte = new Bouteille();
-			$data = $bte->RecupererBouteilleParCellier($id, $filter);
-			$dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
-			$dat['nomCellier'] = $bte->cellierParId($id);
-			
-			$pays = $bte->GetPays();
-			include("vues/entete.php");
-			include("vues/cellier.php");
-			include("vues/pied.php");
+			// Si l'usager est authentifié
+			if (isset($_SESSION["UserID"])) {
+				$bte = new Bouteille();
+				$data = $bte->RecupererBouteilleParCellier($id, $filter);
+				$dat['nomCellier'] = $bte->cellierParId($id);
+							
+				$pays = $bte->GetPays();
+				$nombreSAQ = $this->nombreSAQ();
+				include("vues/entete.php");
+				include("vues/cellier.php");
+				include("vues/pied.php");
+			}
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
+			}
 		}
 
 		/**
@@ -543,7 +603,7 @@ class Controler
 			
 			$bte = new Bouteille();
 			$data = $bte->ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format);
-			
+			$nombreSAQ = $this->nombreSAQ();
 			include("vues/entete.php");
 			include("vues/ajouter.php");
 			include("vues/pied.php");
@@ -556,7 +616,6 @@ class Controler
 		*/
 		private function ajouterCellier($nomCellier)
 		{
-			// $body = json_decode(file_get_contents('php://input'));
 			$bte = new Bouteille();
 			$existe = $bte->chercherCellier($nomCellier);
 			
@@ -569,10 +628,10 @@ class Controler
     			$messageErreur = "Un cellier portant ce nom existe déjà !";
     			
     		}
-			$dat['cellier'] = $bte->CellierParUsager($_SESSION["UserID"] );
-		
+			$dat = $bte->CellierParUsager($_SESSION["UserID"] );
+			$nombreSAQ = $this->nombreSAQ();
 			include("vues/entete.php");
-			include("vues/cellier.php");
+			include("vues/mesCelliers.php");
 			include("vues/pied.php");
 		}
 
@@ -744,7 +803,164 @@ class Controler
             // Retourner un message d'erreur
             return $msgErreur;
         }
+
+        /**
+		* Fonction de validation du formulaire de modification des informations d'un usager
+		* 
+		* @param $nom nom de l'usager
+		* @param $prenom le prénom de l'usager
+		* @param $nomUsager le nom d'utilisateur
+		* @param $motDePasse le mot de passe (facultatif)
+		* @param $motDePasseConfirm le mot de passe de confirmation (facultatif)
+		* @param $motDePasseActuel le mot de passe actuel (facultatif)
+		* @return $msgErreur messages d'erreur
+		*/
+        public function valideFormModifierUsager($nom, $prenom, $nomUsager, $motDePasse='', $motDePasseConfirm='', $motDePasseActuel = '')
+        {
+            $msgErreur = array();
+           
+            // Trimer les variables
+            $nom = trim($nom);
+            $prenom = trim($prenom);
+            $nomUsager = trim($nomUsager);
+            $motDePasse = trim($motDePasse);
+            $motDePasseConfirm = trim($motDePasseConfirm);
+            $motDePasseActuel = trim($motDePasseActuel);
+
+
+            // Validation du nom
+            if($nom == "" || !preg_match("/^[a-zA-Z]+$/i", $nom)){
+                $msgErreur['erreur_nom'] = "Le nom doit avoir que des lettres !";
+            }
+
+            // Validation du prénom
+            if($prenom == "" || !preg_match("/^[a-zA-Z]+$/i", $prenom)){
+                $msgErreur['erreur_prenom'] = "Le prénom doit avoir que des lettres !";
+            }
+
+            // Ne pas prendre en compte les erreurs si les champs concernant le mot de passe 
+            // sont vides
+	        if ($motDePasse !='' || $motDePasseConfirm !='' || $motDePasseActuel !='') {
+	            	            
+	            // Validation du nom d'usager 
+	            if($nomUsager == "" || !preg_match("/^[A-Za-z][A-Za-z0-9_]{5,29}$/i", $nomUsager)){
+	                $msgErreur['erreur_nomUsager'] = "Le nom d'usager doit avoir minimum 5 lettres et ne doit pas commencer par un chiffre !";
+	            }
+	                            
+	            // Validation du mot de passe
+	            if($motDePasse == '' || !preg_match("/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,20}$/i", $motDePasse) ){
+	                $msgErreur['erreur_motDePasse']= "Le mot de passe doit avoir minimum une lettre, un chiffre et doit être d'une longueur minimum de 6 caractères !";
+	            }
+
+	            // Validation du mot de passe de confirmation
+	            if($motDePasse != $motDePasseConfirm){
+	                $msgErreur['erreur_motDePasseConfirm']= "Le mot de passe doit être identique !";
+	            }
+
+	            // Validation du mot de passe actuel
+	            $usager = new Usager();	
+	    		if(!$usager->Authentification($_SESSION["UserName"],$motDePasseActuel)) {
+	    			$msgErreur['erreur_invalide']= 'Mot de passe invalide !';
+	    		}
+            }
+
+            // Retourner un message d'erreur
+            return $msgErreur;
+        }
+
+        /**
+		* Fonction d'affichage des statistiques
+		* 
+		*/
+		private function statistiques()
+		{	
+			
+			$bte = new Usager();
+			// Récupérer la liste des bouteilles par cellier que possède un usager authentifié
+            $data = $bte->getCellier($_SESSION['UserID']);
+            $cellier = new Bouteille();
+            // Récupérer les cellier par usager authentifié
+            $dat['cellier'] = $cellier->CellierParUsager($_SESSION['UserID']);
+
+
+
+            // $dat['nomCellier'] = $cellier->cellierParId($id=1);
+            $dat['nomCellier'] = $cellier->RecupererCellierParUsager($_SESSION['UserID']);
+
+            // Le nombre d'usagers
+            $nombreUsagers = $bte->nombreUsagers();
+
+            // Le nombre de celliers
+            $nombreCelliers = $cellier->nombreCelliers();
+
+			// Le nombre de celliers par usager
+            $nombreCelliersParUsagers = $cellier->nombreCelliersParUsager();
+
+            // Le nombre de bouteilles par cellier
+            $nombreBouteillesParCellier = $cellier->nombreBouteillesParCellier();
+
+            // Le nombre de bouteilles par usager
+            $nombreBouteillesParUsager = $cellier->nombreBouteillesParUsager();
+
+            // La valeur totale des bouteilles
+            $valeurBouteilleTous = $cellier->valeurBouteilleTous();
+
+            // La valeur des bouteilles par usager
+            $valeurBouteilleParUsager = $cellier->valeurBouteilleParUsager();
+
+            $nombreSAQ = $this->nombreSAQ();
+            include("vues/entete.php");
+            // Afficher la vue statistiques
+			include("vues/statistiques.php");
+			include("vues/pied.php");       
+		}
+
+		/**
+		* Fonction supprimerUsagers, l'Admin peux supprimer des usagers avec ses celliers
+		* 
+		* @return $resultat Sous format json
+		*/
+
+        private function supprimerUsagers()
+		{
+			if(strtolower($_SESSION['admin']) != 'oui') die ('Accès refusé');
+			$body = json_decode(file_get_contents('php://input'));
+			$usager = new Usager(); 
+			$resultat = $usager->supprimerUsagers($body->id);			
+			
+			echo json_encode($resultat);
+		}
 		
+		/**
+		* Fonction voter, on peux mettre des etoiles apres boire la bouteille
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function vote()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			$vote = (int)$body->vote;
+			if($vote < 1 || $vote > 5) return;
+			$resultat = $bte->vote($body->id, $vote);
+			echo json_encode($resultat);
+		}
+
+		/**
+		* Fonction de récupération du nombre de bouteille de la SAQ importées
+		* 
+		*/
+		private function nombreSAQ()
+		{
+			
+            $cellier = new Bouteille();
+           
+            // Récupérer le nombre de bouteilles SAQ importées
+            $nombreSAQ = $cellier->nombreBouteillesSAQimporte();
+
+            return $nombreSAQ;
+
+    	}
 }
 ?>
 

@@ -1,50 +1,47 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <title>List d'usagers</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-      td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
-    <script src="./js/admin.js"></script>
-  </head>
-  <body class="text-center">
+
   	<div class="container">
-  		<div class="col-md-12 mx-auto">
-  			<h2>List d'usagers</h2>
-            <table class="d-flex justify-content-center">
+      <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+      		<div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+      			<h2 class="tm-block-title text-dark">Liste des usagers</h2>
+            <table class="table table-hover tm-table-small tm-product-table">
+              <thead>
               <tr>
-                <th>Nom d'utilisateure</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Sellier d'usager</th>
-                <th>Supprimer usager</th>
+                <th scope="col">Nom d'utilisateur</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Sellier de l'usager</th>
+                <th scope="col">Supprimer l'usager</th>
               </tr>
+              </thead>
+              <tbody>
               <?php foreach ($data as $i => $usager) { ?>
                 <tr>
-                  <th><?php echo $usager['username']; ?></th>
-                  <th><?php echo $usager['nom']; ?></th>
-                  <th><?php echo $usager['prenom']; ?></th>
-                  <th><?php echo $usager['cnom']; ?></th>
-                  <th><button data-id="<?php echo $usager['id']; ?>" class="btnModifier btn-remove-user btn btn-sm btn-outline-danger">Supprimer</button></th>
+                  <td><?php echo $usager['username']; ?></td>
+                  <td><?php echo $usager['nom']; ?></td>
+                  <td><?php echo $usager['prenom']; ?></td>
+                  <td><?php echo $usager['cnom']; ?></td>
+                  <td>
+                    <button data-id="<?php echo $usager['id']; ?>" class="btnSupprimerUsager far fa-trash-alt tm-product-delete-icon tm-product-delete-link"></button>
+                      
+                  </td>
                 </tr> 
               <?php } ?>
+            </tbody>
               
             </table>
-            </div>
+          </div>
+        </div>
+      </div>
     </div>  
-  </body>
-</html>
+
+    <script type="text/javascript">
+      //Au chargement de la page : on active le menu 'Paramètres' et on désactive les autres
+      window.addEventListener('load', function() {
+        document.getElementById("parametres").classList.add("active");
+        document.getElementById("monCompte").classList.remove("active");
+        document.getElementById("celliers").classList.remove("active");
+        document.getElementById("statistiques").classList.remove("active");
+      });
+    </script>
+  
