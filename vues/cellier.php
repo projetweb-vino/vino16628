@@ -149,7 +149,7 @@
                     <button class="btnModifier btn-sm">Modifier</button>
                     <button type="button" class='btnAjouter btn-sm'>+</button>
                     <button class='btnBoire btn-sm'>-</button>
-                    <button class='btnRetirer btn-sm' title="Retirer cette bouteille"><i class="fas fa-trash-alt"></i></button>
+                    <button class='btnRetirer btn-sm fas fa-trash-alt' title="Retirer cette bouteille"></button>
                 </div>
                              
             </div>
