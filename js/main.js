@@ -234,7 +234,9 @@ window.addEventListener('load', function() {
   });
 
  
-  // Selection de tous les boutons modifier
+  /*=============================================
+  =      formulaire des bouteilles listées      =
+  =============================================*/
   document.querySelectorAll(".ajoutebouteille").forEach(function(element){
 
     element.addEventListener("click", function(evt){
@@ -259,11 +261,222 @@ window.addEventListener('load', function() {
       document.getElementById("url_saq").value = url_saq;
       document.getElementById("url_img").value = url_img;
       document.getElementById("format").value = format;
+      //afficher l'image dans le formulaire listées
+      var image = document.getElementById("imagelistee").childNodes[1];
+      image.setAttribute("src", url_img);
+      //fermer le popup
+      document.location.href = "#"; 
 
     })
 
   });
+  /*=============================================
+  =       image de formulaire d'ajout      =
+  =============================================*/
+  var input = document.getElementById("image_uploads");
+  var preview = document.querySelector('.preview');
+  
+  input.addEventListener('change', updateImageDisplay);
+  function updateImageDisplay() {
+    var imagesuprimer = document.getElementById("image1");
+    var curFiles = input.files;
+    if(curFiles.length === 0) {
+      var para = document.createElement('p');
+      para.textContent = 'Aucun fichier sélectionné pour le moment';
+    } else {
 
+      for(var i = 0; i < curFiles.length; i++) {
+
+        var para = document.createElement('p');
+        para.setAttribute("id", "paga1")
+        var divimage = document.getElementById("imagecharger");
+
+        if (imagesuprimer) {
+          imagesuprimer.remove();
+        }else {
+          document.getElementById("paga1").remove();
+        }
+        if(validFileType(curFiles[i])) {
+          para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
+
+          var image = document.createElement('img');
+          image.src = window.URL.createObjectURL(curFiles[i]);
+          
+          image.style.width = '300px';
+          image.style.height = '380px';
+          image.setAttribute("id", "image1") 
+          divimage.appendChild(image);
+          
+        } else {
+          para.textContent = 'Nom de fichier ' + curFiles[i].name + ': le type pas valide .';
+          divimage.appendChild(para);
+
+        }
+      }
+    }
+  }
+  var fileTypes = [
+    'image/jpeg',
+    'image/pjpeg',
+    'image/png'
+  ]
+
+  function validFileType(file) {
+    for(var i = 0; i < fileTypes.length; i++) {
+      if(file.type === fileTypes[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }function returnFileSize(number) {
+    if(number < 1024) {
+      return number + ' octets';
+    } else if(number >= 1024 && number < 1048576) {
+      return (number/1024).toFixed(1) + ' Ko';
+    } else if(number >= 1048576) {
+      return (number/1048576).toFixed(1) + ' Mo';
+    }
+  }
+
+  /*=============================================
+  =       validation des deux formulaires      =
+  =============================================*/
+  
+    document.querySelectorAll(".input100").forEach(function(element){
+      
+      
+      element.addEventListener("change", function(evt){
+        var formulaire =  document.getElementById("tab2-2");
+        var formulaire1 =  document.getElementById("tab2-1");
+
+        if (element.name == "nom") {
+          var regex =/^[a-zA-Z0-9 ]+$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 1 );
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 13 );
+          }
+        }
+        if (element.name == "millesime") {
+          var regex =/^(1[89]\d\d|20[01]\d)$/ig
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 2);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 14 );
+          }
+        }
+        if (element.name == "quantite") {
+          var regex =/^[0-9]+$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 3);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 15 );
+          }
+        }
+        if (element.name == "pays") {
+          var regex =/^[a-zA-Z]+$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 4);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 16 );
+          }
+        }
+        if (element.name == "prix_saq") {
+          var regex =/^\d+(,\d{3})*(\.\d{1,4})?$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 5);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 17 );
+          }
+        }
+        if (element.name == "notes") {
+          var regex =/^[a-zA-Z]+$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 6);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 18 );
+          }
+        }
+        if (element.name == "description") {
+          var regex =/^[a-zA-Z0-9 /:,;]+$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 10);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 22 );
+          }
+        }
+        if (element.name == "format") {
+          var regex =/^[a-zA-Z0-9 /,*.]+$/gm
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 7);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 19 );
+          }
+        }
+        if (element.name == "date_achat") {
+          var regex =/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 8);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 20 );
+          }
+        }
+        if (element.name == "garde_jusqua") {
+          var regex =/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 9);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 21 );
+          }
+        }
+        if (element.name == "image") {
+          var regex =''//i
+          if (formulaire1.checked ) {
+          validerformulaire(element.value, element.name,regex, 26);
+          }
+          if (formulaire.checked ) {
+            validerformulaire(element.value, element.name,regex, 27 );
+          }
+        }
+      })
+      
+    });
+    function validerformulaire(element, name, reg ,id){
+      element =element.trim();
+     var input = document.querySelector(".validate"+id);
+     var validebar = input.childNodes[3];
+        if (element !="") {
+          var paragraph = element 
+          var regex = reg
+          var matcher = paragraph.match(regex)
+          if (matcher) {
+            input.classList.add('true-validate');
+            input.classList.remove('alert-validate');
+            validebar.classList.add('has-val');
+          }else {
+            input.classList.remove('true-validate');
+            input.classList.add('alert-validate');
+            validebar.classList.remove('has-val');
+            }
+        }else {
+          input.classList.remove('true-validate');
+          input.classList.remove('alert-validate');
+          validebar.classList.remove('has-val');
+        }
+    }
+    
+  /*****************fin validation formulaire *********************/
     
    // Selection de tous les boutons modifier
   document.querySelectorAll(".btnModifier").forEach(function(element){

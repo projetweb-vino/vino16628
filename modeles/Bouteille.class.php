@@ -229,8 +229,24 @@ class Bouteille extends Modele {
 		return $rangee;
 		
 	}
-	
-	
+
+	/**
+	 * Cette méthode permet de récupérer une bouteilles dans une cellier
+	 * 
+	 * @param $nom $noo  de la bouteille
+	 * @param $cellier_id id de cellier
+	 * @return retourne l'occurence.
+	 */
+	public function verifierbouteilleNonlistee($nom, $cellier_id)
+	{
+		
+		$requete = "SELECT * From vino_bouteille WHERE nom = '$nom' and cellier_id = '$cellier_id'";
+		$res = $this->_db->query($requete);
+        $rangee = $res->fetch_assoc();
+		return $rangee;
+		
+	}
+
 	/**
 	 * Cette méthode ajoute une ou des bouteilles au cellier
 	 * 
@@ -249,6 +265,39 @@ class Bouteille extends Modele {
 		"'".$data->prix."',".
 		"'".$data->quantite."',".
 		"'".$data->millesime."')";
+
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+	/**
+	 * Cette méthode ajoute une  bouteilles au cellier listées ou non listées
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
+	{
+		$vote =0;	
+		$requete = "INSERT INTO vino_bouteille(cellier_id, nom, type_id, millesime, quantite, pays, prix_saq, notes, format, date_achat, garde_jusqua, image, description, code_saq, url_saq, vote, url_img)VALUES (".
+		"'".$cellier_id."',".
+		"'".$nom."',".
+		"'".$type_id."',".
+		"'".$millesime."',".
+		"'".$quantite."',".
+		"'".$pays."',".
+		"'".$prix_saq."',".
+		"'".$notes."',".
+		"'".$format."',".
+		"'".$date_achat."',".
+		"'".$garde_jusqua."',".
+		"'".$image_uploads."',".
+		"'".$description."',".
+		"'".$code_saq."',".
+		"'".$url_saq."',".
+		"'".$vote."',".
+		"'".$url_img."')";
 
         $res = $this->_db->query($requete);
         
