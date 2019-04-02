@@ -704,6 +704,7 @@ input[type="checkbox"]:focus {
   .tm-site-icon {
     font-size: 2em;
   }
+ 
 
 }
 @media (max-width: 480px) {
@@ -721,6 +722,20 @@ input[type="checkbox"]:focus {
   nav{
     z-index: 200;
   }
+
+   .middle{
+    display: block;
+    /*transition: .5s ease;*/
+  opacity: 1;
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  text-align: center;
+  background-color: red;
+  height: 65%;
+  width: 90%;
+  }
+  
 }
 
 
@@ -1175,9 +1190,9 @@ textarea:-ms-input-placeholder {color: #cccccc;}*/
 
 /*---------------------------------------------*/
 button {
-  outline: none !important;
+  /*outline: none !important;
   border: none;
-  background: transparent;
+  background: transparent;*/
 }
 
 button:hover {
@@ -1528,6 +1543,11 @@ iframe {
   overflow: auto;
 }
 
+.btnModifier, .btnBoire, .btnAjouter , .btnRetirer{
+    font-size: 14pt;
+    
+}
+
 @media screen and (max-width: 700px){
   .box{
     width: 100%;
@@ -1549,6 +1569,64 @@ iframe {
   width: 100%;
   top: 60px;
   left: -50px;
+}
+
+@media screen and (max-width: 480px){
+  .box{
+    width: 100%;
+  }
+  .popup{
+    width: 100%;
+  }
+  .middle{
+  /*transition: .5s ease;
+  opacity: 1;
+  position: block;
+  
+  left: 5%;
+  text-align: center;
+  background-color: transparent;
+  height: 5%;
+  width: 90%;*/
+  }
+  .middle h2{
+  /*font-size: 12pt;*/
+
+  }
+  .middle h2:nth-child(5){
+  /*display: none;*/
+
+  }
+  .btnModifier, .btnBoire, .btnAjouter , .btnRetirer{
+    font-size: 22pt;
+    width: 50px;
+    margin-right: 5px;
+  }
+  .quantite{
+    font-size: 18px;
+  }
+  /*.btnModifier, .btnBoire, .btnAjouter , .btnRetirer{
+    font-size: 22pt;
+
+  }*/
+  .options{
+  /*position: absolute;*/
+  display: flex;
+  justify-content: center;
+  margin-left: -80px;
+ /* top: 360px;
+  left: 2%;*/
+  /*text-align: center;*/
+  /*background-color: red;*/
+}
+
+}
+.options{
+  position: absolute;
+  top: 360px;
+  left: 28%;
+  /*text-align: center;*/
+  /*background-color: red;*/
 }
 
 
