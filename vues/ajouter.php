@@ -419,7 +419,7 @@
               <tbody>
                 <?php
                 if (!empty($data)) {
-                    $i =0;
+                    $i =1;
                      foreach ($dat as $cle => $bouteille) {
                         $i++
                     ?>
