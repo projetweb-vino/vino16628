@@ -229,8 +229,24 @@ class Bouteille extends Modele {
 		return $rangee;
 		
 	}
-	
-	
+
+	/**
+	 * Cette méthode permet de récupérer une bouteilles dans une cellier
+	 * 
+	 * @param $nom $noo  de la bouteille
+	 * @param $cellier_id id de cellier
+	 * @return retourne l'occurence.
+	 */
+	public function verifierbouteilleNonlistee($nom, $cellier_id)
+	{
+		
+		$requete = "SELECT * From vino_bouteille WHERE nom = '$nom' and cellier_id = '$cellier_id'";
+		$res = $this->_db->query($requete);
+        $rangee = $res->fetch_assoc();
+		return $rangee;
+		
+	}
+
 	/**
 	 * Cette méthode ajoute une ou des bouteilles au cellier
 	 * 
