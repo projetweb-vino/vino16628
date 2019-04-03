@@ -126,8 +126,8 @@
                 </div>
 
                 <!-- Image de la bouteille -->
-                <img class="rounded-circle image" src="https:<?php echo $bouteille['image'] ?>">
-
+                <!-- une condition qui choisire d'afficher l'image de la saq si il a lieu sinon elle affiche la photo ajouter bouteille non listées -->
+                <img class="rounded-circle image" <?php if(substr($bouteille['image'],0,2) == "//"){ ?> src="https:<?php  echo $bouteille['image'];?>" <?php }else{ ?> src="images/<?php  echo $bouteille['image'];?>"<?php }?> >    
                 
 
                 <!-- Le nom de la bouteille -->
