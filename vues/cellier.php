@@ -144,11 +144,12 @@
                 <!-- Quantité -->
                 <p><small class="quantite text-muted" id="<?php echo 'item'.$bouteille['id_bouteille_cellier'] ?>">Quantité : <?php echo $bouteille['quantite'] ?></small></p>
 
-                <!-- Les boutons Modifier, Ajouter, Boire et Supprimer -->
+               <!-- Les boutons Modifier, Ajouter, Boire et Supprimer -->
                 <div class="options btn-group" data-id="<?php echo $bouteille['id_bouteille_cellier'] ?>">
-                    <button class="btnModifier btn-sm">Modifier</button>
-                    <button type="button" class='btnAjouter btn-sm'>+</button>
-                    <button class='btnBoire btn-sm'>-</button>
+                    
+                    <button class="btnModifier btn-sm fas fa-edit" title="Modifier"></button>
+                    <button type="button" class='btnAjouter btn-sm' title="Ajouter">+</button>
+                    <button class='btnBoire btn-sm' title="Boire">-</button>
                     <button class='btnRetirer btn-sm' title="Retirer cette bouteille"><i class="fas fa-trash-alt"></i></button>
                 </div>
                              

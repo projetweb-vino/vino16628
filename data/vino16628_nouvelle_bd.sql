@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `vino_bouteille` (
   `date_achat` date DEFAULT NULL,
   `notes` varchar(200) DEFAULT NULL,
   `cellier_id` int(11) UNSIGNED NOT NULL,
+  `vote` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `type_id` (`type_id`),
   KEY `cellier_id` (`cellier_id`)

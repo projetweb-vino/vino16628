@@ -54,11 +54,33 @@ class Controler
 						break;
 
 					case 'ajouterBouteilleNonListe':
-						// Tester si les paramêtres sont envoyés
-						if (isset($_POST['id'],$_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'],$_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format'])){
+						// Déclarer un tableau
+							$message = array();
+							
+							// Validation de formulaire
+                            $message = $this->valideFormAjout($_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
 
-							$this->ajouterBouteilleNonListe($_POST['id'], $_POST['nom'], $_POST['date_achat'], $_POST['notes'], $_POST['quantite'], $_POST['garde_jusqua'], $_POST['prix_saq'], $_POST['pays'], $_POST['millesime'], $_POST['description'], $_POST['type'], $_POST['format']);
-						}
+							if(count($message) ==0){
+							//tester si la bouteille existe déja
+								$bouteilleNonlistee = $this->verifierbouteille($_REQUEST['nom'],$_REQUEST['cellier_id']);
+								
+								if($bouteilleNonlistee == ''){
+																
+								$this->ajouterBouteilleNonListe($_REQUEST['cellier_id'], $_REQUEST['nom'], $_REQUEST['type_id'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['notes'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['image'], $_REQUEST['description'], $_REQUEST['code_saq'], $_REQUEST['url_saq'], $_REQUEST['url_img']);
+								$this->accueil();
+								}else{
+									if (isset($_REQUEST['id_formulaire'])) {
+
+										$message['vide1'] = "la bouteille existe déjà";
+									}else{
+										$message['vide2'] = "la bouteille existe déjà";
+									}
+									
+			        				$this->afficheformulaireMessages($message);
+								}
+							}else{
+								$this->afficheformulaireMessages($message);
+							}
 						break;
 
 
@@ -418,8 +440,10 @@ class Controler
 				$data = $bte->CellierParUsager($_SESSION["UserID"] );
 				// Récupérer la liste des bouteilles
 				$dat = $bte->ListeBouteilleSAQ();
+				// $dat = $bte->getListeBouteille();
 				// Récupérer les types
 				$datas = $bte->RecupererTypes();
+				$nombreSAQ = $this->nombreSAQ();
 
 				include("vues/entete.php");
 				include("vues/ajouter.php");
@@ -592,22 +616,52 @@ class Controler
 				require_once(__DIR__."/vues/login.php");
 			}
 		}
+		/**
+		* Fonction Pour vérifier si la bouteille si existe ou non dans le cellier
+		* 
+		* @return $data
+		*/
+		private function verifierbouteille($nom, $cellier_id)
+		{
+				
+			$bte = new Bouteille();
+			$data = $bte->verifierbouteilleNonlistee($nom, $cellier_id);
+			return $data ;
+			
+		}
 
 		/**
-		* Fonction d'ajout d'une bouteille non listée
+		* Fonction d'ajout d'une bouteille non listées et listées
 		* 
 		* @return $resultat Sous format json
 		*/
-		private function ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format)
+		private function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
 		{
-			
+				
 			$bte = new Bouteille();
-			$data = $bte->ajouterBouteilleNonListe($id, $nom, $date_achat, $notes, $quantite, $garde_jusqua, $prix_saq, $pays, $millesime, $description, $type, $format);
-			$nombreSAQ = $this->nombreSAQ();
-			include("vues/entete.php");
-			include("vues/ajouter.php");
-			include("vues/pied.php");
+			$data = $bte->ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img);
 		}
+		/**
+		* Fonction affiche les deux formulaires avec les messages d'erreurs
+		* 
+		*/
+		private function afficheformulaireMessages($erreurs)
+		{	
+			$message = array();
+			$message = $erreurs;
+			$bte = new Bouteille();
+			// Récupérer la liste des celliers par usager
+			$data = $bte->CellierParUsager($_SESSION["UserID"] );
+			// Récupérer la liste des bouteilles
+			// $dat = $bte->ListeBouteilleSAQ();
+			$dat = $bte->getListeBouteille();
+			// Récupérer les types
+			$datas = $bte->RecupererTypes();
+			$nombreSAQ = $this->nombreSAQ();
+			require_once(__DIR__."/vues/entete.php");
+		    require_once(__DIR__."/vues/ajouter.php");
+		    require_once(__DIR__."/vues/pied.php");
+    	}
 
 		/**
 		* Fonction d'ajout d'un cellier
@@ -739,6 +793,141 @@ class Controler
 			if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
                 $msgErreur['erreur_pays'] = "Le pays ne peut être vide ou il est invalide !<br>";
             }
+            
+            // Retourner un message d'erreur
+            return $msgErreur;
+        }
+        /**
+		* Fonction de validation d'ajout d'une bouteille listées et non listées
+		* 
+		* @param $nom nom de la bouteille cellier
+		* @param $date_achat la date d'achat de la bouteille cellier
+		* @param $quantite la quantité de la bouteille cellier
+		* @param $garde_jusqua à garder jusqu'à quand la bouteille cellier
+		* @param $prix prix de la bouteille cellier
+		* @param $pays pays de la bouteille cellier
+		* @param $millesime année de la bouteille cellier
+		* @param $format le format de la bouteille cellier
+		* @param $description la description de la bouteille cellier
+		* @param $notes les notes de la bouteille cellier
+		* @param $image l'image de la bouteille cellier
+		* @return $msgErreur messages d'erreur
+		*/
+        public function valideFormAjout($nom, $millesime , $quantite, $pays, $prix, $format, $date_achat, $garde_jusqua, $id_formulaire, $description, $notes, $image)
+        {
+            $msgErreur = array();
+           
+            // Trimer les variables
+            $nom = trim($nom);
+            $pays = trim($pays);
+            $format = trim($format);
+            $prix = trim($prix);
+            $quantite = trim($quantite);
+            $millesime = trim($millesime);
+            if ($id_formulaire == '1') {
+            
+	            // Validation du nom de la bouteille
+	            if($nom == ""){
+	                $msgErreur['erreur_nom'] = "Le nom ne peut être vide !";
+	            }
+	            // Validation du description de la bouteille
+	            if($description == ""){
+	                $msgErreur['erreur_description'] = "La description ne peut être vide !";
+	            }
+	            // Validation du image de la bouteille
+	            if($image == ""){
+	                $msgErreur['erreur_image'] = "L'image ne peut être vide !";
+	            }
+	            // Validation du notes de la bouteille
+	             if($notes == ""){
+	                $msgErreur['erreur_notes'] = "les notes ne peut être vide !";
+	            }
+	            
+	            // Validation date d'achat
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $date_achat)) {
+				    $msgErreur['erreur_date_achat'] = "La date est invalide !";
+				}
+	            
+	            // Validation quantité
+	            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
+	                $msgErreur['erreur_quantite']= "La quantité est invalide !";
+	            }
+	            // Validation garder jusqu'à
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $garde_jusqua)) {
+				    $msgErreur['erreur_garde_jusqua'] = "La date est invalide !";
+				}
+
+				// Validation du millesime (année)
+	            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
+				    $msgErreur['erreur_millesime'] = "La date est invalide !";
+				}
+
+				// Validation du prix
+				if(!is_float($prix) && !is_numeric($prix)){
+	                $msgErreur['erreur_prix'] = "Le prix n'est pas valide !";
+				}
+
+				// Validation du pays
+				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+	                $msgErreur['erreur_pays'] = "Le pays est invalide !<br>";
+	            }
+	            // Validation du format
+				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
+				    $msgErreur['erreur_format'] = "La format est invalide !";
+				}
+			}
+			   if ($id_formulaire == '2') {
+            
+	            // Validation du nom de la bouteille
+	            if($nom == ""){
+	                $msgErreur['erreur_nom2'] = "Le nom ne peut être vide !";
+	            }
+	            // Validation du description de la bouteille
+	            if($description == ""){
+	                $msgErreur['erreur_description2'] = "La description ne peut être vide !";
+	            }
+	            // Validation du image de la bouteille
+	            if($image == ""){
+	                $msgErreur['erreur_image2'] = "L'image ne peut être vide !";
+	            }
+	            // Validation du notes de la bouteille
+	             if($notes == ""){
+	                $msgErreur['erreur_notes2'] = "les notes ne peut être vide !";
+	            }
+	            
+	            // Validation date d'achat
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $date_achat)) {
+				    $msgErreur['erreur_date_achat2'] = "La date d'achat est invalide !";
+				}
+	            
+	            // Validation quantité
+	            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
+	                $msgErreur['erreur_quantite2']= "La quantité est invalide !";
+	            }
+	            // Validation garder jusqu'à
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $garde_jusqua)) {
+				    $msgErreur['erreur_garde_jusqua2'] = "La date est invalide !";
+				}
+
+				// Validation du millesime (année)
+	            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
+				    $msgErreur['erreur_millesime2'] = "La date est invalide !";
+				}
+
+				// Validation du prix
+				if(!is_float($prix) && !is_numeric($prix)){
+	                $msgErreur['erreur_prix2'] = "Le prix n'est pas valide !";
+				}
+
+				// Validation du pays
+				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+	                $msgErreur['erreur_pays2'] = "Le pays est invalide !<br>";
+	            }
+	            // Validation du format
+				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
+				    $msgErreur['erreur_format2'] = "La format est invalide !";
+				}
+			}
             
             // Retourner un message d'erreur
             return $msgErreur;
