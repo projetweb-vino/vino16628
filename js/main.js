@@ -275,9 +275,9 @@ window.addEventListener('load', function() {
   =============================================*/
   var input = document.getElementById("image_uploads");
   var preview = document.querySelector('.preview');
-  // if (input =='') {
+  if (input !=null) {
     input.addEventListener('change', updateImageDisplay);
-  // }
+  }
   
   function updateImageDisplay() {
     var imagesuprimer = document.getElementById("image1");
