@@ -76,10 +76,10 @@ class Controler
 										$message['vide2'] = "la bouteille existe déjà";
 									}
 									
-			        				$this->afficheformulaireMessages($message);
+			        				$this->afficheformulaireMessages($message,$_REQUEST['nom'],$_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
 								}
 							}else{
-								$this->afficheformulaireMessages($message);
+								$this->afficheformulaireMessages($message,$_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
 							}
 						break;
 
@@ -642,13 +642,26 @@ class Controler
 			$data = $bte->ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img);
 		}
 		/**
-		* Fonction affiche les deux formulaires avec les messages d'erreurs
+		* Fonction affiche les deux formulaires avec les messages d'erreurs et les valeurs des champs
 		* 
 		*/
-		private function afficheformulaireMessages($erreurs)
+		private function afficheformulaireMessages($erreurs, $nom, $millesime , $quantite, $pays, $prix, $format, $date_achat, $garde_jusqua, $id_formulaire, $description, $notes, $image)
 		{	
 			$message = array();
+			$champs = array();
 			$message = $erreurs;
+			$champs['nom'] = $nom;
+			$champs['millesime'] = $millesime;
+			$champs['quantite'] = $quantite;
+			$champs['pays'] = $pays;
+			$champs['prix'] = $prix;
+			$champs['format'] = $format;
+			$champs['date_achat'] = $date_achat;
+			$champs['garde_jusqua'] = $garde_jusqua;
+			$champs['description'] = $description;
+			$champs['notes'] = $notes;
+			$champs['image'] = $image;
+			$champs['id_formulaire'] =$id_formulaire;
 			$bte = new Bouteille();
 			// Récupérer la liste des celliers par usager
 			$data = $bte->CellierParUsager($_SESSION["UserID"] );

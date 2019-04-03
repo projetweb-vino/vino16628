@@ -238,7 +238,7 @@ window.addEventListener('load', function() {
   =      formulaire des bouteilles listées      =
   =============================================*/
   document.querySelectorAll(".ajoutebouteille").forEach(function(element){
-
+    console.log('tester')
     element.addEventListener("click", function(evt){
       let id = evt.target.parentElement.dataset.id;
       //recuperer les information de la bouteille selectionné
@@ -275,13 +275,14 @@ window.addEventListener('load', function() {
   =============================================*/
   var input = document.getElementById("image_uploads");
   var preview = document.querySelector('.preview');
-  if (input =='') {
+  if (input !=null) {
     input.addEventListener('change', updateImageDisplay);
   }
   
   function updateImageDisplay() {
     var imagesuprimer = document.getElementById("image1");
     var curFiles = input.files;
+
     if(curFiles.length === 0) {
       var para = document.createElement('p');
       para.textContent = 'Aucun fichier sélectionné pour le moment';
@@ -292,16 +293,18 @@ window.addEventListener('load', function() {
         var para = document.createElement('p');
         para.setAttribute("id", "paga1")
         var divimage = document.getElementById("imagecharger");
-
-        if (imagesuprimer) {
+        var paragsuprimer = document.getElementById("paga1");
+        if(imagesuprimer) {
           imagesuprimer.remove();
-        }else {
-          document.getElementById("paga1").remove();
+        }
+        if(paragsuprimer){
+          paragsuprimer.remove();
         }
         if(validFileType(curFiles[i])) {
           para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
 
           var image = document.createElement('img');
+          console.log(image);
           image.src = window.URL.createObjectURL(curFiles[i]);
           
           image.style.width = '300px';
@@ -398,7 +401,7 @@ window.addEventListener('load', function() {
           }
         }
         if (element.name == "notes") {
-          var regex =/^[a-zA-Z]+$/gm
+          var regex =/^[a-zA-Z0-9 /:,;.]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 6);
           }
@@ -407,7 +410,7 @@ window.addEventListener('load', function() {
           }
         }
         if (element.name == "description") {
-          var regex =/^[a-zA-Z0-9 /:,;]+$/gm
+          var regex =/^[a-zA-Z0-9 /:,;.]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 10);
           }
