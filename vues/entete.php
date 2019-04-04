@@ -26,9 +26,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Notre style css -->
     <link rel="stylesheet" href="./css/style.css">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-   
+      
     <!-- BASEURL -->
     <base href="<?php echo BASEURL; ?>">
 
@@ -82,12 +80,40 @@
 
                     <!-- On affiche le menu Statistiques uniquement pour l'administrateur -->
                     <?php 
+                    if ($_SESSION['admin']=='non') {
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?requete=indiquer" id="indiquer">
+                            <i class="fas fa-exclamation-circle" title="indiquer"></i>
+                            Indique les erreurs
+                        </a>
+                    </li>
+                    <?php 
+                    }
+                    ?>
+
+                    <!-- On affiche le menu Statistiques uniquement pour l'administrateur -->
+                    <?php 
                     if ($_SESSION['admin']=='oui') {
                     ?>
                     <li class="nav-item">
                         <a class="nav-link" href="?requete=statistiques" id="statistiques">
                             <i class="fa fa-chart-bar" title="Statistiques"></i>
                             Statistiques
+                        </a>
+                    </li>
+                    <?php 
+                    }
+                    ?>
+
+                    <!-- On affiche le menu Statistiques uniquement pour l'administrateur -->
+                    <?php 
+                    if ($_SESSION['admin']=='oui') {
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?requete=listeerreurs" id="erreurs">
+                            <i class="fas fa-exclamation-triangle" title="erreurs"></i>
+                            Erreurs
                         </a>
                     </li>
                     <?php 
