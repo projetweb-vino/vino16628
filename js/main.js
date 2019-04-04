@@ -96,10 +96,11 @@ window.addEventListener('load', function() {
   var span = document.getElementsByClassName("close")[0];
 
   // Quand on clique sur le bouton importation, on affiche le modal
-  btn.onclick = function() {
-    modal.style.display = "block";
+  if (btn) {
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
   }
-
   // Qaund on clique sur le bouton de fermeture, on ferme le modal
   span.onclick = function() {
     modal.style.display = "none";
@@ -238,7 +239,7 @@ window.addEventListener('load', function() {
   =      formulaire des bouteilles listées      =
   =============================================*/
   document.querySelectorAll(".ajoutebouteille").forEach(function(element){
-    console.log('tester')
+
     element.addEventListener("click", function(evt){
       let id = evt.target.parentElement.dataset.id;
       //recuperer les information de la bouteille selectionné
