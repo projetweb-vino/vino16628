@@ -989,6 +989,23 @@ class Bouteille extends Modele {
 	
 	}
 
+	/**
+	 * Cette méthode qui permet de récupérer le nombre de bouteilles bu dans une date donnée
+	 * 
+	 * @param date $date 
+	 * 
+	 * @return retourne l'occurence.
+	 */
+	public function nombreBouteillesBuParDate($id)
+	{
+			
+		$requete = "SELECT * From stats WHERE id = $id";
+		$res = $this->_db->query($requete);
+        $rangee = $res->fetch_assoc();
+		return $rangee;
+		
+	}
+
 
 
 
