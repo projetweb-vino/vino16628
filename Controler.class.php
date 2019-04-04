@@ -470,9 +470,11 @@ class Controler
 			$body = json_decode(file_get_contents('php://input'));
 			$bte = new Bouteille();
 			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
+			// Calculer le nombre de bouteilles bu dans un temps donné
+			$champ = 'nombreBu';
+			$nombreBouteillesBu = $bte->nombreBouteillesBu($champ);
 			// Fair appel à la fonction de récupération de la quantité
 			$resultat = $bte->recupererQuantite($body->id);
-			echo json_encode($resultat);
 		}
 
 		/**
