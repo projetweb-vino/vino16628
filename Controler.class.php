@@ -1141,6 +1141,9 @@ class Controler
             // La valeur des bouteilles par usager
             $valeurBouteilleParUsager = $cellier->valeurBouteilleParUsager();
 
+            // Les dates
+            $dates = $cellier->stats();
+
             $nombreSAQ = $this->nombreSAQ();
             include("vues/entete.php");
             // Afficher la vue statistiques
