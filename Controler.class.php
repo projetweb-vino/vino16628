@@ -54,6 +54,8 @@ class Controler
 						break;
 
 					case 'ajouterBouteilleNonListe':
+						//tester si usager est connecté 
+						if (isset($_SESSION["UserID"])) {
 						// Déclarer un tableau
 							$message = array();
 							
@@ -81,6 +83,10 @@ class Controler
 							}else{
 								$this->afficheformulaireMessages($message,$_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
 							}
+						}else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
 						break;
 
 
@@ -348,7 +354,44 @@ class Controler
 							// Sinon on affiche le login
 							require_once(__DIR__."/vues/login.php");
 						}
-                        break; 
+                        break;
+                    // la page de formulaire pour indiquer une erreur
+					case 'indiquer':
+						// Si l'usager est authentifié 
+						if (isset($_SESSION["UserID"])) {
+                        	$this->formulaireErreur();
+                        }
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
+                        break;
+                    // le sauvgarde de l'indication qui la laisser l'usager
+					case 'sauvagrdeindication':
+						// Si l'usager est authentifié 
+						if (isset($_SESSION["UserID"]) &&  $_SESSION["admin"] =='non') {
+
+							if (isset($_SESSION ['nom']) && isset($_SESSION ['prenom'])) {
+								// var_dump($_SESSION ['nom'], $_SESSION ['prenom'],$_REQUEST["titre"], $_REQUEST["texteerreurs"]);
+                        		$this->sauvagrdeindication($_SESSION ['nom'], $_SESSION ['prenom'],$_REQUEST["titre"], $_REQUEST["texteerreurs"]);
+							}
+                        }
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
+                        break;    
+                    // la liste des erreurs
+					case 'listeerreurs':
+						// Si l'usager est authentifié et Admnistrateur
+						if (isset($_SESSION["UserID"]) &&  $_SESSION["admin"] =='oui') {
+                        	$this->ListeErreur();
+                        }
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
+                        break;        
 
                     case "vote":
 				    	$this->vote();
@@ -428,26 +471,31 @@ class Controler
 		*/
 		private function ajouterNouvelleBouteilleCellier()
 		{
+			if (isset($_SESSION["UserID"])) {
 			$body = json_decode(file_get_contents('php://input'));
-			if(!empty($body)){
-				$bte = new Bouteille();
-				$resultat = $bte->ajouterBouteilleCellier($body);
-				echo json_encode($resultat);
-			}
-			else{
-				$bte = new Bouteille();
-				// Récupérer la liste des celliers par usager
-				$data = $bte->CellierParUsager($_SESSION["UserID"] );
-				// Récupérer la liste des bouteilles
-				$dat = $bte->ListeBouteilleSAQ();
-				// $dat = $bte->getListeBouteille();
-				// Récupérer les types
-				$datas = $bte->RecupererTypes();
-				$nombreSAQ = $this->nombreSAQ();
+				if(!empty($body)){
+					$bte = new Bouteille();
+					$resultat = $bte->ajouterBouteilleCellier($body);
+					echo json_encode($resultat);
+				}
+				else{
+					$bte = new Bouteille();
+					// Récupérer la liste des celliers par usager
+					$data = $bte->CellierParUsager($_SESSION["UserID"] );
+					// Récupérer la liste des bouteilles
+					$dat = $bte->ListeBouteilleSAQ();
+					// $dat = $bte->getListeBouteille();
+					// Récupérer les types
+					$datas = $bte->RecupererTypes();
+					$nombreSAQ = $this->nombreSAQ();
 
-				include("vues/entete.php");
-				include("vues/ajouter.php");
-				include("vues/pied.php");
+					include("vues/entete.php");
+					include("vues/ajouter.php");
+					include("vues/pied.php");
+				}
+			}else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
 			}
 		}
 		
@@ -747,7 +795,67 @@ class Controler
 			
 			echo ($resultat);
 		}
+		
+		/**
+		* Fonction affiche le formulaire avec les données
+		* 
+		*/
+		private function formulaireErreur()
+		{
+			if (isset($_SESSION["UserID"])) {
+				include("vues/entete.php");
+				include("vues/indiqueerreur.php");
+				include("vues/pied.php");
+			}
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
+			}
+		}
+		
+		/**
+		* Fonction affiche le liste des erreurs
+		* 
+		*/
+		private function ListeErreur()
+		{
+			if (isset($_SESSION["UserID"])) {
+				$bte = new Bouteille();
+				$data = $bte->RecupererErreurs();
+				$nombreSAQ = $this->nombreSAQ();
+				include("vues/entete.php");
+				include("vues/Listeerreurs.php");
+				include("vues/pied.php");
+			}
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
+			}
+		}
+		/**
+		* Fonction sauvegarder indication des erreurs
+		* 
+		* @param $nom de l'usager
+		* @param $prenom de l'usager
+		* @param $titre de l'indication 
+		* @param $texte de l'indication 
+		*/
+		private function sauvagrdeindication($nom, $prenom,$titre, $texte)
+		{
 
+			// Si l'usager est authentifié
+			if (isset($_SESSION["UserID"])) {
+				$btte = new Bouteille();
+				// Faire appel à la fonction de sauvegarde
+				$data = $btte->SauvagrdIndication($nom, $prenom,$titre, $texte);
+				// Afficher l'accueil
+				$this->accueil();
+			}
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
+			}
+		}
 		/**
 		* Fonction de validation de modification d'une bouteille
 		* 
@@ -764,51 +872,59 @@ class Controler
 		*/
         public function valideFormModif($nom, $dateachat, $quantite, $Garde, $prix, $pays, $millesime ,$description, $format)
         {
-            $msgErreur = array();
+        	// Si l'usager est authentifié
+			if (isset($_SESSION["UserID"])) {
+				$msgErreur = array();
            
-            // Trimer les variables
-            $nom = trim($nom);
-            $pays = trim($pays);
-            $format = trim($format);
-            $prix = trim($prix);
-            $quantite = trim($quantite);
+	            // Trimer les variables
+	            $nom = trim($nom);
+	            $pays = trim($pays);
+	            $format = trim($format);
+	            $prix = trim($prix);
+	            $quantite = trim($quantite);
 
-            // Validation du nom de la bouteille
-            if($nom == ""){
-                $msgErreur['erreur_nom'] = "Le nom ne peut être vide !";
-            }
-            
-            // Validation date d'achat
-            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $dateachat)) {
-			    $msgErreur['erreur_date_achat'] = "La date est invalide !";
+	            // Validation du nom de la bouteille
+	            if($nom == ""){
+	                $msgErreur['erreur_nom'] = "Le nom ne peut être vide !";
+	            }
+	            
+	            // Validation date d'achat
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $dateachat)) {
+				    $msgErreur['erreur_date_achat'] = "La date est invalide !";
+				}
+	            
+	            // Validation quantité
+	            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
+	                $msgErreur['erreur_quantite']= "La quantité est invalide !";
+	            }
+	            // Validation garder jusqu'à
+	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $Garde)) {
+				    $msgErreur['erreur_garde_jusqua'] = "La date est invalide !";
+				}
+
+				// Validation du millesime (année)
+	            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
+				    $msgErreur['erreur_millesime'] = "La date est invalide !";
+				}
+
+				// Validation du prix
+				if(!is_float($prix) && !is_numeric($prix)){
+	                $msgErreur['erreur_prix'] = "Le prix n'est pas valide !";
+				}
+
+				// Validation du pays
+				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+	                $msgErreur['erreur_pays'] = "Le pays ne peut être vide ou il est invalide !<br>";
+	            }
+	            
+           		// Retourner un message d'erreur
+           		return $msgErreur;
+			}
+			else{
+				// Sinon on affiche le login
+				require_once(__DIR__."/vues/login.php");
 			}
             
-            // Validation quantité
-            if(!is_numeric($quantite) || !preg_match("/^([1-9]|[1-9]\d|[1-9]\d\d)$/i", $quantite) ){
-                $msgErreur['erreur_quantite']= "La quantité est invalide !";
-            }
-            // Validation garder jusqu'à
-            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $Garde)) {
-			    $msgErreur['erreur_garde_jusqua'] = "La date est invalide !";
-			}
-
-			// Validation du millesime (année)
-            if (!preg_match("/^[12][0-9]{3}$/i", $millesime)) {
-			    $msgErreur['erreur_millesime'] = "La date est invalide !";
-			}
-
-			// Validation du prix
-			if(!is_float($prix) && !is_numeric($prix)){
-                $msgErreur['erreur_prix'] = "Le prix n'est pas valide !";
-			}
-
-			// Validation du pays
-			if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
-                $msgErreur['erreur_pays'] = "Le pays ne peut être vide ou il est invalide !<br>";
-            }
-            
-            // Retourner un message d'erreur
-            return $msgErreur;
         }
         /**
 		* Fonction de validation d'ajout d'une bouteille listées et non listées
