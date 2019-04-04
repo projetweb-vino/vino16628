@@ -95,6 +95,20 @@ INSERT INTO `vino_cellier` (`id`, `nom`, `usager_id`) VALUES
 (6, 'Cellier Nord', 4),
 (8, 'test', 4);
 
+--
+-- Structure de la table `indiquer`
+--
+
+DROP TABLE IF EXISTS `indiquer`;
+CREATE TABLE IF NOT EXISTS `indiquer` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `texteerreurs` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+COMMIT;
 -- --------------------------------------------------------
 
 --
