@@ -196,6 +196,24 @@ INSERT INTO `vino_type` (`id`, `type`) VALUES
 
 -- --------------------------------------------------------
 
+
+--
+-- Structure de la table `indiquer`
+--
+
+DROP TABLE IF EXISTS `indiquer`;
+CREATE TABLE IF NOT EXISTS `indiquer` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `texteerreurs` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+COMMIT;
+
+-- --------------------------------------------------------
+
 --
 -- Structure de la table `vino_usagers`
 --
@@ -219,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `vino_usagers` (
 INSERT INTO `vino_usagers` (`id`, `username`, `password`, `nom`, `prenom`, `admin`, `banni`) VALUES
 (1, 'Ivan', '202cb962ac59075b964b07152d234b70', 'Trembley', 'Ivan', 'non', 'non'),
 (2, 'Din', 'caf1a3dfb505ffed0d024130f58c5cfa', 'Krol', 'Alex', 'oui', 'non'),
-(4, 'Admin', 'fcea920f7412b5da7be0cf42b8c93759', 'Tim', 'Elena', 'oui', 'non'),
+(4, 'Admin', '21232f297a57a5a743894a0e4a801fc3', 'Tim', 'Elena', 'oui', 'non'),
 (5, 'Marchand', '7fe779ec8f4991300e594f8e1619b376', 'Marc', 'Galina', 'non', 'non'),
 (6, 'Marvel', '7fe779ec8f4991300e594f8e1619b376', 'Bertrant', 'Marion', 'non', 'non'),
 (9, 'Trambley', '6f5387f35a11094e40bce3d202c02f25', 'Foudil', 'Tarik', 'non', 'non'),
