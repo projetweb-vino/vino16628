@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
       <div class="col">
-          <p class="text-dark mt-5 mb-5">Mes <b>celliers</b></p>
+          <p class="text-dark mt-lg-5 mt-sm-1 mb-sm-1 mb-lg-5">Mes <b>celliers</b></p>
       </div>
   </div>
   <!-- row -->

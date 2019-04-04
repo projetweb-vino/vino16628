@@ -10,7 +10,7 @@
                 <th scope="col">Nom d'utilisateur</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prénom</th>
-                <th scope="col">Sellier de l'usager</th>
+                <!-- <th scope="col">Sellier de l'usager</th> -->
                 <th scope="col">Supprimer l'usager</th>
               </tr>
               </thead>
@@ -20,7 +20,7 @@
                   <td><?php echo $usager['username']; ?></td>
                   <td><?php echo $usager['nom']; ?></td>
                   <td><?php echo $usager['prenom']; ?></td>
-                  <td><?php echo $usager['cnom']; ?></td>
+                  <!-- <td><?php echo $usager['cnom']; ?></td> -->
                   <td>
                     <button data-id="<?php echo $usager['id']; ?>" class="btnSupprimerUsager far fa-trash-alt tm-product-delete-icon tm-product-delete-link"></button>
                       
