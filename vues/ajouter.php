@@ -1,7 +1,7 @@
 <div class="ajouter container-fluid">
     <div class="tabscss">
     <div class="tab-2">
-        <label for="tab2-1">Ajouter Une bouteille Non listées</label>
+        <label for="tab2-1">Ajouter une bouteille non listée</label>
         <?php
         // condition pour selectioner le formulaire il affiche listées si en travail avec sinon l'autre formulaire non listées
         if (!isset($champs['id_formulaire'])||(isset($champs['id_formulaire'])&& isset($champs['id_formulaire'])== 1)){ ?>
@@ -289,7 +289,7 @@
         </div>    
     </div>
  <div class="tab-2">
-    <label for="tab2-2">Ajouter Une bouteille listées</label>
+    <label for="tab2-2">Ajouter une bouteille listée</label>
         <?php 
         if (isset($champs['id_formulaire']) && $champs['id_formulaire'] == 2) { ?>
             <input id="tab2-2" name="tabs-two" type="radio" checked="checked">
