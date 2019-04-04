@@ -54,12 +54,12 @@
                 </div>
                 
                 <div class="form-group col-md-2">
-                    <label>Tri par</label> 
+                    <label>Trier par</label> 
                     <select class="custom-select search-slt" id="exampleFormControlSelect1" name="filter[filtre]">
-                        <option value = "nom">nom </option>
-                        <option value = "pays">pays </option>
+                        <option value = "nom">Nom </option>
+                        <option value = "pays">Pays </option>
                         <option value = "millesime">Millesime </option>
-                        <option value = "quantite">Quantite </option>
+                        <option value = "quantite">Quantité </option>
                         <option value = "prix_saq">Prix </option>
                         <option value = "date_achat">Date d'achat </option>
                         <option value = "type">Type </option>

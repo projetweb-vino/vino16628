@@ -31,7 +31,7 @@
           <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
             <div class="row">
               <div class="col-12 text-center">
-                <h2 class="tm-block-title mb-4 text-dark">Bienvenu</h2>
+                <h2 class="tm-block-title mb-4 text-dark">Bienvenue</h2>
                 <?php 
                 // On affiche un message d'erreur si le nom d'utilisateur et mot de passe sont invalides
                 if(isset($messageErreur)){

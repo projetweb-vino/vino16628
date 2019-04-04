@@ -87,7 +87,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="?requete=indiquer" id="indiquer">
                             <i class="fas fa-exclamation-circle" title="indiquer"></i>
-                            Indique les erreurs
+                            Indiquer les erreurs
                         </a>
                     </li>
                     <?php 

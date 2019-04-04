@@ -1,10 +1,10 @@
 <div class="container-fluid min-101">
     <div class="row indique">
         <div class="col-md-12">
-            <h3>Formulaire indique aux adminisrateurs les erreurs dans le catalogue</h3>
+            <h3>Ce formulaire indique aux administrateurs les erreurs dans le catalogue</h3>
         </div>    
         <div class="col-md-12">
-            <p>Voue pouvez indiquer une ou plusieurs erreurs dans le catalogue aux administrateurs à fin de régler ces problèmes et merci..</p>
+            <p>Vous pouvez indiquer une ou plusieurs erreurs dans le catalogue aux administrateurs à fin de régler ces problèmes.</p>
         </div>    
     </div>    
     <div class="row justify-content-md-center indique">
@@ -17,7 +17,7 @@
                     </div>    
                 </div>
                 <div class="form-group">
-                   <label for="username">Texte</label>    
+                   <label for="username">Description de l'erreur</label>    
                     <div class="input-group-prepend">
                         <textarea name="texteerreurs" class="form-control" rows="8" id="comment"></textarea>
                     </div>
@@ -25,7 +25,7 @@
                 <div class="form-row  mt-2 col-md-3 indiq">
                     <div class="form-group wrap-login100-form-btn">
                         <input type="hidden" name="requete" value="sauvagrdeindication">
-                        <button type="submit"  class=" btn btn-primary ">Ajouter</button>
+                        <button type="submit"  class=" btn btn-primary ">Envoyer</button>
                     </div>
                 </div>
             </form>

@@ -10,7 +10,7 @@
                 <th scope="col">Nom d'utilisateur</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prénom</th>
-                <th scope="col">Sellier de l'usager</th>
+                <th scope="col">Cellier de l'usager</th>
                 <th scope="col">Supprimer l'usager</th>
               </tr>
               </thead>
