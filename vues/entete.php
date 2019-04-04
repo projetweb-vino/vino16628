@@ -66,7 +66,7 @@
                     <!-- Ajouter une bouteille -->
                     <li class="nav-item dropdown">
 
-                        <a class="nav-link dropdown-toggle" id="" href="?requete=ajouterNouvelleBouteilleCellier" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" id="ajouterBouteille" href="?requete=ajouterNouvelleBouteilleCellier" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-plus"><i class="fas fa-wine-bottle"></i></i>
                             <span>

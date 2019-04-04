@@ -31,4 +31,16 @@
             </form>
         </div>    
     </div>
-</div>       
+</div>
+
+
+<script type="text/javascript">
+    //Au chargement de la page : on active le menu 'Statistiques' et on désactive les autres
+    window.addEventListener('load', function() {
+      document.getElementById("indiquer").classList.add("active");
+      document.getElementById("monCompte").classList.remove("active");
+      document.getElementById("celliers").classList.remove("active");
+      document.getElementById("statistiques").classList.remove("active");
+
+    });
+</script>       
