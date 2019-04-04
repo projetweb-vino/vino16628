@@ -68,7 +68,8 @@
                     <h1 class="card-title">
                        <?php 
                         if(isset($valeurBouteilleTous))
-                          echo $valeurBouteilleTous['valeurBouteilleTous'].'$';
+                          echo number_format($valeurBouteilleTous['valeurBouteilleTous'], 2, '.', '') . '$';
+                          // echo $valeurBouteilleTous['valeurBouteilleTous'].'$';
                       ?>
                     </h1>
                     <p class="card-text">Valeur des bouteilles </p>
@@ -78,6 +79,62 @@
               </div>
             </div>
           </div>
+
+          <!-- Nombre de nouvels usagers -->
+          <div class="col-md-4">
+            <div class="card mb-2">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                 <i class="fas fa-user-clock fa-5x"></i>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h1 class="card-title">
+                       <?php 
+                        // On ouvre le fichier texte en mode écriture
+                        $monfichier = fopen('compteur.txt', 'r+');
+   
+                        $nombreNouvelUsager = fgets($monfichier); // On lit la première ligne (nombre de nouvels usagers)
+                        echo  $nombreNouvelUsager;
+                       
+                        fclose($monfichier);
+                      ?>
+                    </h1>
+                    <p class="card-text">Nouvels usagers </p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+           <!-- Nombre de bouteilles bu -->
+          <div class="col-md-4">
+            <div class="card mb-2">
+              <label for="date">Nombre de bouteilles bu par date </label>
+              <select class="form-control custom-select" id="date" name="date">
+              <?php
+               foreach ($dates as $key => $date) { ?>
+                <option value="<?php echo $date['id'] ?>"><?php echo $date['date'] ?></option>
+              <?php } ?>
+              </select>
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                 <i class="fas fa-wine-glass-alt fa-5x"></i>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h1 class="card-title" id="nombreBu">
+                       
+                    </h1>
+                    <p class="card-text">Bouteilles </p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
