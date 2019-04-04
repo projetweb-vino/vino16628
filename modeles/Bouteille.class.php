@@ -924,6 +924,49 @@ class Bouteille extends Modele {
         return $res;
 	}
 
+	/**
+	 * Cette méthode permet de calculer le nombre de bouteilles bu 
+	 * 
+	 * @return retourne l'occurence.
+	 */
+	public function nombreBouteillesBu($champ)
+	{
+		// Récupérer la date courante
+        //(GMT -4:00) EST (U.S. & Canada)
+        $rangees = Array();
+        $timezone  = -4;
+        $dateCourante = gmdate("Y/m/j", time() + 3600*($timezone+date("I"))); 
+        // Requête qui lit les statistiques en fonction de la date actuelle
+        $requete = "SELECT * 
+					FROM stats
+					WHERE date = '$dateCourante'";
+		$resultat = $this->_db->query($requete);
+
+        $rangees = $resultat->fetch_assoc();
+        // Récupérer le nombre de bouteilles bu
+        $nombreBu = $rangees['nombreBu'];
+
+      	if(!$nombreBu){
+      		// On procède à l'insertion d'un nouveau enregistrement si la date actuelle est dépassée
+      		$i++;
+      		$requete = "INSERT into stats($champ, date) VALUE (?, ?)";
+			
+        	$stmt = $this->_db->prepare($requete);
+			$stmt->bind_param('is', $i, $dateCourante);
+			$res = $stmt->execute();
+      	      		
+      	}
+      	// Sinon on fait une mise à jour
+      	else{
+      		      	
+			$requete = "UPDATE stats SET $champ = $champ+1 WHERE date = '$dateCourante'";
+			$res = $this->_db->query($requete);
+
+       	}
+
+		return $res;
+	}
+
 
 
 
