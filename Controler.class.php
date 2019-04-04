@@ -357,6 +357,10 @@ class Controler
 
                     case "vote":
 				    	$this->vote();
+				    	break;
+				    		
+				    case "nombreBouteillesBu":
+				    	$this->nombreBouteillesBue();
 				    	break;	
 				}
 			}
