@@ -233,6 +233,36 @@ window.addEventListener('load', function() {
          
   });
 
+  /*=================================================================*
+  =                 Afficher le nombre de bouteilles bu              =
+  ==================================================================*/
+  document.getElementById("date").addEventListener("change", function(evt){
+    var id = document.getElementById("date").value;
+    var h2 = document.getElementById("nombreBu");
+    console.log(date);
+    
+    let requete = new Request("index.php?requete=nombreBouteillesBu", {method: 'POST', body: '{"id": '+id+'}'});
+             
+      fetch(requete)
+        .then(response => {
+            if (response.status === 200) {
+              return response.json();
+            } else {
+              throw new Error('Erreur');
+            }
+          })
+          .then(response => {
+            console.log(response);
+                   
+           
+              h2.innerHTML = response.nombreBu;
+            
+          }).catch(error => {
+            console.error(error);
+          });
+         
+  });
+
  
   /*=============================================
   =      formulaire des bouteilles listées      =
