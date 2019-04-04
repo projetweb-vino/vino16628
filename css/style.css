@@ -1484,6 +1484,9 @@ iframe {
 .ajouter{
   background-color: white;
  }
+.ajouform{
+  margin-bottom: 44.4px;
+}
 /*------------ fin formulaire -----------------*/
 
 /****** popup  la liste des bouteilles**********/
@@ -1628,5 +1631,18 @@ iframe {
   /*text-align: center;*/
   /*background-color: red;*/
 }
-
-
+/*------------ formulaire erreurs-----------------*/
+.min-100 {
+    margin-top: 80px;
+    margin-bottom: 269.4px;
+}
+/*.min-101 {
+    height: 100%;
+}*/
+.indique{
+  margin-top: 80px;
+}
+.indiq{
+  margin-bottom: 83px;
+}
+/*------------ fin formulaire -----------------*/

@@ -264,7 +264,7 @@
                             <div class="form-group wrap-login100-form-btn">
                                 <input type="hidden" name="requete" value="ajouterBouteilleNonListe">
                                 <input type="hidden" name="id_formulaire" value="1">
-                                <button type="submit"  class=" btn btn-primary">Ajouter</button>
+                                <button type="submit"  class=" btn btn-primary ajouform">Ajouter</button>
                             </div>
                         </div>
                     </form>
@@ -555,12 +555,12 @@
                             <div class="form-group wrap-login100-form-btn">
                                 <input type="hidden" name="requete" value="ajouterBouteilleNonListe">
                                 <input type="hidden" name="id_formulaire" value="2">
-                                <button type="submit"  class=" btn btn-primary " id ="validfor2" >Ajouter</button>
+                                <button type="submit"  class=" btn btn-primary ajouform" id ="validfor2" >Ajouter</button>
                             </div>
                         </div>
                     </form>
                 </div>
-                 <div class="col-md-3 imagesuprimer" >
+                <div class="col-md-3 imagesuprimer" >
                     <div class="form-group ">
                         <a class="btn btn-primary btnliste" href="#popup1">Liste des bouteilles</a>
                     </div>
