@@ -669,9 +669,10 @@ class Bouteille extends Modele {
 			{
 				$rangees[] = $rangee;
 			}
+			return $rangees;
 		}
 		
-		return $rangees;
+		
 	
 	}
 
