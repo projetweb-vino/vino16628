@@ -2,8 +2,14 @@
     <div class="tabscss">
     <div class="tab-2">
         <label for="tab2-1">Ajouter Une bouteille Non listées</label>
-        <input id="tab2-1" name="tabs-two" type="radio" checked="checked">
-        <div class="container-fluid">
+        <?php
+        // condition pour selectioner le formulaire il affiche listées si en travail avec sinon l'autre formulaire non listées
+        if (!isset($champs['id_formulaire'])||(isset($champs['id_formulaire'])&& isset($champs['id_formulaire'])== 1)){ ?>
+            <input id="tab2-1" name="tabs-two" type="radio" checked="checked">
+        <?php }else{?>
+            <input id="tab2-1" name="tabs-two" type="radio" >
+        <?php }?>
+         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8">
                     <form method="GET">
@@ -18,6 +24,7 @@
                             </div>
                              <div id="nomchamp1" class=" form-group col-md-3 wrap-input100 validate1 validate-input" data-validate="Nom est invalide" >
                                 <span class="label-input100">Nom</span>
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['nom'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="nom" id="nom1" value = "<?php echo $champs['nom']?>">
                                 <?php 
@@ -47,6 +54,7 @@
                         <div class="form-row">
                             <div class=" form-group col-md-3 wrap-input100 validate2 validate-input" data-validate="Millesime est invalide">
                                 <span class="label-input100">Millesime</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['millesime'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="millesime" id="millesime1" value = "<?php echo $champs['millesime']?>">
                                 <?php 
@@ -66,6 +74,7 @@
                             </div>    
                             <div class=" form-group col-md-3 wrap-input100 validate3 validate-input " data-validate="Quantiteest invalide">
                                 <span class="label-input100">Quantité</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['quantite'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="quantite" id="quantite1" value = "<?php echo $champs['quantite']?>">
                                 <?php 
@@ -85,6 +94,7 @@
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate4 validate-input" data-validate="Pays est invalide">
                                 <span class="label-input100">Pays</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['pays'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="pays" id="pays1" value = "<?php echo $champs['pays']?>">
                                 <?php 
@@ -106,6 +116,7 @@
                          <div class="form-row">
                             <div class=" form-group col-md-3 wrap-input100 validate5 validate-input" data-validate="Prix est invalide">
                                 <span class="label-input100">Prix</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['prix'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="prix_saq" id="prix1" value = "<?php echo $champs['prix']?>">
                                 <?php 
@@ -125,6 +136,7 @@
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate6 validate-input" data-validate="Notes est invalide">
                                 <span class="label-input100">Notes</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['notes'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="notes" id="notes1" value = "<?php echo $champs['notes']?>">
                                 <?php 
@@ -144,6 +156,7 @@
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate7 validate-input" data-validate="Format est invalide">
                                 <span class="label-input100">Format</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['format'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100" type="text" name="format" id="format1" value = "<?php echo $champs['format']?>">
                                 <?php 
@@ -165,6 +178,7 @@
                         <div class="form-row">
                              <div class=" form-group col-md-3 wrap-input100 validate8 validate-input">
                                 <span class="label-input100">Date d'achat</span>
+                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['date_achat'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100 sele" type="date" name="date_achat" id="date_achat1" value = "<?php echo $champs['date_achat']?>">
                                 <?php 
@@ -276,7 +290,13 @@
     </div>
  <div class="tab-2">
     <label for="tab2-2">Ajouter Une bouteille listées</label>
-    <input id="tab2-2" name="tabs-two" type="radio">
+        <?php 
+        if (isset($champs['id_formulaire']) && $champs['id_formulaire'] == 2) { ?>
+            <input id="tab2-2" name="tabs-two" type="radio" checked="checked">
+        <?php }else{?>
+            <input id="tab2-2" name="tabs-two" type="radio">
+        <?php }?>
+    
     <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8">
