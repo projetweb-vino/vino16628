@@ -631,6 +631,49 @@ class Bouteille extends Modele {
 		$stmt->bind_param('si', $nomCellier, $usager_id);
 		$stmt->execute();
 	}
+	
+	/**
+	* Fonction de sauvegarde les erreurs indiquer par l'usager
+	* 
+	* @param $nom de l'usager
+	* @param $prenom de l'usager
+	* @param $titre de l'indication 
+	* @param $texte de l'indication 
+	*/
+	public function SauvagrdIndication($nom, $prenom,$titre, $texte)
+	{
+		
+		$requete = "INSERT INTO indiquer(nom, prenom, titre, texteerreurs) VALUES (".
+		"'".$nom."',".
+		"'".$prenom."',".
+		"'".$titre."',".
+		"'".$texte."')";
+		
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+	/**
+	* Fonction recuperer les errures indiqués
+	*
+	* @return $row détails d'une erreurs
+	**/
+	public function RecupererErreurs()
+	{
+				
+		$requete = "SELECT * FROM indiquer ORDER BY nom DESC  ";
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($rangee = $res->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+	
+	}
 
 	/**
 	* Fonction de sauvegarde d'une bouteille dans un cellier
