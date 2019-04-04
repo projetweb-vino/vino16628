@@ -12,7 +12,7 @@
     <!-- Le nom du Cellier -->
     <div class="row">
         <div class="col">
-            <p class="text-dark mt-5 mb-5">
+            <p class="text-dark mt-5 mb-5 text-cellier">
                 <b>
                 <?php 
                 echo $dat['nomCellier']['nomCellier'];
@@ -97,7 +97,7 @@
         foreach ($data as $cle => $bouteille) {
                  
     ?>
-        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 tm-block-col bouteilles">
+        <div class="col-md-2 col-sm-6 col-md-4 col-lg-3 col-xl-3 tm-block-col bouteilles">
 
             <!-- Le conteneur overlay -->
             <div class="middle">

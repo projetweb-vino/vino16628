@@ -58,6 +58,9 @@ button:focus {
 .tm-mb-big {
   margin-bottom: 60px;
 }
+.cont-login, .cont-usagers {
+  min-height: 80vh
+}
 .tm-mt-small {
   margin-top: 20px;
 }
@@ -595,6 +598,10 @@ input[type="checkbox"]:focus {
   .navbar-expand-lg .navbar-nav .nav-link {
     padding: 15px 20px;
   }
+   .form-group{
+    padding-left: 0;
+    padding-right: 5px;
+  }  
 }
 @media (max-width: 1275px) and (min-width: 1200px) {
   .nav-item {
@@ -650,6 +657,10 @@ input[type="checkbox"]:focus {
   .navbar-collapse {
     right: 15px;
   }
+   .text-cellier{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  } 
 }
 @media (max-width: 991px) {
   .tm-col-big,
@@ -718,7 +729,10 @@ input[type="checkbox"]:focus {
   #lineChart {
     max-height: 350px;
   }
-  
+  .table-usagers{
+  padding: 15px 0 !important;
+  font-size: 80%;
+}
   nav{
     z-index: 200;
   }
@@ -1581,6 +1595,9 @@ iframe {
   .popup{
     width: 100%;
   }
+  .navbar-collapse{
+    z-index: 2000 !important;
+  }
   .middle{
   /*transition: .5s ease;
   opacity: 1;
@@ -1646,3 +1663,12 @@ iframe {
   margin-bottom: 83px;
 }
 /*------------ fin formulaire -----------------*/
+.exemple{
+  min-height: 80vh;
+}
+.btnSupprimerUsager:hover{
+  color: red;
+} 
+.lienCellier{
+color: #525151 !important;
+}
