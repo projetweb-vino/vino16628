@@ -39,7 +39,7 @@
                 }
                 // Sinon on affiche un message
                 else{
-                    echo "Votre Cellier est vide !";
+                    echo "Votre liste est vide !";
                 }
 
                 ?>  
