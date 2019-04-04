@@ -2,7 +2,7 @@
     <!-- Le nom du Cellier -->
     <div class="row">
         <div class="col">
-            <p class="text-dark mt-5 mb-5">
+            <p class="text-dark mt-5 mb-5 text-cellier">
                 <b>
                 <?php 
                 echo $dat['nomCellier']['nomCellier'];
