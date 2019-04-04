@@ -358,7 +358,7 @@ class Controler
                     case "vote":
 				    	$this->vote();
 				    	break;
-				    		
+
 				    case "nombreBouteillesBu":
 				    	$this->nombreBouteillesBue();
 				    	break;	
@@ -576,6 +576,23 @@ class Controler
 			include("vues/mesCelliers.php");
 			include("vues/pied.php");
     	}
+
+    	/**
+		* Fonction d'affichage des détails d'une bouteille par id
+		* 
+		*/
+		private function bouteille($id)
+		{
+			$bte = new Bouteille();
+			// $body = json_decode(file_get_contents('php://input'));
+			$bouteille = $bte->bouteilleParId($id);
+			// var_dump($data);
+			// include("vues/entete.php");
+			include("vues/bouteille.php");
+			// include("vues/pied.php");
+            
+                  
+		}
 
     	/**
 		* Fonction de gestion d'un compte
