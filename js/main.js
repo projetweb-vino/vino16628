@@ -237,7 +237,11 @@ window.addEventListener('load', function() {
   /*=================================================================*
   =                 Afficher le nombre de bouteilles bu              =
   ==================================================================*/
-  document.getElementById("date").addEventListener("change", function(evt){
+  var date = document.getElementById("date");
+  if (date != null) {
+    // statement
+  
+  date.addEventListener("change", function(evt){
     var id = document.getElementById("date").value;
     var h2 = document.getElementById("nombreBu");
     console.log(date);
@@ -263,6 +267,7 @@ window.addEventListener('load', function() {
           });
          
   });
+  }
 
  
   /*=============================================
