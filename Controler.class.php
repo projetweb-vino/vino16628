@@ -1197,6 +1197,21 @@ class Controler
             return $nombreSAQ;
 
     	}
+    	
+    	/**
+		* Fonction qui récupère le nombre de bouteilles bu à une date donnée
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function nombreBouteillesBue()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			// $vote = (int)$body->vote;
+			// if($vote < 1 || $vote > 5) return;
+			$resultat = $bte->nombreBouteillesBuParDate($body->id);
+			echo json_encode($resultat);
+		}
 }
 ?>
 
