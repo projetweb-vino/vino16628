@@ -36,6 +36,11 @@ class Controler
 						$this->bouteilleParId();
 						break;
 
+					case 'bouteille':
+						$id = $_GET["id"];
+						$this->bouteille($id);
+						break;
+
 					case 'autocompleteBouteille':
 						$this->autocompleteBouteille();
 						break;
