@@ -967,6 +967,28 @@ class Bouteille extends Modele {
 		return $res;
 	}
 
+	/**
+	 * Fonction qui récupère les statistiques 
+	 * 
+	 * @return $row détails d'un cellier
+	 */
+	public function stats()
+	{
+		$rangees = array();		
+		$requete = "SELECT * FROM stats";
+		$res = $this->_db->query($requete);
+        if($res->num_rows)
+		{
+			while($rangee = $res->fetch_assoc())
+			{
+				$rangees[] = $rangee;
+			}
+		}
+		
+		return $rangees;
+	
+	}
+
 
 
 
