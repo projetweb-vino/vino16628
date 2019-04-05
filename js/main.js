@@ -239,34 +239,33 @@ window.addEventListener('load', function() {
   ==================================================================*/
   var date = document.getElementById("date");
   if (date != null) {
-    // statement
-  
-  date.addEventListener("change", function(evt){
-    var id = document.getElementById("date").value;
-    var h2 = document.getElementById("nombreBu");
-    console.log(date);
     
-    let requete = new Request("index.php?requete=nombreBouteillesBu", {method: 'POST', body: '{"id": '+id+'}'});
-             
-      fetch(requete)
-        .then(response => {
-            if (response.status === 200) {
-              return response.json();
-            } else {
-              throw new Error('Erreur');
-            }
-          })
-          .then(response => {
-            console.log(response);
-                   
-           
-              h2.innerHTML = response.nombreBu;
-            
-          }).catch(error => {
-            console.error(error);
-          });
+    date.addEventListener("change", function(evt){
+      var id = document.getElementById("date").value;
+      var nombreBu = document.getElementById("nombreBu");
+      var nombreAjoute = document.getElementById("nombreAjoute");
          
-  });
+      let requete = new Request("index.php?requete=nombreBouteillesBu", {method: 'POST', body: '{"id": '+id+'}'});
+               
+        fetch(requete)
+          .then(response => {
+              if (response.status === 200) {
+                return response.json();
+              } else {
+                throw new Error('Erreur');
+              }
+            })
+            .then(response => {
+              console.log(response);
+                // Injecter le résultat 
+                nombreBu.innerHTML = response.nombreBu;
+                nombreAjoute.innerHTML = response.nombreAjoute;
+              
+            }).catch(error => {
+              console.error(error);
+            });
+           
+    });
   }
 
  
