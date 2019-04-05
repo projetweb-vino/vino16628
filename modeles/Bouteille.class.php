@@ -125,7 +125,7 @@ class Bouteille extends Modele {
 			{
 				while($rangee = $res->fetch_assoc())
 				{
-					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					// $rangee['nom'] = trim(utf8_encode($rangee['nom']));
 					$rangees[] = $rangee;
 				}
 			}

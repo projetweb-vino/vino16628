@@ -1083,11 +1083,11 @@ class Controler
 				}
 
 				// Validation du pays
-				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+				// if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+				if($pays == ""){
 	                $msgErreur['erreur_pays'] = "Le pays est invalide !<br>";
 	            }
-	            // Validation du format
-				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
+	           if ($format =='') {
 				    $msgErreur['erreur_format'] = "La format est invalide !";
 				}
 			}
@@ -1135,11 +1135,11 @@ class Controler
 				}
 
 				// Validation du pays
-				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
+				if($pays == ""){
 	                $msgErreur['erreur_pays2'] = "Le pays est invalide !<br>";
 	            }
 	            // Validation du format
-				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
+				if ($format =='') {
 				    $msgErreur['erreur_format2'] = "La format est invalide !";
 				}
 			}

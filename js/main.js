@@ -418,7 +418,7 @@ window.addEventListener('load', function() {
           }
         }
         if (element.name == "pays") {
-          var regex =/^[a-zA-Z]+$/gm
+          var regex =/^[A-Z\É][A-Za-z\é\è\ê\-]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 4);
           }
