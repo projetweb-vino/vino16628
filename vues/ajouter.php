@@ -176,7 +176,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                             <div class=" form-group col-md-3 wrap-input100 validate8 validate-input">
+                            <div class=" form-group col-md-3 wrap-input100 validate8 validate-input">
                                 <span class="label-input100">Date d'achat</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['date_achat'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
@@ -197,23 +197,24 @@
                                 ?>
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate9 validate-input">
-                                    <span class="label-input100">Garder jusqu'à</span>
-                                    <?php  if(isset($champs['garde_jusqua'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
+                                <span class="label-input100">Garder jusqu'à</span>
+                                <?php  if(isset($champs['garde_jusqua'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua1" value = "<?php echo $champs['garde_jusqua']?>">
-                                    <?php 
-                                        }else{
-                                    ?>
-                                        <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua1" placeholder="Garder jusqu'à...">
-                                    <?php         
-                                        } 
-                                    ?>
-                                    <span class="focus-input100"></span>
-                                    <!-- Afficher un message d'erreur s'il y'a lieu -->
-                                    <?php  if(isset($message['erreur_garde_jusqua'])) { ?>
-                                        <small class="text-warning invali"><?php echo $message['erreur_garde_jusqua']?></small>
-                                    <?php 
-                                        } 
-                                    ?>
+                                <?php 
+                                    }else{
+                                ?>
+                                    <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua1" placeholder="Garder jusqu'à...">
+                                <?php         
+                                    } 
+                                ?>
+                                <span class="focus-input100"></span>
+                                <!-- Afficher un message d'erreur s'il y'a lieu -->
+                                <?php  if(isset($message['erreur_garde_jusqua'])) { ?>
+                                    <small class="text-warning invali"><?php echo $message['erreur_garde_jusqua']?></small>
+                                <?php 
+                                    } 
+                                ?>
                                 </div>                
                             <div class="imageupload form-group col-md-3 wrap-input100 validate26 validate-input">
                                 <span class="label-input100">images</span>
@@ -229,6 +230,7 @@
                           </div>
                          <div class="form-row">
                              <div class=" form-group col-md-9 wrap-input100 validate10 validate-input">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Description</span>
                                 <?php  if(isset($champs['description'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
                                     <input class="input100 sele" type="text" name="description" id="description1" value = "<?php echo $champs['description']?>">
@@ -311,6 +313,7 @@
                                 </select>
                             </div>
                              <div id="nomchamp1" class=" form-group col-md-3 wrap-input100 validate13 validate-input" data-validate="Nom est invalide" >
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Nom</span>
                                 <?php  if(isset($champs['nom'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="nom" id="nom" value = "<?php echo $champs['nom']?>">
@@ -341,6 +344,7 @@
                         </div>         
                         <div class="form-row">
                             <div class=" form-group col-md-3 wrap-input100 validate14 validate-input" data-validate="Millesime est invalide">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Millesime</span>
                                 <?php  if(isset($champs['millesime'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="millesime" id="millesime" value = "<?php echo $champs['millesime']?>">
@@ -360,6 +364,7 @@
                                 ?>
                             </div>    
                             <div class=" form-group col-md-3 wrap-input100 validate15 validate-input " data-validate="Quantite est invalide">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Quantité</span>
                                 <?php  if(isset($champs['quantite'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="quantite" id="quantite" value = "<?php echo $champs['quantite']?>">
@@ -379,6 +384,7 @@
                                 ?>
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate16 validate-input" data-validate="Pays est invalide">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Pays</span>
                                 <?php  if(isset($champs['pays'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="pays" id="pays" value = "<?php echo $champs['pays']?>">
@@ -400,6 +406,7 @@
                         </div>
                         <div class="form-row">
                             <div class=" form-group col-md-3 wrap-input100 validate17 validate-input" data-validate="Prix est invalide">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Prix</span>
                                 <?php  if(isset($champs['prix'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="prix_saq" id="prix" value = "<?php echo $champs['prix']?>">
@@ -419,6 +426,7 @@
                                 ?>
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate18 validate-input" data-validate="Notes est invalide">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Notes</span>
                                 <?php  if(isset($champs['notes'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="notes" id="notes" value = "<?php echo $champs['notes']?>">
@@ -438,6 +446,7 @@
                                 ?>
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate19 validate-input" data-validate="Format est invalide">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Format</span>
                                 <?php  if(isset($champs['format'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100" type="text" name="format" id="format" value = "<?php echo $champs['format']?>">
@@ -459,6 +468,7 @@
                         </div>
                         <div class="form-row">
                              <div class=" form-group col-md-3 wrap-input100 validate20 validate-input">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Date d'achat</span>
                                 <?php  if(isset($champs['date_achat'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100 sele" type="date" name="date_achat" id="date_achat" value = "<?php echo $champs['date_achat']?>">
@@ -478,6 +488,7 @@
                                 ?>
                             </div>
                             <div class=" form-group col-md-3 wrap-input100 validate21 validate-input">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Garder jusqu'à</span>
                                 <?php  if(isset($champs['garde_jusqua'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                 <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua" value = "<?php echo $champs['garde_jusqua']?>">
@@ -497,18 +508,19 @@
                                 ?>
                                 </div>                
                                 <div class="imageupload form-group col-md-3 wrap-input100 validate27 validate-input">
-                                <span class="label-input100">images</span>
+                                    <!-- apres la validation il retourne les valeurs envoyés   -->
+                                    <span class="label-input100">images</span>
 
-                                <?php  if(isset($champs['image'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
+                                    <?php  if(isset($champs['image'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
 
-                                    <input type="text" class="input100" id="image" placeholder="image" name="image" value = "<?php echo $champs['image']?>">
-                                <?php 
-                                    }else{
-                                ?>
-                                    <input type="text" class="input100" id="image" placeholder="image" name="image">
-                                <?php         
-                                    } 
-                                ?>
+                                        <input type="text" class="input100" id="image" placeholder="image" name="image" value = "<?php echo $champs['image']?>">
+                                    <?php 
+                                        }else{
+                                    ?>
+                                        <input type="text" class="input100" id="image" placeholder="image" name="image">
+                                    <?php         
+                                        } 
+                                    ?>
                                 <span class="focus-input100"></span>
                                 <!-- Afficher un message d'erreur s'il y'a lieu -->
                                 <?php  if(isset($message['erreur_image2'])) { ?>
@@ -520,6 +532,7 @@
                           </div>
                          <div class="form-row">
                              <div class=" form-group col-md-9 wrap-input100 validate22 validate-input">
+                                <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Description</span>
                                 <?php  if(isset($champs['description'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
                                     <input class="input100 sele" type="text" name="description" id="description" value = "<?php echo $champs['description']?>">

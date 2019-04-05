@@ -312,6 +312,7 @@ window.addEventListener('load', function() {
   var preview = document.querySelector('.preview');
   if (input !=null) {
     input.addEventListener('change', updateImageDisplay);
+
   }
   
   function updateImageDisplay() {
@@ -445,7 +446,7 @@ window.addEventListener('load', function() {
           }
         }
         if (element.name == "description") {
-          var regex =/^[a-zA-Z0-9 /:,;.]+$/gm
+          var regex =/^[a-zA-Z0-9 /:,;.&]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 10);
           }
@@ -483,7 +484,7 @@ window.addEventListener('load', function() {
         if (element.name == "image") {
           var regex =''//i
           if (formulaire1.checked ) {
-          validerformulaire(element.value, element.name,regex, 26);
+            validerformulaire(element.value, element.name,regex, 26);
           }
           if (formulaire.checked ) {
             validerformulaire(element.value, element.name,regex, 27 );
@@ -495,7 +496,7 @@ window.addEventListener('load', function() {
     function validerformulaire(element, name, reg ,id){
       element =element.trim();
      var input = document.querySelector(".validate"+id);
-     var validebar = input.childNodes[3];
+     var validebar = input.childNodes[5];
         if (element !="") {
           var paragraph = element 
           var regex = reg
