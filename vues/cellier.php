@@ -121,7 +121,7 @@
                 <div class="b-share" id="<?php echo 'b-share'.$bouteille['id_bouteille_cellier'] ?>">
                    <div id="carre"></div>
                      <!--Bouton Facebook -->
-                    <div class="icon-bar" data-href="https://www.foudil-benzaid.com/vino16628-newDesign/index.php?requete=bouteille&id=<?php echo $bouteille['id_bouteille_cellier'] ?>" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=https%3A%2F%2Fwww.foudil-benzaid.com%2Fvino16628-foudil-benzaid%2Findex.php%3Frequete%3Dbouteille%26id%3D<?php echo $bouteille['id_bouteille_cellier'] ?>&display=popup&ref=plugin&src=share_button" class="fb-xfbml-parse-ignore facebook"><i class="fab fa-facebook-f"></i></a></div>
+                    <div class="icon-bar" data-href="https://www.foudil-benzaid.com/vino16628-newDesign/index.php?requete=bouteille&id=<?php echo $bouteille['id_bouteille_cellier'] ?>" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=https%3A%2F%2Fwww.foudil-benzaid.com%2Fvino16628-newDesign%2Findex.php%3Frequete%3Dbouteille%26id%3D<?php echo $bouteille['id_bouteille_cellier'] ?>&display=popup&ref=plugin&src=share_button" class="fb-xfbml-parse-ignore facebook"><i class="fab fa-facebook-f"></i></a></div>
                     
                     
                     <!-- Bouton Twitter -->
