@@ -9,7 +9,7 @@
   <div class="row tm-content-row">
           
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
-      <div class="tm-bg-primary-dark tm-block tm-block-taller">
+      <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
         <div class="row">
 
           <!-- Le nombre d'usagers -->
@@ -107,39 +107,41 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
 
-           <!-- Nombre de bouteilles bu -->
-          <div class="col-md-4">
-            <div class="card mb-2">
-              <label for="date">Nombre de bouteilles bu par date </label>
+  </div> <!--fin du row-->
+
+    <!-- Le nombre de celliers par usagers -->
+        <div class="row tm-content-row">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+              <h2 class="tm-block-title text-dark">Choisir une date</h2>
               <select class="form-control custom-select" id="date" name="date">
               <?php
                foreach ($dates as $key => $date) { ?>
                 <option value="<?php echo $date['id'] ?>"><?php echo $date['date'] ?></option>
               <?php } ?>
               </select>
-              <div class="row no-gutters">
-                <div class="col-md-4">
-                 <i class="fas fa-wine-glass-alt fa-5x"></i>
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h1 class="card-title" id="nombreBu">
-                       
-                    </h1>
-                    <p class="card-text">Bouteilles </p>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre de bouteilles bu</th>
+                    <th scope="col">Nombre de bouteilles ajoutées</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td scope="row" id="nombreBu"></td>
+                    <td scope="row" id="nombreAjoute"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> <!--Fin du tableau-->
           </div>
-
         </div>
-      </div>
-    </div>
-
-  </div> <!--fin du row-->
       
   <!-- Le nombre de celliers par usagers -->
   <div class="row tm-content-row">
