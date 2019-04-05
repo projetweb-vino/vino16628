@@ -609,9 +609,9 @@
               </thead>
               <tbody>
                 <?php
-                if (!empty($data)) {
+                if (!empty($dataSAQ)) {
                     $i =1;
-                     foreach ($dat as $cle => $bouteille) {
+                     foreach ($dataSAQ as $cle => $bouteille) {
                         $i++
                     ?>
                     <tr>
@@ -633,7 +633,7 @@
                 }
                 // Sinon on affiche un message
                 else{
-                    echo "Votre Cellier est vide !";
+                    echo "Aucune bouteille n'est importée depuis la SAQ ! Veuillez contacter l'administrateur.";
                 }
 
                 ?>  
