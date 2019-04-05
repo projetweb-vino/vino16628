@@ -46,29 +46,48 @@ class Controler
 						break;
 
 					case 'ajouterBouteilleSAQ':
-						$this->ajouterBouteilleSAQ($_POST['id_cellier'], $_POST['nom'], $_POST['image'], $_POST['code_saq'], $_POST['pays'], $_POST['description'], $_POST['prix_saq'], $_POST['url_saq'], $_POST['url_img'], $_POST['format'], $_POST['type_id'], $_POST['quantite'], $_POST['notes'], $_POST['garde_jusqua'],  $_POST['notes'], $_POST['millesime']);
+						//tester si usager est authentifié
+						if (isset($_SESSION["UserID"])) {
+							$this->ajouterBouteilleSAQ($_POST['id_cellier'], $_POST['nom'], $_POST['image'], $_POST['code_saq'], $_POST['pays'], $_POST['description'], $_POST['prix_saq'], $_POST['url_saq'], $_POST['url_img'], $_POST['format'], $_POST['type_id'], $_POST['quantite'], $_POST['notes'], $_POST['garde_jusqua'],  $_POST['notes'], $_POST['millesime']);
+						}
+						else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
 						break;
 
 					case 'ajouterNouvelleBouteilleCellier':
-						$this->ajouterNouvelleBouteilleCellier();
+						//tester si usager est authentifié
+						if (isset($_SESSION["UserID"])) {
+							$this->ajouterNouvelleBouteilleCellier();
+						}else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
 						break;
 						
 
 					case 'ajouterBouteilleCellier':
-						$this->ajouterBouteilleCellier();
+						//tester si usager est authentifié
+						if (isset($_SESSION["UserID"])) {
+							$this->ajouterBouteilleCellier();
+						}else{
+							// Sinon on affiche le login
+							require_once(__DIR__."/vues/login.php");
+						}
 						break;
 
 					case 'ajouterBouteilleNonListe':
-						//tester si usager est connecté 
+						//tester si usager est authentifié
 						if (isset($_SESSION["UserID"])) {
-						// Déclarer un tableau
+							// Déclarer un tableau
 							$message = array();
 							
 							// Validation de formulaire
                             $message = $this->valideFormAjout($_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
 
 							if(count($message) ==0){
-							//tester si la bouteille existe déja
+								//tester si la bouteille existe déja
 								$bouteilleNonlistee = $this->verifierbouteille($_REQUEST['nom'],$_REQUEST['cellier_id']);
 								
 								if($bouteilleNonlistee == ''){
@@ -96,6 +115,7 @@ class Controler
 
 
 					case 'modifierBouteilleCellier':
+
 						$id = $_GET["id"];
 						$this->modifierBouteilleCellier($id);
 						break;
@@ -134,36 +154,51 @@ class Controler
 						break;
 
 					case 'sauvegarder':
-						// Tester si les paramêtres sont envoyés
-						if (isset($_REQUEST['id'],$_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['notes'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'],$_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['type'], $_REQUEST['format']))
-						{
-							// Déclarer un tableau
-							$message = array();
+						//tester si usager est connecté 
+						if (isset($_SESSION["UserID"])) {
+							// Tester si les paramêtres sont envoyés
+							if (isset($_REQUEST['id'],$_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['notes'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'],$_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['type'], $_REQUEST['format']))
+							{
+								// Déclarer un tableau
+								$message = array();
 
-							// Valider que les paramètres sont valides
-                            $message = $this->valideFormModif($_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'],$_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['format']);
-                            
-                            // Si le message est vide
-                            // Ce qui signifie qu'il y'a pas eu d'erreurs
-                            if(count($message) ==0)
-                            {
-                            	// On procède à la modification
-								$this->sauvegardeModifierCellier($_REQUEST['id'], $_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['notes'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'], $_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['type'], $_REQUEST['format']);
-							}
-							// Sinon on affiche le formulaire de modification avec l'ensemble des erreurs
-							else{
-								$this->modifierBouteilleCellier($_REQUEST['id'], $message);
+								// Valider que les paramètres sont valides
+	                            $message = $this->valideFormModif($_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'],$_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['format']);
+	                            
+	                            // Si le message est vide
+	                            // Ce qui signifie qu'il y'a pas eu d'erreurs
+	                            if(count($message) ==0)
+	                            {
+	                            	// On procède à la modification
+									$this->sauvegardeModifierCellier($_REQUEST['id'], $_REQUEST['nom'], $_REQUEST['date_achat'], $_REQUEST['notes'], $_REQUEST['quantite'], $_REQUEST['garde_jusqua'], $_REQUEST['prix_saq'], $_REQUEST['pays'], $_REQUEST['millesime'], $_REQUEST['description'], $_REQUEST['type'], $_REQUEST['format']);
+								}
+								// Sinon on affiche le formulaire de modification avec l'ensemble des erreurs
+								else{
+									$this->modifierBouteilleCellier($_REQUEST['id'], $message);
 
+								}
 							}
+						}
+						else{
+							require_once(__DIR__."/vues/login.php");
+
 						}
 						break;
 
 					case 'sauvegarderBouteilleCellier':
-						// Tester si les paramêtres sont envoyés
-						if (isset($_REQUEST['cellier'],$_REQUEST['bouteille'],$_REQUEST['quantite'], $_REQUEST['date_achat'] )){
+						//tester si usager est connecté 
+						if (isset($_SESSION["UserID"])) {
+							// Tester si les paramêtres sont envoyés
+							if (isset($_REQUEST['cellier'],$_REQUEST['bouteille'],$_REQUEST['quantite'], $_REQUEST['date_achat'] )){
 
-							$this->sauvegarderBouteilleCellier($_REQUEST['cellier'], $_REQUEST['bouteille'], $_REQUEST['quantite'], $_REQUEST['date_achat'],$_REQUEST['notes'] );
+								$this->sauvegarderBouteilleCellier($_REQUEST['cellier'], $_REQUEST['bouteille'], $_REQUEST['quantite'], $_REQUEST['date_achat'],$_REQUEST['notes'] );
+							}
 						}
+						else{
+							require_once(__DIR__."/vues/login.php");
+
+						}
+
 						break;	
 
 					case 'boireBouteilleCellier':
@@ -206,59 +241,68 @@ class Controler
 		        		break; 
 
 		        	case "ChangerMotDePass":
+
+		        		//tester si un usager est authentifié
+						if (isset($_SESSION["UserID"])) {
 		        	    
-		        	    if(isset($_REQUEST["password"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && isset($_REQUEST["username"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) )
+			        	    if(isset($_REQUEST["password"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && isset($_REQUEST["username"]) && isset($_REQUEST["passwordNouveau"]) && isset($_REQUEST["passwordRepeat"]) )
+				        	{
+
+				        		// Déclarer un tableau
+								$message = array();
+
+								// Valider les paramètres
+	                            $message = $this->valideFormModifierUsager($_REQUEST['nom'], $_REQUEST['prenom'], $_REQUEST['username'], $_REQUEST['passwordNouveau'], $_REQUEST['passwordRepeat'], $_REQUEST['password']);
+	                                       
+	                            // Si le message est vide
+	                            // Ce qui signifie qu'il y'a pas eu d'erreurs
+	                            // On procède à la modification des informations
+	                            if(count($message) ==0)
+		                        {
+		                        		                        	
+		                        	$usager = new Usager();
+
+		                        	$data = $usager->modifierUsager($_SESSION["UserID"], $_REQUEST['username'], $_REQUEST['passwordNouveau'], $_REQUEST['nom'], $_REQUEST['prenom']);
+		                        	
+		                  
+		                            if($data) 
+		                            { 
+		                            	// Initialiser les variables session
+	                                    $_SESSION["UserID"] = $data["id"];
+	                                    $_SESSION["nom"] = $_REQUEST["nom"];
+				        			    $_SESSION["prenom"] = $_REQUEST["prenom"];
+						        	    $_SESSION["UserName"] = $_REQUEST["username"];
+		                                $_SESSION["admin"] = 'non';
+
+				                       	$nombreSAQ = $this->nombreSAQ();
+				                        require_once(__DIR__."/vues/entete.php");
+			        				    require_once(__DIR__."/vues/monCompte.php");
+			        				    require_once(__DIR__."/vues/pied.php");
+				                       
+		                            }
+		                        }
+		                        else{
+		                          	$nombreSAQ = $this->nombreSAQ();
+		                            require_once(__DIR__."/vues/entete.php");
+			        				require_once(__DIR__."/vues/monCompte.php");
+			        				require_once(__DIR__."/vues/pied.php");
+		                        }
+			                }
+			                else
+			                {
+			                	$nombreSAQ = $this->nombreSAQ();
+			                    $this->monCompte();
+			                }
+			            }
+			        	else
 			        	{
+			        		require_once(__DIR__."/vues/login.php");
+			        	}
 
-			        		// Déclarer un tableau
-							$message = array();
-
-							// Valider les paramètres
-                            $message = $this->valideFormModifierUsager($_REQUEST['nom'], $_REQUEST['prenom'], $_REQUEST['username'], $_REQUEST['passwordNouveau'], $_REQUEST['passwordRepeat'], $_REQUEST['password']);
-                                       
-                            // Si le message est vide
-                            // Ce qui signifie qu'il y'a pas eu d'erreurs
-                            // On procède à la modification des informations
-                            if(count($message) ==0)
-	                        {
-	                        		                        	
-	                        	$usager = new Usager();
-
-	                        	$data = $usager->modifierUsager($_SESSION["UserID"], $_REQUEST['username'], $_REQUEST['passwordNouveau'], $_REQUEST['nom'], $_REQUEST['prenom']);
-	                        	
-	                  
-	                            if($data) 
-	                            { 
-	                            	// Initialiser les variables session
-                                    $_SESSION["UserID"] = $data["id"];
-                                    $_SESSION["nom"] = $_REQUEST["nom"];
-			        			    $_SESSION["prenom"] = $_REQUEST["prenom"];
-					        	    $_SESSION["UserName"] = $_REQUEST["username"];
-	                                $_SESSION["admin"] = 'non';
-
-			                       	$nombreSAQ = $this->nombreSAQ();
-			                        require_once(__DIR__."/vues/entete.php");
-		        				    require_once(__DIR__."/vues/monCompte.php");
-		        				    require_once(__DIR__."/vues/pied.php");
-			                       
-	                            }
-	                        }
-	                        else{
-	                          	$nombreSAQ = $this->nombreSAQ();
-	                            require_once(__DIR__."/vues/entete.php");
-		        				require_once(__DIR__."/vues/monCompte.php");
-		        				require_once(__DIR__."/vues/pied.php");
-	                        }
-		                }
-		                else
-		                {
-		                	$nombreSAQ = $this->nombreSAQ();
-		                    $this->monCompte();
-		                }
 				    	break;
 		        		
 		        	case "Enregistrer":
-			        	
+		        		
 	                   	if(isset($_REQUEST["username"]) && isset($_REQUEST["password"]) && isset($_REQUEST["passwordRepeat"]) && isset($_REQUEST["nom"]) && isset($_REQUEST["prenom"]) && !isset($_SESSION["UserID"]))
 			        	{
 			        		// Déclarer un tableau
@@ -299,6 +343,8 @@ class Controler
 		                {
 		                    require_once(__DIR__."/vues/formEnregistrer.php");
 		                }
+		            
+						
 				    	break;
 				    		
 		        	case "Logout":
@@ -492,7 +538,7 @@ class Controler
 					// Récupérer la liste des celliers par usager
 					$data = $bte->CellierParUsager($_SESSION["UserID"] );
 					// Récupérer la liste des bouteilles
-					$dat = $bte->ListeBouteilleSAQ();
+					$dataSAQ = $bte->ListeBouteilleSAQ();
 					// $dat = $bte->getListeBouteille();
 					// Récupérer les types
 					$datas = $bte->RecupererTypes();
