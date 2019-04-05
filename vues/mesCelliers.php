@@ -67,15 +67,14 @@
             foreach ($dat as $cle => $cellier) {
             ?>
               <tr>
-                <th scope="row"><input type="checkbox" /></th>
+                <th scope="row"><a href="#" class="tm-product-delete-link"><img src="images/winery.png" style="width: 20px;">
+                  </a></th>
                 <td class="tm-product-name"><a class="lienCellier" data-id='<?php echo $cellier['id'] ?>' id="<?php echo $cellier['id'] ?>" href="<?php echo '?requete=bouteilleParCellier&id='.$cellier['id'].'#cellier' ?>"><?php echo $cellier['nom'] ?></a></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>
-                  <a href="#" class="tm-product-delete-link">
-                    <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                  </a>
+                 
                 </td>
               </tr>
             <?php
