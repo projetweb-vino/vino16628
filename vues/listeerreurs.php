@@ -1,5 +1,5 @@
-<div class="container-fluid">
-    <div class="row indique">
+<div class="container-fluid ">
+    <div class="row indique1">
         <div class="col-md-12">
             <h3>La listes des erreurs indiqué par les usagers </h3>
         </div>    
@@ -7,7 +7,7 @@
             <p></p>
         </div>    
     </div>    
-    <div class="row justify-content-md-center indique">
+    <div class="row justify-content-md-center indique2">
         <div class="table-responsive col-lg-8 min-100 ">
            <table class="table table-dark">
               <thead>
