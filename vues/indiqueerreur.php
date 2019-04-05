@@ -1,5 +1,5 @@
-<div class="container-fluid min-101">
-    <div class="row indique">
+<div class="container-fluid listfooter">
+    <div class="row listfooter2">
         <div class="col-md-12">
             <h3>Ce formulaire indique aux administrateurs les erreurs dans le catalogue</h3>
         </div>    
@@ -7,13 +7,13 @@
             <p>Vous pouvez indiquer une ou plusieurs erreurs dans le catalogue aux administrateurs à fin de régler ces problèmes.</p>
         </div>    
     </div>    
-    <div class="row justify-content-md-center indique">
+    <div class="row justify-content-md-center ">
         <div class="col-lg-4 ">
             <form method="GET">
                 <div class="form-group">
                     <label for="username">Titre</label>    
                     <div class="input-group-prepend">
-                        <input name="titre"  type="text" class="form-control validate" id="titre" value="" required/>
+                        <input name="titre"  type="text" class="form-control" id="titre" value="" required/>
                     </div>    
                 </div>
                 <div class="form-group">

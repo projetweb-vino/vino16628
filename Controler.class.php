@@ -1057,7 +1057,11 @@ class Controler
 	             if($notes == ""){
 	                $msgErreur['erreur_notes'] = "les notes ne peut être vide !";
 	            }
-	            
+	             // Validation du format
+				if ($format == "") {
+				    $msgErreur['erreur_format'] = "La format est invalide !";
+				}
+					            
 	            // Validation date d'achat
 	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $date_achat)) {
 				    $msgErreur['erreur_date_achat'] = "La date est invalide !";
@@ -1086,10 +1090,7 @@ class Controler
 				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
 	                $msgErreur['erreur_pays'] = "Le pays est invalide !<br>";
 	            }
-	            // Validation du format
-				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
-				    $msgErreur['erreur_format'] = "La format est invalide !";
-				}
+	           
 			}
 			   if ($id_formulaire == '2') {
             
@@ -1109,6 +1110,10 @@ class Controler
 	             if($notes == ""){
 	                $msgErreur['erreur_notes2'] = "les notes ne peut être vide !";
 	            }
+	             // Validation du format
+				if ($format == "") {
+				    $msgErreur['erreur_format2'] = "La format est invalide !";
+				}
 	            
 	            // Validation date d'achat
 	            if (!preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i", $date_achat)) {
@@ -1138,10 +1143,7 @@ class Controler
 				if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
 	                $msgErreur['erreur_pays2'] = "Le pays est invalide !<br>";
 	            }
-	            // Validation du format
-				if (!preg_match("/^[a-zA-Z0-9 \/,*.]+$/i", $format)) {
-				    $msgErreur['erreur_format2'] = "La format est invalide !";
-				}
+	           
 			}
             
             // Retourner un message d'erreur
