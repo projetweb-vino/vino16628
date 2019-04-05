@@ -555,14 +555,21 @@ class Controler
 		{
 			if (isset($_SESSION["UserID"])) {	
 				$bte = new Bouteille();
-				// Récupérer la bouteille par id
-				$data = $bte->RecupererCellierParId($id);
-				$data['types'] = $bte->RecupererTypes();
-				$nombreSAQ = $this->nombreSAQ();
-	            include("vues/entete.php");
-	            // Afficher la vue modifier
-				include("vues/modifier.php");
-				include("vues/pied.php"); 
+				$compteur = $bte->RecupererBouteillesParUsager($id);
+				if ($compteur[0]['nombreBouteilles'] != 0) {
+									
+					// Récupérer la bouteille par id
+					$data = $bte->RecupererCellierParId($id);
+					$data['types'] = $bte->RecupererTypes();
+					$nombreSAQ = $this->nombreSAQ();
+		            include("vues/entete.php");
+		            // Afficher la vue modifier
+					include("vues/modifier.php");
+					include("vues/pied.php"); 
+				}
+				else{
+					$this->accueil();
+				}
 			} 
 			else{
 				// Sinon on affiche le login

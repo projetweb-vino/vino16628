@@ -928,7 +928,7 @@ class Bouteille extends Modele {
 	 * @param $id id de la bouteille cellier
 	 * @return $row détails d'un cellier
 	 */
-	public function RecupererBouteillesParUsager($idUsager, $idCellier)
+	public function RecupererBouteillesParUsager($id)
 	{
 		$rangees = array();		
 		$requete = "SELECT 
@@ -940,7 +940,7 @@ class Bouteille extends Modele {
 					JOIN vino_bouteille ON vino_cellier.id = vino_bouteille.cellier_id
 
 					
-					WHERE vino_usagers.id = ". $id;
+					WHERE vino_bouteille.id = ". $id. " AND vino_usagers.id = ".$_SESSION['UserID'];
 		$res = $this->_db->query($requete);
         if($res->num_rows)
 		{
