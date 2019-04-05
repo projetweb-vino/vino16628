@@ -68,9 +68,9 @@
                     <h1 class="card-title">
                        <?php 
                         if(isset($valeurBouteilleTous))
+                          // Appliquer un format de chiffre à deux décimales après la virgule
                           echo number_format($valeurBouteilleTous['valeurBouteilleTous'], 2, '.', '') . '$';
-                          // echo $valeurBouteilleTous['valeurBouteilleTous'].'$';
-                      ?>
+                        ?>
                     </h1>
                     <p class="card-text">Valeur des bouteilles </p>
                     
@@ -217,8 +217,8 @@
                       if ($bouteilles['valeurBouteillesParCellier']==null) {
                         echo "0 $";
                       }else{
-                        echo $bouteilles['valeurBouteillesParCellier'].' $';
-
+                        // Appliquer un format de chiffre à deux décimales après la virgule
+                        echo number_format($bouteilles['valeurBouteillesParCellier'], 2, '.', '') . '$';
                       }
                     ?>
                   </td>
@@ -275,8 +275,9 @@
                       if ($bouteilles['valeurBouteillesParUsager']==null) {
                         echo "0 $";
                       }else{
-                        echo $bouteilles['valeurBouteillesParUsager'].' $';
-
+                        // Appliquer un format de chiffre à deux décimales après la virgule
+                        echo number_format($bouteilles['valeurBouteillesParUsager'], 2, '.', '') . '$';
+                       
                       }
                     ?>
                   </td>
