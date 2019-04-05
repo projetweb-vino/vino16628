@@ -1189,15 +1189,15 @@ class Controler
                 $msgErreur['erreur_prenom'] = "Le prénom doit avoir que des lettres !";
             }
 
+            // Validation du nom d'usager 
+            if($nomUsager == "" || !preg_match("/^[A-Za-z][A-Za-z0-9_]{5,29}$/i", $nomUsager)){
+                $msgErreur['erreur_nomUsager'] = "Le nom d'usager doit avoir minimum 5 lettres et ne doit pas commencer par un chiffre !";
+            }
+
             // Ne pas prendre en compte les erreurs si les champs concernant le mot de passe 
             // sont vides
 	        if ($motDePasse !='' || $motDePasseConfirm !='' || $motDePasseActuel !='') {
-	            	            
-	            // Validation du nom d'usager 
-	            if($nomUsager == "" || !preg_match("/^[A-Za-z][A-Za-z0-9_]{5,29}$/i", $nomUsager)){
-	                $msgErreur['erreur_nomUsager'] = "Le nom d'usager doit avoir minimum 5 lettres et ne doit pas commencer par un chiffre !";
-	            }
-	                            
+	                           
 	            // Validation du mot de passe
 	            if($motDePasse == '' || !preg_match("/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,20}$/i", $motDePasse) ){
 	                $msgErreur['erreur_motDePasse']= "Le mot de passe doit avoir minimum une lettre, un chiffre et doit être d'une longueur minimum de 6 caractères !";
