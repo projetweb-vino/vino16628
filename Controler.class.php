@@ -1095,7 +1095,7 @@ class Controler
 	           if ($format =='') {
 				    $msgErreur['erreur_format'] = "La format est invalide !";
 				}
-
+			}	
 			   if ($id_formulaire == '2') {
             
 	            // Validation du nom de la bouteille
@@ -1154,6 +1154,7 @@ class Controler
 				}
 
 			}
+			
             
             // Retourner un message d'erreur
             return $msgErreur;
