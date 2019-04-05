@@ -604,6 +604,15 @@ input[type="checkbox"]:focus {
   {
     margin-bottom: 80px;
   }
+  .indique1
+  {
+    margin-top: 80px;
+    margin-bottom: 40px;
+  }
+  .indique2
+  {
+   margin-bottom: 511px;
+  } 
 }
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-nav .nav-link {
@@ -734,6 +743,15 @@ input[type="checkbox"]:focus {
   {
     margin-top: 40px;
   }
+  .indique1
+  {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  .indique2
+  {
+   margin-bottom: 40px;
+  } 
 }
 @media (max-width: 480px) {
   .tm-mt-big {
