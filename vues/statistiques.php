@@ -113,35 +113,7 @@
 
   </div> <!--fin du row-->
 
-    <!-- Le nombre de celliers par usagers -->
-        <div class="row tm-content-row">
-          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
-            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-              <h2 class="tm-block-title text-dark">Choisir une date</h2>
-              <select class="form-control custom-select" id="date" name="date">
-              <?php
-               foreach ($dates as $key => $date) { ?>
-                <option value="<?php echo $date['id'] ?>"><?php echo $date['date'] ?></option>
-              <?php } ?>
-              </select>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Nombre de bouteilles bu</th>
-                    <th scope="col">Nombre de bouteilles ajoutées</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td scope="row" id="nombreBu"></td>
-                    <td scope="row" id="nombreAjoute"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div> <!--Fin du tableau-->
-          </div>
-        </div>
+  
       
   <!-- Le nombre de celliers par usagers -->
   <div class="row tm-content-row">
