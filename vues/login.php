@@ -24,7 +24,7 @@
 		if(!isset($_SESSION["UserID"]))
 		{
 	?>
-    <div class="container tm-mt-big tm-mb-big">
+    <div class="container tm-mt-big tm-mb-big loginfooter">
 	
       <div class="row">
         <div class="col-12 mx-auto tm-login-col">
