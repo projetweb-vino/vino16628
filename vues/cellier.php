@@ -8,7 +8,7 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
   
-<div class="container">
+<div class="container cellierfooter">
     <!-- Le nom du Cellier -->
     <div class="row">
         <div class="col">
@@ -121,16 +121,16 @@
                 <div class="b-share" id="<?php echo 'b-share'.$bouteille['id_bouteille_cellier'] ?>">
                    <div id="carre"></div>
                      <!--Bouton Facebook -->
-                    <div class="icon-bar" data-href="https://www.foudil-benzaid.com/vino16628-newDesign/index.php?requete=bouteille&id=<?php echo $bouteille['id_bouteille_cellier'] ?>" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=https%3A%2F%2Fwww.foudil-benzaid.com%2Fvino16628-foudil-benzaid%2Findex.php%3Frequete%3Dbouteille%26id%3D<?php echo $bouteille['id_bouteille_cellier'] ?>&display=popup&ref=plugin&src=share_button" class="fb-xfbml-parse-ignore facebook"><i class="fab fa-facebook-f"></i></a></div>
+                    <div class="icon-bar" data-href="https://www.foudil-benzaid.com/vino16628/index.php?requete=bouteille&id=<?php echo $bouteille['id_bouteille_cellier'] ?>" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=https%3A%2F%2Fwww.foudil-benzaid.com%2Fvino16628%2Findex.php%3Frequete%3Dbouteille%26id%3D<?php echo $bouteille['id_bouteille_cellier'] ?>&display=popup&ref=plugin&src=share_button" class="fb-xfbml-parse-ignore facebook"><i class="fab fa-facebook-f"></i></a></div>
                     
                     
                     <!-- Bouton Twitter -->
                     <div class="icon-bar"  data-layout="button" data-size="small">
-                    <a target="_blank" href="<?php echo 'https://twitter.com/share?ref_src=https://www.foudil-benzaid.com/vino16628-newDesign/index.php?requete=bouteille&id='.$bouteille['id_bouteille_cellier'] ?>" class="fb-xfbml-parse-ignore twitter" data-show-count="false"><i class="fab fa-twitter"></i></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+                    <a target="_blank" href="<?php echo 'https://twitter.com/share?ref_src=https://www.foudil-benzaid.com/vino16628/index.php?requete=bouteille&id='.$bouteille['id_bouteille_cellier'] ?>" class="fb-xfbml-parse-ignore twitter" data-show-count="false"><i class="fab fa-twitter"></i></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
                     
                     <!-- Bouton LinkedIn -->
                     <div class="icon-bar"  data-layout="button" data-size="small">
-                        <a class="fb-xfbml-parse-ignore linkedin" href="<?php echo 'https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.foudil-benzaid.com%2Fvino16628-newDesign%2Findex.php%3Frequete%3Dbouteille%26id%3D'.$bouteille['id_bouteille_cellier'] ?>" onclick="javascript:window.open(this.href,
+                        <a class="fb-xfbml-parse-ignore linkedin" href="<?php echo 'https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.foudil-benzaid.com%2Fvino16628%2Findex.php%3Frequete%3Dbouteille%26id%3D'.$bouteille['id_bouteille_cellier'] ?>" onclick="javascript:window.open(this.href,
                           '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fab fa-linkedin-in"></i></a>
                           
                     </div>
@@ -140,7 +140,7 @@
                 <!-- Image de la bouteille -->
                 
                 <!-- une condition qui choisire d'afficher l'image de la saq si il a lieu sinon elle affiche la photo ajouter bouteille non listées -->
-                <img class="rounded-circle image" <?php if(substr($bouteille['image'],0,2) == "//"){ ?> src="https:<?php  echo $bouteille['image'];?>" <?php }else{ ?> src="images/<?php  echo $bouteille['image'];?>"<?php }?> >    
+                <img class="image" <?php if(substr($bouteille['image'],0,2) == "//"){ ?> src="https:<?php  echo $bouteille['image'];?>" <?php }else{ ?> src="images/<?php  echo $bouteille['image'];?>"<?php }?> >    
                 
 
                 <!-- Le nom de la bouteille -->

@@ -125,7 +125,7 @@ class Bouteille extends Modele {
 			{
 				while($rangee = $res->fetch_assoc())
 				{
-					$rangee['nom'] = trim(utf8_encode($rangee['nom']));
+					// $rangee['nom'] = trim(utf8_encode($rangee['nom']));
 					$rangees[] = $rangee;
 				}
 			}
@@ -172,25 +172,18 @@ class Bouteille extends Modele {
 		return $rangee;
 	}
 	/**
-	 * Cette méthode permet de retourner les résultats de recherche pour la fonction d'autocomplete de l'ajout des bouteilles dans le cellier
+	 * Cette méthode recupere les bouteille courspendre au chaine envoyé
 	 * 
-	 * @param string $nom La chaine de caractère à rechercher
-	 * @param integer $nb_resultat Le nombre de résultat maximal à retourner.
-	 * 
-	 * @throws Exception Erreur de requête sur la base de données 
-	 * 
-	 * @return array id et nom de la bouteille trouvée dans le catalogue
+	 * @param $nom le nom de la bouteille une chaine 
+	 * @param integer $nbr Le nombre de résultat maximal à retourner.
 	 */
        
-	public function autocomplete($nom, $nb_resultat=10)
+	public function serch($nom, $nbr=10)
 	{
 		
 		$rangees = Array();
-		$nom = $this->_db->real_escape_string($nom);
-		$nom = preg_replace("/\*/","%" , $nom);
-		 
-		
-		$requete ='SELECT id, nom FROM vino_bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
+			
+		$requete ='SELECT id, nom FROM vino_bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nbr; 
 		
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
@@ -204,12 +197,7 @@ class Bouteille extends Modele {
 				}
 			}
 		}
-		else 
-		{
-			throw new Exception("Erreur de requête sur la base de données", 1);
-			 
-		}
-	
+
 		return $rangees;
 	}
 
@@ -277,27 +265,64 @@ class Bouteille extends Modele {
 	 * 
 	 * @return Boolean Succès ou échec de l'ajout.
 	 */
-	public function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
-	{
-		$vote =0;	
+	public function ajouterBouteilleNonListe($data)
+	{	
+		
+		// dépaler l'image dans le fichier images		   
+	    if(isset($_FILES["image_ch"]) && $_FILES["image_ch"]["error"] == 0) {
+ 			//tester si la taille de l'image ne dépasse pas  4mb
+	    	if ($_FILES["image_ch"]["size"]<= 4194304) {
+
+	    		$informationNom = pathinfo($_FILES["image_ch"]["name"]);
+	    		$extension_charge = $informationNom["extension"];
+	    		$extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+	    		
+	    		if (in_array($extension_charge, $extensions_autorisees)) {
+	    			//générer une chaine aléatoire
+	    			$chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+				    $string = '';
+
+				    for($i=0; $i< 15; $i++){
+				        $string .= $chars[rand(0, strlen($chars)-1)];
+				    }
+				    //ajouter le nom de l'image au chaine
+				    $string = $string.$_FILES["image_ch"]["name"];
+				    $image_uploads = $this->_db->escape_string($string);
+
+	    			move_uploaded_file($_FILES["image_ch"]["tmp_name"], "./images/" . $string);
+	    			
+	    		}
+	    		
+	    	}else{
+	    		//image par défaut
+	    		$image_uploads = "1yejc4idzdcellier.jpg";
+	    	}
+	    }else{
+	    	$image_uploads = "1yejc4idzdcellier.jpg";
+	    }	
+	    if (isset($data['image']) && $data['image'] !="") {
+	    	
+	    	$image_uploads = $data['image'];
+	    }
+		$data['vote'] =0;	
 		$requete = "INSERT INTO vino_bouteille(cellier_id, nom, type_id, millesime, quantite, pays, prix_saq, notes, format, date_achat, garde_jusqua, image, description, code_saq, url_saq, vote, url_img)VALUES (".
-		"'".$cellier_id."',".
-		"'".$nom."',".
-		"'".$type_id."',".
-		"'".$millesime."',".
-		"'".$quantite."',".
-		"'".$pays."',".
-		"'".$prix_saq."',".
-		"'".$notes."',".
-		"'".$format."',".
-		"'".$date_achat."',".
-		"'".$garde_jusqua."',".
+		"'".$data['cellier_id']."',".
+		"'".$data['nom']."',".
+		"'".$data['type_id']."',".
+		"'".$data['millesime']."',".
+		"'".$data['quantite']."',".
+		"'".$data['pays']."',".
+		"'".$data['prix_saq']."',".
+		"'".$data['notes']."',".
+		"'".$data['format']."',".
+		"'".$data['date_achat']."',".
+		"'".$data['garde_jusqua']."',".
 		"'".$image_uploads."',".
-		"'".$description."',".
-		"'".$code_saq."',".
-		"'".$url_saq."',".
-		"'".$vote."',".
-		"'".$url_img."')";
+		"'".$data['description']."',".
+		"'".$data['code_saq']."',".
+		"'".$data['url_saq']."',".
+		"'".$data['vote']."',".
+		"'".$data['url_img']."')";
 
         $res = $this->_db->query($requete);
         
@@ -742,6 +767,21 @@ class Bouteille extends Modele {
 		return $rangee;
 		
 	}
+	/**
+	 * Cette méthode permet d'obtenir une bouteille par id de la saq
+	 * @param integer $id id de la bouteille
+	 * 
+	 * @return retourne l'occurence.
+	 */
+	public function bouteilleParIdSaq($id)
+	{
+			
+		$requete = "SELECT * From vino_saq WHERE id = $id";
+		$res = $this->_db->query($requete);
+        $rangee = $res->fetch_assoc();
+		return $rangee;
+		
+	}
 
 	/**
 	 * Cette méthode permet de retirer une bouteille d'un cellier
@@ -1008,7 +1048,7 @@ class Bouteille extends Modele {
 
        	}
 
-		return $res;
+		// return $res;
 	}
 
 	/**
@@ -1049,10 +1089,29 @@ class Bouteille extends Modele {
 		return $rangee;
 		
 	}
+	/**
+	 * Cette méthode qui permet de récupérer le nom de bouteille tapé dans le recherche de formulaire 
+	 * 
+	 * @param $date nom de bouteille 
+	 * 
+	 * @return retourne l'occurence.
+	 */
 
+	public function RechercheFormulaireNom($nom ,$nbResultats = 100000) {
+		// $nom = $this->_db->escape_string($nom);
+		// $nom = preg_replace("/\*/","%" , $nom);
+  //       $nbResultats = (int) $nbResultats;
+		$rangees = Array(); 
+		$sql = "SELECT id, nom FROM vino_saq WHERE nom LIKE LOWER('%$nom%') LIMIT 0, $nbResultats";
 
-
-
+        $res = $this->_db->query($sql);
+       
+        while ($row = $res->fetch_assoc()) {
+            $rangees[] = $row;					
+        }
+        
+		return $rangees;
+	}
 
 
 }

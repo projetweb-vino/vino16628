@@ -26,9 +26,9 @@ window.addEventListener('load', function() {
   document.querySelectorAll(".btnBoire").forEach(function(element){
       
     element.addEventListener("click", function(evt){
-      console.log('boire');
+      
       let id = evt.target.parentElement.dataset.id;
-      console.log(id);
+      
       let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
       document.getElementById('reviewStars-input-' + id).style.display = 'block';
       fetch(requete)
@@ -58,7 +58,7 @@ window.addEventListener('load', function() {
   ==================================================================*/
 
   document.querySelectorAll(".btnAjouter").forEach(function(element){
-      console.log(element);
+      
       element.addEventListener("click", function(evt){
           let id = evt.target.parentElement.dataset.id;
           let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
@@ -121,10 +121,11 @@ window.addEventListener('load', function() {
   ===================================================================*/
   
   document.querySelectorAll(".btnRetirer").forEach(function(element){
-      console.log(element);
+     
       element.addEventListener("click", function(evt){
         // Boite de dialogue 
-        if ( confirm( "Voulez-vous retirer cette bouteille du cellier ?" ) ) {
+        confirmation = confirm( "Voulez-vous retirer cette bouteille du cellier ?" );
+        if (confirmation) {
           // Si l'usager clique sur OK           
           let id = evt.target.parentElement.dataset.id;
           let requete = new Request("index.php?requete=retirerBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
@@ -268,43 +269,6 @@ window.addEventListener('load', function() {
     });
   }
 
- 
-  /*=============================================
-  =      formulaire des bouteilles listées      =
-  =============================================*/
-  document.querySelectorAll(".ajoutebouteille").forEach(function(element){
-
-    element.addEventListener("click", function(evt){
-      let id = evt.target.parentElement.dataset.id;
-      //recuperer les information de la bouteille selectionné
-      var nom = document.getElementById("nom"+id).innerHTML;
-      var image = document.getElementById("image"+id).innerHTML;
-      var code_saq = document.getElementById("code_saq"+id).innerHTML;
-      var pays = document.getElementById("pays"+id).innerHTML;
-      var description = document.getElementById("description"+id).innerHTML;
-      var prix_saq = document.getElementById("prix_saq"+id).innerHTML;
-      var url_saq = document.getElementById("url_saq"+id).innerHTML;
-      var url_img = document.getElementById("url_img"+id).innerHTML;
-      var format = document.getElementById("format"+id).innerHTML;
-      //remplire le formulaire d'ajoute une bouteille 
-      document.getElementById("nom").value = nom;
-      document.getElementById("image").value = image;
-      document.getElementById("code_saq").value = code_saq;
-      document.getElementById("pays").value = pays;
-      document.getElementById("description").value = description;
-      document.getElementById("prix").value = prix_saq;
-      document.getElementById("url_saq").value = url_saq;
-      document.getElementById("url_img").value = url_img;
-      document.getElementById("format").value = format;
-      //afficher l'image dans le formulaire listées
-      var image = document.getElementById("imagelistee").childNodes[1];
-      image.setAttribute("src", url_img);
-      //fermer le popup
-      document.location.href = "#"; 
-
-    })
-
-  });
   /*=============================================
   =       image de formulaire d'ajout      =
   =============================================*/
@@ -343,8 +307,8 @@ window.addEventListener('load', function() {
           console.log(image);
           image.src = window.URL.createObjectURL(curFiles[i]);
           
-          image.style.width = '300px';
-          image.style.height = '380px';
+          image.style.width = '200px';
+          image.style.height = '204px';
           image.setAttribute("id", "image1") 
           divimage.appendChild(image);
           
@@ -379,6 +343,92 @@ window.addEventListener('load', function() {
       return (number/1048576).toFixed(1) + ' Mo';
     }
   }
+  /*=============================================
+  =      Recherche Bouteille listée de la saq    =
+  =============================================*/
+  var champrecherche = document.querySelector(".recherchesaq");
+  var listerech = document.querySelector('.listeBouteilles');
+  var image = document.getElementById("imagelistee");
+  if (image) {
+    var image = document.getElementById("imagelistee").childNodes[1];
+    image.style.display = "none";  
+  }
+        
+  if (champrecherche) {
+    champrecherche.addEventListener("keyup", function(evt){
+        
+    let nomBouteille = champrecherche.value;
+      
+    listerech.innerHTML = "";
+
+      if(nomBouteille){
+        let requete = new Request( "index.php?requete=RechercheFormulaire", { method: 'POST', body: '{"nom": "' + nomBouteille + '", "nbResultats": 5}'}
+        );
+        fetch(requete).then(response => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          else {
+            throw new Error('Erreur');
+          }
+        })
+        .then(response => {
+          response.forEach(function(element){
+              listerech.innerHTML += "<li data-idbouteille='"+ element.id +"'>"+element.nom+"</li>";
+          })
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      }
+    });
+  }
+    /*=============================================
+    =      Remplire le formulaire     =
+    =============================================*/
+
+ if (listerech != null) {
+
+    listerech.addEventListener("click", function(evt){
+    
+    if(evt.target.tagName == "LI"){
+        let id= evt.target.dataset.idbouteille;
+
+        let requete = new Request("index.php?requete=bouteilledelaSaq",{method: 'POST', body: '{"id": "'+id+'"}'});
+
+        fetch(requete).then(response => {
+            if (response.status === 200) {
+                return response.json();
+            }
+            else {
+                throw new Error('Erreur');
+            }
+        })
+        .then(response => {
+          //remplire le formulaire d'ajoute une bouteille 
+          document.getElementById("nom").value = response.nom;
+          document.getElementById("image").value = response.image;
+          document.getElementById("code_saq").value = response.code_saq;
+          document.getElementById("pays").value = response.pays;
+          document.getElementById("description").value = response.description;
+          document.getElementById("prix").value = response.prix_saq;
+          document.getElementById("url_saq").value = response.url_saq;
+          document.getElementById("url_img").value = response.url_img;
+          document.getElementById("format").value = response.format;
+          //afficher l'image dans le formulaire listées
+          var image = document.getElementById("imagelistee").childNodes[1];
+          image.setAttribute("src", response.url_img);
+          image.style.display = "block";
+          //vider le champ de recherche et la liste des bouteille          
+          listerech.innerHTML = "";
+          champrecherche.value = "";
+        })
+        .catch(error => {
+            console.error(error);
+        });        
+      }
+    });        
+  }
 
   /*=============================================
   =       validation des deux formulaires      =
@@ -390,8 +440,8 @@ window.addEventListener('load', function() {
       element.addEventListener("change", function(evt){
         var formulaire =  document.getElementById("tab2-2");
         var formulaire1 =  document.getElementById("tab2-1");
-
-        if (element.name == "nom") {
+        console.log(element.name)
+        if (element.name == "bouteille[nom]") {
           var regex =/^[a-zA-Z0-9 ]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 1 );
@@ -400,7 +450,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 13 );
           }
         }
-        if (element.name == "millesime") {
+        if (element.name == "bouteille[millesime]") {
           var regex =/^(1[89]\d\d|20[01]\d)$/ig
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 2);
@@ -409,7 +459,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 14 );
           }
         }
-        if (element.name == "quantite") {
+        if (element.name == "bouteille[quantite]") {
           var regex =/^[0-9]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 3);
@@ -418,8 +468,8 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 15 );
           }
         }
-        if (element.name == "pays") {
-          var regex =/^[a-zA-Z]+$/gm
+        if (element.name == "bouteille[pays]") {
+          var regex =/^[A-Za-z \é\è\ê\-]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 4);
           }
@@ -427,7 +477,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 16 );
           }
         }
-        if (element.name == "prix_saq") {
+        if (element.name == "bouteille[prix_saq]") {
           var regex =/^\d+(,\d{3})*(\.\d{1,4})?$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 5);
@@ -436,7 +486,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 17 );
           }
         }
-        if (element.name == "notes") {
+        if (element.name == "bouteille[notes]") {
           var regex =/^[a-zA-Z0-9 /:,;.]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 6);
@@ -445,7 +495,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 18 );
           }
         }
-        if (element.name == "description") {
+        if (element.name == "bouteille[description]") {
           var regex =/^[a-zA-Z0-9 /:,;.&]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 10);
@@ -454,7 +504,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 22 );
           }
         }
-        if (element.name == "format") {
+        if (element.name == "bouteille[format]") {
           var regex =/^[a-zA-Z0-9 /,*.]+$/gm
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 7);
@@ -463,7 +513,7 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 19 );
           }
         }
-        if (element.name == "date_achat") {
+        if (element.name == "bouteille[date_achat]") {
           var regex =/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 8);
@@ -472,22 +522,13 @@ window.addEventListener('load', function() {
             validerformulaire(element.value, element.name,regex, 20 );
           }
         }
-        if (element.name == "garde_jusqua") {
+        if (element.name == "bouteille[garde_jusqua]") {
           var regex =/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/i
           if (formulaire1.checked ) {
           validerformulaire(element.value, element.name,regex, 9);
           }
           if (formulaire.checked ) {
             validerformulaire(element.value, element.name,regex, 21 );
-          }
-        }
-        if (element.name == "image") {
-          var regex =''//i
-          if (formulaire1.checked ) {
-            validerformulaire(element.value, element.name,regex, 26);
-          }
-          if (formulaire.checked ) {
-            validerformulaire(element.value, element.name,regex, 27 );
           }
         }
       })
@@ -525,7 +566,7 @@ window.addEventListener('load', function() {
     element.addEventListener("click", function(evt){
 
       let id = evt.target.parentElement.dataset.id;
-      console.log('id bouteille '+id);
+      
       // Faire une redirection vers la page de modification 
       window.location = "index.php?requete=modifierBouteilleCellier&id="+id;
     })
