@@ -41,8 +41,8 @@ class Controler
 						$this->bouteille($id);
 						break;
 
-					case 'autocompleteBouteille':
-						$this->autocompleteBouteille();
+					case 'serchBouteille':
+						$this->serchBouteille();
 						break;
 
 					case 'ajouterBouteilleSAQ':
@@ -84,16 +84,16 @@ class Controler
 							$message = array();
 							
 							// Validation de formulaire
-                            $message = $this->valideFormAjout($_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
+                            $message = $this->valideFormAjout(empty($_REQUEST['bouteille']) ? array() : $_REQUEST['bouteille']);
 
 							if(count($message) ==0){
 								//tester si la bouteille existe déja
-								$bouteilleNonlistee = $this->verifierbouteille($_REQUEST['nom'],$_REQUEST['cellier_id']);
-								
+								$bouteilleNonlistee = $this->verifierbouteille($_REQUEST['bouteille']['nom'],$_REQUEST['bouteille']['cellier_id']);
+							
 								if($bouteilleNonlistee == ''){
 																
-								$this->ajouterBouteilleNonListe($_REQUEST['cellier_id'], $_REQUEST['nom'], $_REQUEST['type_id'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['notes'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['image'], $_REQUEST['description'], $_REQUEST['code_saq'], $_REQUEST['url_saq'], $_REQUEST['url_img']);
-								$this->accueil();
+								$this->ajouterBouteilleNonListe(empty($_REQUEST['bouteille']) ? array() : $_REQUEST['bouteille']);
+								
 								}else{
 									if (isset($_REQUEST['id_formulaire'])) {
 
@@ -102,10 +102,10 @@ class Controler
 										$message['vide2'] = "la bouteille existe déjà";
 									}
 									
-			        				$this->afficheformulaireMessages($message,$_REQUEST['nom'],$_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
+			        				$this->afficheformulaireMessages($message,empty($_REQUEST['bouteille']) ? array() : $_REQUEST['bouteille']);
 								}
 							}else{
-								$this->afficheformulaireMessages($message,$_REQUEST['nom'], $_REQUEST['millesime'], $_REQUEST['quantite'], $_REQUEST['pays'], $_REQUEST['prix_saq'], $_REQUEST['format'], $_REQUEST['date_achat'], $_REQUEST['garde_jusqua'], $_REQUEST['id_formulaire'], $_REQUEST['description'], $_REQUEST['notes'], $_REQUEST['image']);
+								$this->afficheformulaireMessages($message,empty($_REQUEST['bouteille']) ? array() : $_REQUEST['bouteille']);
 							}
 						}else{
 							// Sinon on affiche le login
@@ -208,6 +208,18 @@ class Controler
 					case 'retirerBouteilleCellier':
 						$this->retirerBouteilleCellier();
 						break;
+					case 'RechercheFormulaire':
+						$this->RechercheFormulaire();
+						break;
+					case 'bouteilledelaSaq':
+
+		                if (isset($_SESSION["UserID"])) {
+		                    $this->bouteilledelaSaq();
+		                }else{
+							require_once(__DIR__."/vues/login.php");
+
+						}
+		                break;		
 
 					case "Login":
 					                           
@@ -510,11 +522,11 @@ class Controler
 		* 
 		* @return $listeBouteille Sous format json
 		*/
-		private function autocompleteBouteille()
+		private function serchBouteille()
 		{
 			$bte = new Bouteille();
 			$body = json_decode(file_get_contents('php://input'));
-			$listeBouteille = $bte->autocomplete($body->nom);
+			$listeBouteille = $bte->serch($body->nom);
             
             echo json_encode($listeBouteille);
                   
@@ -565,8 +577,8 @@ class Controler
 			$bte = new Bouteille();
 			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
 			// Calculer le nombre de bouteilles bu dans un temps donné
-			$champ = 'nombreBu';
-			$nombreBouteillesBu = $bte->nombreBouteillesBu($champ);
+			// $champ = 'nombreBu';
+			// $nombreBouteillesBu = $bte->nombreBouteillesBu($champ);
 			// Fair appel à la fonction de récupération de la quantité
 			$resultat = $bte->recupererQuantite($body->id);
 
@@ -585,8 +597,8 @@ class Controler
 			$bte = new Bouteille();
 			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, 1);
 			// Calculer le nombre de bouteilles ajoutées dans un temps donné
-			$champ = 'nombreAjoute';
-			$nombreBouteillesBu = $bte->nombreBouteillesBu($champ);
+			// $champ = 'nombreAjoute';
+			// $nombreBouteillesBu = $bte->nombreBouteillesBu($champ);
 			// Fair appel à la fonction de récupération de la quantité
 			$resultat = $bte->recupererQuantite($body->id);
 			echo json_encode($resultat);
@@ -769,39 +781,39 @@ class Controler
 		* 
 		* @return $resultat Sous format json
 		*/
-		private function ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img)
+		private function ajouterBouteilleNonListe($dataf = array())
 		{
 				
 			$bte = new Bouteille();
-			$data = $bte->ajouterBouteilleNonListe($cellier_id, $nom, $type_id, $millesime, $quantite, $pays, $prix_saq, $notes, $format, $date_achat, $garde_jusqua, $image_uploads, $description, $code_saq, $url_saq, $url_img);
+			$data = $bte->ajouterBouteilleNonListe($dataf);
+			header("Location: index.php?requete=bouteilleParCellier&id=" . $dataf['cellier_id']);
 		}
 		/**
 		* Fonction affiche les deux formulaires avec les messages d'erreurs et les valeurs des champs
 		* 
 		*/
-		private function afficheformulaireMessages($erreurs, $nom, $millesime , $quantite, $pays, $prix, $format, $date_achat, $garde_jusqua, $id_formulaire, $description, $notes, $image)
+		private function afficheformulaireMessages($erreurs, $data =array())
 		{	
 			$message = array();
 			$champs = array();
 			$message = $erreurs;
-			$champs['nom'] = $nom;
-			$champs['millesime'] = $millesime;
-			$champs['quantite'] = $quantite;
-			$champs['pays'] = $pays;
-			$champs['prix'] = $prix;
-			$champs['format'] = $format;
-			$champs['date_achat'] = $date_achat;
-			$champs['garde_jusqua'] = $garde_jusqua;
-			$champs['description'] = $description;
-			$champs['notes'] = $notes;
-			$champs['image'] = $image;
-			$champs['id_formulaire'] =$id_formulaire;
+			$champs['nom'] = $data['nom'];
+			$champs['millesime'] = $data['millesime'];
+			$champs['quantite'] = $data['quantite'];
+			$champs['pays'] = $data['pays'];
+			$champs['prix'] = $data['prix_saq'];
+			$champs['format'] = $data['format'];
+			$champs['date_achat'] = $data['date_achat'];
+			$champs['garde_jusqua'] = $data['garde_jusqua'];
+			$champs['description'] = $data['description'];
+			$champs['notes'] = $data['notes'];
+			$champs['id_formulaire'] = $data['id_formulaire'];
 			$bte = new Bouteille();
 			// Récupérer la liste des celliers par usager
 			$data = $bte->CellierParUsager($_SESSION["UserID"] );
 			// Récupérer la liste des bouteilles
-			// $dat = $bte->ListeBouteilleSAQ();
-			$dat = $bte->getListeBouteille();
+			$dat = $bte->ListeBouteilleSAQ();
+			//$dat = $bte->getListeBouteille();
 			// Récupérer les types
 			$datas = $bte->RecupererTypes();
 			$nombreSAQ = $this->nombreSAQ();
@@ -850,6 +862,19 @@ class Controler
 			
 			echo json_encode($resultat);
 		}
+		/**
+		* Fonction Recuperer une bouteille de la saq
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function bouteilledelaSaq()
+	    {
+	        
+	        $body = json_decode(file_get_contents('php://input'));
+	        $bte = new Bouteille();
+	        $resultat = $bte->bouteilleParIdSaq($body->id);
+	        echo json_encode($resultat);
+	    }
 
 		/**
 		* Fonction d'ajout d'une bouteille dans le cellier
@@ -879,7 +904,7 @@ class Controler
 			$bte = new Bouteille();
 			$resultat = $bte->retirerBouteilleCellier($body->id);
 			
-			echo ($resultat);
+			echo json_encode($resultat);
 		}
 		
 		/**
@@ -910,7 +935,7 @@ class Controler
 				$data = $bte->RecupererErreurs();
 				$nombreSAQ = $this->nombreSAQ();
 				include("vues/entete.php");
-				include("vues/Listeerreurs.php");
+				include("vues/listeerreurs.php");
 				include("vues/pied.php");
 			}
 			else{
@@ -1028,18 +1053,25 @@ class Controler
 		* @param $image l'image de la bouteille cellier
 		* @return $msgErreur messages d'erreur
 		*/
-        public function valideFormAjout($nom, $millesime , $quantite, $pays, $prix, $format, $date_achat, $garde_jusqua, $id_formulaire, $description, $notes, $image)
+        public function valideFormAjout($data)
         {
             $msgErreur = array();
            
             // Trimer les variables
-            $nom = trim($nom);
-            $pays = trim($pays);
-            $format = trim($format);
-            $prix = trim($prix);
-            $quantite = trim($quantite);
-            $millesime = trim($millesime);
-            if ($id_formulaire == '1') {
+            $nom = trim($data['nom']);
+            $pays = trim($data['pays']);
+            $format = trim($data['format']);
+            $prix = trim($data['prix_saq']);
+            $quantite = trim($data['quantite']);
+            $description = trim($data['description']);
+            $notes = trim($data['notes']);
+            $format = trim($data['format']);
+            $date_achat = trim($data['date_achat']);
+            $quantite = trim($data['quantite']);
+            $garde_jusqua = trim($data['garde_jusqua']);
+            $millesime = trim($data['millesime']);
+
+            if ($data['id_formulaire'] == '1') {
             
 	            // Validation du nom de la bouteille
 	            if($nom == ""){
@@ -1048,10 +1080,6 @@ class Controler
 	            // Validation du description de la bouteille
 	            if($description == ""){
 	                $msgErreur['erreur_description'] = "La description ne peut être vide !";
-	            }
-	            // Validation du image de la bouteille
-	            if($image == ""){
-	                $msgErreur['erreur_image'] = "L'image ne peut être vide !";
 	            }
 	            // Validation du notes de la bouteille
 	             if($notes == ""){
@@ -1085,9 +1113,6 @@ class Controler
 				if(!is_float($prix) && !is_numeric($prix)){
 	                $msgErreur['erreur_prix'] = "Le prix n'est pas valide !";
 				}
-
-				// Validation du pays
-				// if(!preg_match("/^[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?[a-zàáâäçèéêëìíîïñòóôöùúûü]+[ \-']?]*[a-zàáâäçèéêëìíîïñòóôöùúûü]+$/i", $pays)){
 				if($pays == ""){
 	                $msgErreur['erreur_pays'] = "Le pays est invalide !<br>";
 	            }
@@ -1096,7 +1121,7 @@ class Controler
 				    $msgErreur['erreur_format'] = "La format est invalide !";
 				}
 			}	
-			   if ($id_formulaire == '2') {
+			   if ($data['id_formulaire'] == '2') {
             
 	            // Validation du nom de la bouteille
 	            if($nom == ""){
@@ -1105,10 +1130,6 @@ class Controler
 	            // Validation du description de la bouteille
 	            if($description == ""){
 	                $msgErreur['erreur_description2'] = "La description ne peut être vide !";
-	            }
-	            // Validation du image de la bouteille
-	            if($image == ""){
-	                $msgErreur['erreur_image2'] = "L'image ne peut être vide !";
 	            }
 	            // Validation du notes de la bouteille
 	             if($notes == ""){
@@ -1154,7 +1175,7 @@ class Controler
 				}
 
 			}
-			
+
             
             // Retourner un message d'erreur
             return $msgErreur;
@@ -1394,6 +1415,21 @@ class Controler
 			// if($vote < 1 || $vote > 5) return;
 			$resultat = $bte->nombreBouteillesBuParDate($body->id);
 			echo json_encode($resultat);
+		}
+
+		
+		/**
+		* Fonction qui récupère le nom de la bouteille et id de la table vino_saq
+		* 
+		* @return $resultat Sous format json
+		*/
+		private function RechercheFormulaire()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			$bte = new Bouteille();
+			$nbResultats = isset($body->nbResultats) ? $body->nbResultats : 10000;
+	        $resultat = $bte->RechercheFormulaireNom($body->nom, $nbResultats);
+	        echo json_encode($resultat);
 		}
 }
 ?>

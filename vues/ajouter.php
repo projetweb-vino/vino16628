@@ -10,13 +10,45 @@
             <input id="tab2-1" name="tabs-two" type="radio" >
         <?php }?>
          <div class="container-fluid">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form method="GET">
-                        <div class="form-row">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="row justify-content-center">
+                            <div class="imageupload form-group col-md-3 wrap-input100 validate26 validate-input">
+                                <span class="label-input100">images</span>
+                                <input  type="file" class ="inputvalue" id="image_uploads" name="image_ch" accept=".jpg, .jpeg, .png" multiple>
+                                <span class="focus-input100"></span>
+                                <!-- Afficher un message d'erreur s'il y'a lieu -->
+                                <?php  if(isset($message['erreur_image'])) { ?>
+                                    <small class="text-warning invali"><?php echo $message['erreur_image']?></small>
+                                <?php 
+                                    } 
+                                ?>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-4 imagesuprimer" >
+                                <div id="imagecharger">
+                                     <?php 
+                                    // On affiche un message d'erreur si la bouteille existe déja
+                                    if(isset($message['vide1'])){
+                                    ?>
+                                    <div class="alert alert-danger" role="alert">
+                                      <?php 
+                                        echo $message['vide1'];
+                                      ?>
+                                    </div>
+                                    <?php 
+                                    }
+                                    ?> 
+                                </div>
+                            </div>
+                        </div><br>       
+                    
+                        <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate-input ">
                                 <span class="label-input100 selec">Celliers :</span>
-                                <select class="input100 sele" name="cellier_id">
+                                <select class="input100 sele" name="bouteille[cellier_id]">
                                 <?php foreach ($data as $key => $cellier) { ?>
                                     <option value="<?php echo $cellier['id'] ?>"><?php echo $cellier['nom'];?></option>
                                     <?php } ?>
@@ -26,11 +58,11 @@
                                 <span class="label-input100">Nom</span>
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['nom'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="nom" id="nom1" value = "<?php echo $champs['nom']?>">
+                                    <input class="input100" type="text" name="bouteille[nom]" id="nom1" value = "<?php echo $champs['nom']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="nom" id="nom1" placeholder="Nom...">
+                                    <input class="input100" type="text" name="bouteille[nom]" id="nom1" >
                                 <?php         
                                     } 
                                 ?>
@@ -44,23 +76,23 @@
                             </div>
                            <div class=" form-group col-md-3 wrap-input100 validate-input">
                                 <span class="label-input100">Type</span>
-                                <select class="input100 sele" name="type_id">
+                                <select class="input100 sele" name="bouteille[type_id]">
                                 <?php foreach ($datas as $key => $type) { ?>
                                     <option value="<?php echo $type['id'] ?>"><?php echo $type['type'] ?></option>
                                     <?php } ?>
                                 </select>
                             </div> 
                         </div>         
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate2 validate-input" data-validate="Millesime est invalide">
                                 <span class="label-input100">Millesime</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['millesime'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="millesime" id="millesime1" value = "<?php echo $champs['millesime']?>">
+                                    <input class="input100" type="text" name="bouteille[millesime]" id="millesime1" value = "<?php echo $champs['millesime']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="millesime" id="millesime1" placeholder="Millesime">
+                                    <input class="input100" type="text" name="bouteille[millesime]" id="millesime1" >
                                 <?php         
                                     } 
                                 ?>
@@ -76,11 +108,11 @@
                                 <span class="label-input100">Quantité</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['quantite'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="quantite" id="quantite1" value = "<?php echo $champs['quantite']?>">
+                                    <input class="input100" type="text" name="bouteille[quantite]" id="quantite1" value = "<?php echo $champs['quantite']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="quantite" id="quantite1" placeholder="Quantité...">
+                                    <input class="input100" type="text" name="bouteille[quantite]" id="quantite1" >
                                 <?php         
                                     } 
                                 ?>
@@ -96,11 +128,11 @@
                                 <span class="label-input100">Pays</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['pays'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="pays" id="pays1" value = "<?php echo $champs['pays']?>">
+                                    <input class="input100" type="text" name="bouteille[pays]" id="pays1" value = "<?php echo $champs['pays']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="pays" id="pays1" placeholder="Pays...">
+                                    <input class="input100" type="text" name="bouteille[pays]" id="pays1">
                                 <?php         
                                     } 
                                 ?>
@@ -113,16 +145,16 @@
                                 ?>
                             </div>
                         </div>
-                         <div class="form-row">
+                         <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate5 validate-input" data-validate="Prix est invalide">
                                 <span class="label-input100">Prix</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['prix'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="prix_saq" id="prix1" value = "<?php echo $champs['prix']?>">
+                                    <input class="input100" type="text" name="bouteille[prix_saq]" id="prix1" value = "<?php echo $champs['prix']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="prix_saq" id="prix1" placeholder="Prix...">
+                                    <input class="input100" type="text" name="bouteille[prix_saq]" id="prix1">
                                 <?php         
                                     } 
                                 ?>
@@ -138,11 +170,11 @@
                                 <span class="label-input100">Notes</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['notes'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="notes" id="notes1" value = "<?php echo $champs['notes']?>">
+                                    <input class="input100" type="text" name="bouteille[notes]" id="notes1" value = "<?php echo $champs['notes']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="notes" id="notes1" placeholder="Notes...">
+                                    <input class="input100" type="text" name="bouteille[notes]" id="notes1">
                                 <?php         
                                     } 
                                 ?>
@@ -158,11 +190,11 @@
                                 <span class="label-input100">Format</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['format'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100" type="text" name="format" id="format1" value = "<?php echo $champs['format']?>">
+                                    <input class="input100" type="text" name="bouteille[format]" id="format1" value = "<?php echo $champs['format']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="format" id="format1" placeholder="Format...">
+                                    <input class="input100" type="text" name="bouteille[format]" id="format1">
                                 <?php         
                                     } 
                                 ?>
@@ -175,16 +207,16 @@
                                 ?>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate8 validate-input">
                                 <span class="label-input100">Date d'achat</span>
                                  <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <?php  if(isset($champs['date_achat'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100 sele" type="date" name="date_achat" id="date_achat1" value = "<?php echo $champs['date_achat']?>">
+                                    <input class="input100 sele" type="date" name="bouteille[date_achat]" id="date_achat1" value = "<?php echo $champs['date_achat']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100 sele" type="date" name="date_achat" id="date_achat1" placeholder="Date d'achat...">
+                                    <input class="input100 sele" type="date" name="bouteille[date_achat]" id="date_achat1">
                                 <?php         
                                     } 
                                 ?>
@@ -200,11 +232,11 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Garder jusqu'à</span>
                                 <?php  if(isset($champs['garde_jusqua'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua1" value = "<?php echo $champs['garde_jusqua']?>">
+                                    <input class="input100 sele" type="date" name="bouteille[garde_jusqua]" id="garde_jusqua1" value = "<?php echo $champs['garde_jusqua']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua1" placeholder="Garder jusqu'à...">
+                                    <input class="input100 sele" type="date" name="bouteille[garde_jusqua]" id="garde_jusqua1">
                                 <?php         
                                     } 
                                 ?>
@@ -216,28 +248,18 @@
                                     } 
                                 ?>
                                 </div>                
-                            <div class="imageupload form-group col-md-3 wrap-input100 validate26 validate-input">
-                                <span class="label-input100">images</span>
-                                <input  type="file" class ="inputvalue" id="image_uploads" name="image" accept=".jpg, .jpeg, .png" multiple>
-                                <span class="focus-input100"></span>
-                                <!-- Afficher un message d'erreur s'il y'a lieu -->
-                                <?php  if(isset($message['erreur_image'])) { ?>
-                                    <small class="text-warning invali"><?php echo $message['erreur_image']?></small>
-                                <?php 
-                                    } 
-                                ?>
-                            </div>
+                            
                           </div>
-                         <div class="form-row">
+                         <div class="form-row justify-content-center">
                              <div class=" form-group col-md-9 wrap-input100 validate10 validate-input">
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Description</span>
                                 <?php  if(isset($champs['description'], $champs['id_formulaire']) && $champs['id_formulaire'] == 1) {?>
-                                    <input class="input100 sele" type="text" name="description" id="description1" value = "<?php echo $champs['description']?>">
+                                    <input class="input100 sele" type="text" name="bouteille[description]" id="description1" value = "<?php echo $champs['description']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100 sele" type="text" name="description" id="description1" placeholder="Description...">
+                                    <input class="input100 sele" type="text" name="bouteille[description]" id="description1">
                                 <?php         
                                     } 
                                 ?>
@@ -250,43 +272,28 @@
                                 ?>
                             </div>
                         </div>    
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" id="code_saq1" placeholder="code saq" name="code_saq">
+                                <input type="hidden" class="form-control" id="code_saq1" name="bouteille[code_saq]">
                             </div>
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" id="url_saq1" placeholder="url saq" name="url_saq">
+                                <input type="hidden" class="form-control" id="url_saq1"  name="bouteille[url_saq]">
                             </div>
 
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" id="url_img1" placeholder="url img" name="url_img">
+                                <input type="hidden" class="form-control" id="url_img1"  name="bouteille[url_img]">
                             </div>
                         </div>
-                        <div class="form-row col-md-3">
-                            <div class="form-group wrap-login100-form-btn">
+                        <div class="form-row justify-content-center">
+                            <div class="form-row ajou col-md-4">
                                 <input type="hidden" name="requete" value="ajouterBouteilleNonListe">
-                                <input type="hidden" name="id_formulaire" value="1">
+                                <input type="hidden" name="bouteille[id_formulaire]" value="1">
                                 <button type="submit"  class=" btn btn-primary ajouform">Ajouter</button>
                             </div>
-                        </div>
+                        </div>    
                     </form>
                 </div>
-                 <div class="col-md-3 imagesuprimer" >
-                    <div id="imagecharger">
-                         <?php 
-                        // On affiche un message d'erreur si la bouteille existe déja
-                        if(isset($message['vide1'])){
-                        ?>
-                        <div class="alert alert-danger" role="alert">
-                          <?php 
-                            echo $message['vide1'];
-                          ?>
-                        </div>
-                        <?php 
-                        }
-                        ?> 
-                    </div>
-                </div>    
+                 
             </div>
         </div>    
     </div>
@@ -300,13 +307,46 @@
         <?php }?>
     
     <div class="container-fluid">
-            <div class="row">
+                 
+            <div class="row justify-content-center">
                 <div class="col-md-8">
+                    <!-- Recherche-->
+                    <div class="form-row justify-content-center">
+                        <div class=" form-group col-md-4 ">
+                             <label class="icon_form"><i class="fas fa-search"></i></label>
+                             <input type="text" name="recherche" class="recherchesaq input100" placeholder="Rechercher une Bouteille" autocomplete="off">
+                             <span class="focus-input100" id="reche"></span>
+                        </div>
+                    </div>    
+                    <div class="form-row justify-content-center">
+                        <div class=" form-group col-md-4">
+                            <ul class="listeBouteilles"></ul>
+                        </div>    
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="col-md-4 imagesuprimer" >
+                        <div id="imagelistee">
+                            <img  height="204px" width="200px" >
+                            <?php 
+                            // On affiche un message d'erreur si la bouteille existe déja
+                            if(isset($message['vide2'])){
+                            ?>
+                            <div class="alert alert-danger" role="alert">
+                              <?php 
+                                echo $message['vide2'];
+                              ?>
+                            </div>
+                            <?php 
+                            }
+                            ?> 
+                        </div>
+                    </div>    
+                </div></br>    
                     <form method="GET">
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate-input ">
                                 <span class="label-input100 selec">Celliers :</span>
-                                <select class="input100 sele" name="cellier_id">
+                                <select class="input100 sele" name="bouteille[cellier_id]">
                                 <?php foreach ($data as $key => $cellier) { ?>
                                     <option value="<?php echo $cellier['id'] ?>"><?php echo $cellier['nom'] ?></option>
                                     <?php } ?>
@@ -316,12 +356,12 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Nom</span>
                                 <?php  if(isset($champs['nom'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="nom" id="nom" value = "<?php echo $champs['nom']?>">
+                                    <input class="input100" type="text" name="bouteille[nom]" id="nom" value = "<?php echo $champs['nom']?>">
 
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="nom" id="nom" placeholder="Nom...">
+                                    <input class="input100" type="text" name="bouteille[nom]" id="nom" >
                                 <?php         
                                     } 
                                 ?>
@@ -335,23 +375,23 @@
                             </div>
                            <div class=" form-group col-md-3 wrap-input100 validate-input">
                                 <span class="label-input100">Type</span>
-                                <select class="input100 sele" name="type_id">
+                                <select class="input100 sele" name="bouteille[type_id]">
                                 <?php foreach ($datas as $key => $type) { ?>
                                     <option value="<?php echo $type['id'] ?>"><?php echo $type['type'] ?></option>
                                     <?php } ?>
                                 </select>
                             </div> 
                         </div>         
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate14 validate-input" data-validate="Millesime est invalide">
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Millesime</span>
                                 <?php  if(isset($champs['millesime'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="millesime" id="millesime" value = "<?php echo $champs['millesime']?>">
+                                    <input class="input100" type="text" name="bouteille[millesime]" id="millesime" value = "<?php echo $champs['millesime']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="millesime" id="millesime" placeholder="Millesime">
+                                    <input class="input100" type="text" name="bouteille[millesime]" id="millesime">
                                 <?php         
                                     } 
                                 ?>
@@ -367,11 +407,11 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Quantité</span>
                                 <?php  if(isset($champs['quantite'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="quantite" id="quantite" value = "<?php echo $champs['quantite']?>">
+                                    <input class="input100" type="text" name="bouteille[quantite]" id="quantite" value = "<?php echo $champs['quantite']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="quantite" id="quantite" placeholder="Quantité...">
+                                    <input class="input100" type="text" name="bouteille[quantite]" id="quantite" >
                                 <?php         
                                     } 
                                 ?>
@@ -387,11 +427,11 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Pays</span>
                                 <?php  if(isset($champs['pays'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="pays" id="pays" value = "<?php echo $champs['pays']?>">
+                                    <input class="input100" type="text" name="bouteille[pays]" id="pays" value = "<?php echo $champs['pays']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="pays" id="pays" placeholder="Pays...">
+                                    <input class="input100" type="text" name="bouteille[pays]" id="pays">
                                 <?php         
                                     } 
                                 ?>
@@ -404,16 +444,16 @@
                                 ?>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class=" form-group col-md-3 wrap-input100 validate17 validate-input" data-validate="Prix est invalide">
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Prix</span>
                                 <?php  if(isset($champs['prix'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="prix_saq" id="prix" value = "<?php echo $champs['prix']?>">
+                                    <input class="input100" type="text" name="bouteille[prix_saq]" id="prix" value = "<?php echo $champs['prix']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="prix_saq" id="prix" placeholder="Prix...">
+                                    <input class="input100" type="text" name="bouteille[prix_saq]" id="prix" >
                                 <?php         
                                     } 
                                 ?>
@@ -429,11 +469,11 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Notes</span>
                                 <?php  if(isset($champs['notes'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="notes" id="notes" value = "<?php echo $champs['notes']?>">
+                                    <input class="input100" type="text" name="bouteille[notes]" id="notes" value = "<?php echo $champs['notes']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="notes" id="notes" placeholder="Notes...">
+                                    <input class="input100" type="text" name="bouteille[notes]" id="notes" >
                                 <?php         
                                     } 
                                 ?>
@@ -449,11 +489,11 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Format</span>
                                 <?php  if(isset($champs['format'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100" type="text" name="format" id="format" value = "<?php echo $champs['format']?>">
+                                    <input class="input100" type="text" name="bouteille[format]" id="format" value = "<?php echo $champs['format']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100" type="text" name="format" id="format" placeholder="Format...">
+                                    <input class="input100" type="text" name="bouteille[format]" id="format" >
                                 <?php         
                                     } 
                                 ?>
@@ -466,16 +506,16 @@
                                 ?>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                              <div class=" form-group col-md-3 wrap-input100 validate20 validate-input">
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Date d'achat</span>
                                 <?php  if(isset($champs['date_achat'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100 sele" type="date" name="date_achat" id="date_achat" value = "<?php echo $champs['date_achat']?>">
+                                    <input class="input100 sele" type="date" name="bouteille[date_achat]" id="date_achat" value = "<?php echo $champs['date_achat']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100 sele" type="date" name="date_achat" id="date_achat" placeholder="Date d'achat...">
+                                    <input class="input100 sele" type="date" name="bouteille[date_achat]" id="date_achat" >
                                 <?php         
                                     } 
                                 ?>
@@ -491,11 +531,11 @@
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Garder jusqu'à</span>
                                 <?php  if(isset($champs['garde_jusqua'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua" value = "<?php echo $champs['garde_jusqua']?>">
+                                <input class="input100 sele" type="date" name="bouteille[garde_jusqua]" id="garde_jusqua" value = "<?php echo $champs['garde_jusqua']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100 sele" type="date" name="garde_jusqua" id="garde_jusqua" placeholder="Garder jusqu'à...">
+                                    <input class="input100 sele" type="date" name="bouteille[garde_jusqua]" id="garde_jusqua" >
                                 <?php         
                                     } 
                                 ?>
@@ -513,11 +553,11 @@
 
                                     <?php  if(isset($champs['image'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
 
-                                        <input type="text" class="input100" id="image" placeholder="image" name="image" value = "<?php echo $champs['image']?>">
+                                        <input type="text" class="input100" id="image" name="bouteille[image]" value = "<?php echo $champs['image']?>">
                                     <?php 
                                         }else{
                                     ?>
-                                        <input type="text" class="input100" id="image" placeholder="image" name="image">
+                                        <input type="text" class="input100" id="image"  name="bouteille[image]">
                                     <?php         
                                         } 
                                     ?>
@@ -530,16 +570,16 @@
                                 ?>
                             </div>
                           </div>
-                         <div class="form-row">
+                         <div class="form-row justify-content-center">
                              <div class=" form-group col-md-9 wrap-input100 validate22 validate-input">
                                 <!-- apres la validation il retourne les valeurs envoyés   -->
                                 <span class="label-input100">Description</span>
                                 <?php  if(isset($champs['description'], $champs['id_formulaire']) && $champs['id_formulaire'] == 2) {?>
-                                    <input class="input100 sele" type="text" name="description" id="description" value = "<?php echo $champs['description']?>">
+                                    <input class="input100 sele" type="text" name="bouteille[description]" id="description" value = "<?php echo $champs['description']?>">
                                 <?php 
                                     }else{
                                 ?>
-                                    <input class="input100 sele" type="text" name="description" id="description" placeholder="Description...">
+                                    <input class="input100 sele" type="text" name="bouteille[description]" id="description" placeholder="Description...">
                                 <?php         
                                     } 
                                 ?>
@@ -552,110 +592,31 @@
                                 ?>
                             </div>
                         </div>    
-                        <div class="form-row">
+                        <div class="form-row justify-content-center">
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" id="code_saq" placeholder="code saq" name="code_saq">
+                                <input type="hidden" class="form-control" id="code_saq" placeholder="code saq" name="bouteille[code_saq]">
                             </div>
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" id="url_saq" placeholder="url saq" name="url_saq">
+                                <input type="hidden" class="form-control" id="url_saq" placeholder="url saq" name="bouteille[url_saq]">
                             </div>
 
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" id="url_img" placeholder="url img" name="url_img">
+                                <input type="hidden" class="form-control" id="url_img" placeholder="url img" name="bouteille[url_img]">
                             </div>
                         </div>
-                        <div class="form-row col-md-3">
-                            <div class="form-group wrap-login100-form-btn">
+                        <div class="form-row justify-content-center">
+                            <div class="form-row ajou col-md-4">
                                 <input type="hidden" name="requete" value="ajouterBouteilleNonListe">
-                                <input type="hidden" name="id_formulaire" value="2">
+                                <input type="hidden" name="bouteille[id_formulaire]" value="2">
                                 <button type="submit"  class=" btn btn-primary ajouform" id ="validfor2" >Ajouter</button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="col-md-3 imagesuprimer" >
-                    <div class="form-group ">
-                        <a class="btn btn-primary btnliste" href="#popup1">Liste des bouteilles</a>
-                    </div>
-                    <div id="imagelistee">
-                        <img  height="360px" width="300px" >
-                        <?php 
-                        // On affiche un message d'erreur si la bouteille existe déja
-                        if(isset($message['vide2'])){
-                        ?>
-                        <div class="alert alert-danger" role="alert">
-                          <?php 
-                            echo $message['vide2'];
-                          ?>
-                        </div>
-                        <?php 
-                        }
-                        ?> 
-                    </div>
-                </div>    
             </div>
         </div>    
     </div>
 </div>
-<!-- Popup de liste des bouteilles -->
-<div id="popup1" class="overlay">
-    <div class="popup">
-        <h5>La liste des bouteilles</h5>
-        <a class="close" href="#">&times;</a>
-        <div class="content">
-            <table class="table table-dark">
-              <thead>
-                <tr>
-                    <th scope="col">index</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">La photo</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Code de la saq</th>
-                    <th scope="col">pays</th>
-                    <th scope="col">description</th>
-                    <th scope="col">prix</th>
-                    <th scope="col">url saq</th>
-                    <th scope="col">url image</th>
-                    <th scope="col">format</th>
-                    <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                if (!empty($dataSAQ)) {
-                    $i =1;
-                     foreach ($dataSAQ as $cle => $bouteille) {
-                        $i++
-                    ?>
-                    <tr>
-                      <td class="index"><?php echo $i ?></td>
-                      <td id="nom<?php echo $i ?>"><?php echo $bouteille['nom'] ?></td>
-                      <td><img class = "imageliste" src="https:<?php echo $bouteille['image'] ?>"></td>
-                      <td id="image<?php echo $i ?>"><?php echo $bouteille['image'] ?></td>
-                      <td id="code_saq<?php echo $i ?>"><?php echo $bouteille['code_saq'] ?></td>
-                      <td id="pays<?php echo $i ?>"><?php echo $bouteille['pays'] ?></td>
-                      <td id="description<?php echo $i ?>"><?php echo $bouteille['description'] ?></td>
-                      <td id="prix_saq<?php echo $i ?>"><?php echo $bouteille['prix_saq'] ?></td>
-                      <td id="url_saq<?php echo $i ?>"><?php echo $bouteille['url_saq'] ?></td>
-                      <td id="url_img<?php echo $i ?>"><?php echo $bouteille['url_img'] ?></td>
-                      <td id="format<?php echo $i ?>"><?php echo $bouteille['format'] ?></td>
-                      <td><div  data-id="<?php echo $i ?>"><button type="button"  class="ajoutebouteille">Ajouter</button></div></td>
-                    </tr>
-                    <?php
-                        } //Fin du foreach
-                }
-                // Sinon on affiche un message
-                else{
-                    echo "Aucune bouteille n'est importée depuis la SAQ ! Veuillez contacter l'administrateur.";
-                }
-
-                ?>  
-              </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- fin popup -->
 <script type="text/javascript">
     //Au chargement de la page : on active le menu 'Statistiques' et on désactive les autres
     window.addEventListener('load', function() {
